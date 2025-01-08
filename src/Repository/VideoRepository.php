@@ -31,13 +31,17 @@ class VideoRepository extends ServiceEntityRepository
     //        ;
     //    }
 
-    //    public function findOneBySomeField($value): ?Video
-    //    {
-    //        return $this->createQueryBuilder('v')
-    //            ->andWhere('v.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
+
+
+       public function findOneById($value): ?Video
+       {
+           return $this->createQueryBuilder('v')
+               ->andWhere('v.id = :val')
+            //    on passe la valeur en paramètre
+               ->setParameter('val', $value)
+               ->getQuery()
+            //    retourne 1 ou nul
+               ->getOneOrNullResult()
+           ;
+       }
 }
