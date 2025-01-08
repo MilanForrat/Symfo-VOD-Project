@@ -7,6 +7,7 @@ use App\Form\SignInType;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Controller\SignInController;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,7 +17,7 @@ class SignInController extends AbstractController
 {
     #[Route('/sign-in', name: 'app_sign_in')]
     // on ajoute "Request" pour injecter une requête SQL afin d'envoyer les données saisies sur le form en BDD
-    public function index(Request $req, EntityManagerInterface $entityManager): Response
+    public function index(Request $req, EntityManagerInterface $entityManager, UserPasswordHasherInterface $passwordHasher): Response
     {
 
         // on va créer un nouvel utilisateur via l'objet User (ne pas oublier le "use")
@@ -32,6 +33,20 @@ class SignInController extends AbstractController
         if($form->isSubmitted() && $form->isValid()){
             // on attribue les données du formulaire au nouvel utilisateur
             $user=$form->getData();
+
+            // Hashage du mot de passe
+            // on récupère le mot de passe en clair
+            $plaintextPassword = $user->getPassword();
+
+            // le mot de passe et le user sont passés en paramètre du UserPasswordHasher
+            $hashedPassword = $passwordHasher->hashPassword(
+                $user,
+                $plaintextPassword
+            );
+            // maintenant que le mot de passe hashé est prêt on attribue le mot de passe hashé au user
+            $user->setPassword($hashedPassword);
+
+
             
             $entityManager->persist($user);
             // on envoie en BDD
