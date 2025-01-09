@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Login{% endblock %}
+
+{% block body %}
+
+    {# on vérifie s'il y a une erreur via le paramètre passé dans le LoginController #}
+    {% if error %}
+        <div>{{error.messageKey|trans(error.messageData,'security')}}</div>
+    {% endif %}
+
+    
+    {# formulaire de connexion (on aurait aussi pu le faire avec un make:form) #}
+
+    {# path emmène sur la page login #}
+    <form action="{{ path('app_login') }}" method="post">
+        <label for="username">Email:</label>
+        {# on met une valeur par défaut le lastUsername #}
+        <input type="text" id="username" name="_username" value="{{ last_username }}" required>
+
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="_password" required>
+
+        {# redirection vers la page d'accueil #}
+        <input type="hidden" name="_target_path" value="/">
+
+        <button type="submit">login</button>
+    </form>
+
+{% endblock %}

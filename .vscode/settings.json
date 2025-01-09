@@ -1,0 +1,6 @@
+{
+    "json.schemas": [
+    
+    ],
+    "emmet.includeLanguages": {"twig": "html"}
+}

@@ -16,7 +16,10 @@ security:
         main:
             lazy: true
             provider: app_user_provider
-
+            # permet à symfony de gérer automatiquement le login
+            form_login:
+                login_path: app_login
+                check_path: app_login
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#the-firewall
 
