@@ -5,6 +5,7 @@ namespace App\Controller\Admin;
 // on veut des éléments de l'entité Video donc on l'appelle
 use App\Entity\Video;
 use App\Entity\User;
+use App\Entity\Article;
 
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
@@ -63,6 +64,7 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');
         // yield MenuItem::linkToCrud('The Label', 'fas fa-list', EntityClass::class);
         yield MenuItem::linkToCrud('Utilisateurs', 'fas fa-user', User::class);
+        yield MenuItem::linkToCrud('Articles', 'fa-solid fa-newspaper', Article::class);
         yield MenuItem::linkToCrud('Vidéos', 'fa-solid fa-video', Video::class);
     }
 
