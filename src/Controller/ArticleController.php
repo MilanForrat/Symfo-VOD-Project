@@ -21,10 +21,10 @@ class ArticleController extends AbstractController
 
     // permet de trouver les articles par slug
     #[Route('/article/{slug}', name: 'app_article_details')]
-    public function viewArticleDetails(EntityManagerInterface $EntityManagerInterface, $slug): Response
+    public function viewArticleDetails(EntityManagerInterface $entityManager,  $slug): Response
     {
     
-        $article = $entityManager->getRepository(Article::class)->findOneBy($slug);
+        $article = $entityManager->getRepository(Article::class)->findOneBySlug($slug);
 
         // si on ne trouve pas de vidéo on redirige à la page d'accueil
         if(!$article){
