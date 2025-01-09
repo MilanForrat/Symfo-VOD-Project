@@ -18,9 +18,9 @@ class HomeController extends AbstractController
     {
 
         $video = $entityManager->getRepository(Video::class)->findAll();
+        $article = $entityManager->getRepository(Article::class)->findAll();
         // débugger 
         // var_dump($video); die;
-        $article = $entityManager->getRepository(Article::class)->findAll();
 
         return $this->render('home/index.html.twig', [
             'article' => $article,

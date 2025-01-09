@@ -32,9 +32,31 @@
                         <div class="card-body">
                             <h4 class="card-title">{{articleElement.title}}</h4>
                             <hr>
-                            <h5>{{articleElement.subtitle}}</h5>
-                            <p class="card-text">{{articleElement.textContent}}</p>
-                            <a href="#" class="btn btn-primary">Découvrir l'article</a>
+                            <h5>{{articleElement.subtitle}}</h5>                           
+                            {# <pre>
+                                {{ dump(article) }}
+                            </pre> #}
+                            {#  #}
+                            <a href="{{ path('app_article_details', { 'slug' : articleElement.slug }) }}" class="btn btn-primary">Découvrir l'article</a>
+                            {# afficher le bouton uniquement pour les administrateurs #}
+                            {% if app.user and "ROLE_ADMIN" in app.user.roles %}
+                            <a href="#" class="btn btn-warning">Editer</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% endfor %}
+                    {% for videoElement in video %}
+                    <div class="card" style="width: 18rem;">
+                        <img src="/uploads/{{videoElement.image}}" class="card-img-top" alt="...">
+                        <div class="card-body">
+                            <h4 class="card-title">{{videoElement.name}}</h4>
+                            <hr>
+                            <h5>{{videoElement.subtitle}}</h5>                           
+                            {# <pre>
+                                {{ dump(article) }}
+                            </pre> #}
+                            {#  #}
+                            <a href="{{ path('app_article_details', { 'slug' : videoElement.slug }) }}" class="btn btn-primary">Découvrir la vidéo</a>
                             {# afficher le bouton uniquement pour les administrateurs #}
                             {% if app.user and "ROLE_ADMIN" in app.user.roles %}
                             <a href="#" class="btn btn-warning">Editer</a>
