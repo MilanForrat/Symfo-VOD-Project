@@ -28,4 +28,17 @@ class LoginController extends AbstractController
             'last_username'=>$lastUsername,
         ]);
     }
+
+    // on créer une route de log out
+    #[Route('/logout', name: 'app_logout')]
+    public function logout()
+    {
+        $error="";
+        $lastUsername="";
+        return $this->render('login/index.html.twig', [
+            // on passe à notre vue les paramètres qui pourraient nous être utiles
+            'error' => $error,
+            'last_username'=>$lastUsername,
+        ]);
+    }
 }
