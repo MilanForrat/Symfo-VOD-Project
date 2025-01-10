@@ -10,7 +10,8 @@
 <div>
     <h1>{{article.title}}</h1>
     <h2>{{article.subtitle}}</h2>
-    <p>{{article.textContent}}</p>
+    {# il faut afficher le contenu de la bdd mais celui ci comprend des balises HTML donc on doit utiliser un filtre "raw" #}
+    <p>{{article.textContent | raw}}</p>
 </div>
 
 {% endblock %}

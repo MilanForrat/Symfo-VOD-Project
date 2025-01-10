@@ -44,37 +44,37 @@ class VideoController extends AbstractController
 
     // --------------------- AUTRE MANIERE DE FAIRE : pour récupérer des infos via un id en utilisant le REPOSITORY au lieu du ENTITY Manager
 
-    // ici le "/{id}" permet d'accéder dynamiquement à chaque video depuis son id
-    #[Route('/video/{id}', name: 'app_video')]
-    // ajout de "(EntityManagerInterface $entityManager): Response" pour appeler les éléments de la BDD dans l'index
-    // ici "int $id" me permet d'accéder à la valeur de l'id
-    public function index(VideoRepository $videoRepository, int $id): Response
-    {
+    // // ici le "/{id}" permet d'accéder dynamiquement à chaque video depuis son id
+    // #[Route('/video/{id}', name: 'app_video')]
+    // // ajout de "(EntityManagerInterface $entityManager): Response" pour appeler les éléments de la BDD dans l'index
+    // // ici "int $id" me permet d'accéder à la valeur de l'id
+    // public function index(VideoRepository $videoRepository, int $id): Response
+    // {
     
-    // je vais utiliser la fonction créée dans le Repository 
-    $video = $videoRepository->findOneById($id);
+    // // je vais utiliser la fonction créée dans le Repository 
+    // $video = $videoRepository->findOneById($id);
 
-        // si le produit n'est pas trouvé 
-        if(!$video){
-            // lancer une erreur
-            throw $this->createNotFoundException(
-                'Aucun produit trouvé avec cette id : '.$id
-            );
-        }
+    //     // si le produit n'est pas trouvé 
+    //     if(!$video){
+    //         // lancer une erreur
+    //         throw $this->createNotFoundException(
+    //             'Aucun produit trouvé avec cette id : '.$id
+    //         );
+    //     }
 
-        return $this->render('video/index.html.twig', [
-            'controller_name' => 'VideoController',
-            // on demande à la vue de passer en paramètre le "name" (donc de rendre possible le fait d'accéder à la variable "name")
-            'name' => $video->getName(),
-        ]);
-    }
+    //     return $this->render('video/index.html.twig', [
+    //         'controller_name' => 'VideoController',
+    //         // on demande à la vue de passer en paramètre le "name" (donc de rendre possible le fait d'accéder à la variable "name")
+    //         'name' => $video->getName(),
+    //     ]);
+    // }
 
     // permet de trouver les videos par slug
     #[Route('/video/{slug}', name: 'app_video_details')]
-    public function viewVideoDetails(EntityManagerInterface $EntityManagerInterface, $slug): Response
+    public function viewVideoDetails(EntityManagerInterface $entityManager, $slug): Response
     {
     
-        $video = $entityManager->getRepository(Video::class)->findOneBy($slug);
+        $video = $entityManager->getRepository(Video::class)->findOneBySlug($slug);
 
         // si on ne trouve pas de vidéo on redirige à la page d'accueil
         if(!$video){
