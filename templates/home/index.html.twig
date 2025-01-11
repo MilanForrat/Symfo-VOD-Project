@@ -18,7 +18,7 @@
         </section>
         <div class="album py-5 bg-body-tertiary">
             <div class="container">
-                <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+                <div class="row g-3 justify-content-center">
                 {# debuggage #}
                 {# <pre>
                     {{ dump(article) }}
@@ -27,8 +27,11 @@
                     {# on va boucler les cards pour les générer dynamiquement en fonction de la BDD #}
                     {# pour chaque articleElement parmis les articles (passés en paramètres du controller) #}
                     {% for articleElement in article %}
-                    <div class="card" style="width: 18rem;">
+                    <div class="card col-11 col-md-3 mb-3 mx-3" style="width: 18rem;">
                         <img src="/uploads/{{articleElement.image}}" class="card-img-top" alt="...">
+                        <div class="my-3 text-start">
+                            <span class="badge rounded-pill text-bg-info ms-3 px-3">Article</span>
+                        </div>
                         <div class="card-body">
                             <h4 class="card-title">{{articleElement.title}}</h4>
                             <hr>
@@ -37,17 +40,25 @@
                                 {{ dump(article) }}
                             </pre> #}
                             {#  #}
-                            <a href="{{ path('app_article_details', { 'slug' : articleElement.slug }) }}" class="btn btn-primary">Découvrir l'article</a>
-                            {# afficher le bouton uniquement pour les administrateurs #}
-                            {% if app.user and "ROLE_ADMIN" in app.user.roles %}
-                            <a href="#" class="btn btn-warning">Editer</a>
-                            {% endif %}
                         </div>
+                        <a href="{{ path('app_article_details', { 'slug' : articleElement.slug }) }}" class="btn btn-primary">Lire l'article</a>
+                        {# afficher le bouton uniquement pour les administrateurs #}
+                        {% if app.user and "ROLE_ADMIN" in app.user.roles %}
+                        <a href="{{ ea_url()
+                                    .setController('App\\Controller\\Admin\\ArticleCrudController')
+                                    .setAction('edit')
+                                    .setEntityId(articleElement.id)
+                                }}"
+                        class="btn btn-warning mt-3"><span class="me-2 fa fa-edit"></span>Editer</a>
+                        {% endif %}
                     </div>
                     {% endfor %}
                     {% for videoElement in video %}
-                    <div class="card" style="width: 18rem;">
+                    <div class="card col-11 col-md-3 mb-3 mx-3" style="width: 18rem;">
                         <img src="/uploads/{{videoElement.image}}" class="card-img-top" alt="...">
+                            <div class="my-3 text-start">
+                            <span class="badge rounded-pill text-bg-warning ms-3 px-3">Vidéo</span>
+                        </div>
                         <div class="card-body">
                             <h4 class="card-title">{{videoElement.name}}</h4>
                             <hr>
@@ -56,12 +67,17 @@
                                 {{ dump(article) }}
                             </pre> #}
                             {#  #}
-                            <a href="{{ path('app_video_details', { 'slug' : videoElement.slug }) }}" class="btn btn-primary">Découvrir la vidéo</a>
-                            {# afficher le bouton uniquement pour les administrateurs #}
-                            {% if app.user and "ROLE_ADMIN" in app.user.roles %}
-                            <a href="#" class="btn btn-warning">Editer</a>
-                            {% endif %}
                         </div>
+                        <a href="{{ path('app_video_details', { 'slug' : videoElement.slug }) }}" class="btn btn-primary">Voir la vidéo</a>
+                        {# afficher le bouton uniquement pour les administrateurs #}
+                        {% if app.user and "ROLE_ADMIN" in app.user.roles %}
+                        <a href="{{ ea_url()
+                                    .setController('App\\Controller\\Admin\\VideoCrudController')
+                                    .setAction('edit')
+                                    .setEntityId(videoElement.id)
+                                }}" 
+                                class="btn btn-warning mt-3"><span class="me-2 fa fa-edit"></span>Editer</a>
+                        {% endif %}
                     </div>
                     {% endfor %}
                 </div>

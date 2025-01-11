@@ -54,18 +54,20 @@ class DashboardController extends AbstractDashboardController
     public function configureDashboard(): Dashboard
     {
         return Dashboard::new()
-            ->setTitle('test');
+            ->setTitle('Espace Administration')
+            ->setTranslationDomain('fr');
     }
 
 
     // c'est ici qu'on ajoute des menus/liens accès sur la plateforme admin
     public function configureMenuItems(): iterable
     {
-        yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');
-        // yield MenuItem::linkToCrud('The Label', 'fas fa-list', EntityClass::class);
+        yield MenuItem::linkToRoute('Page Accueil', 'fa-solid fa-house', 'app_home');
+        yield MenuItem::section();
         yield MenuItem::linkToCrud('Utilisateurs', 'fas fa-user', User::class);
         yield MenuItem::linkToCrud('Articles', 'fa-solid fa-newspaper', Article::class);
         yield MenuItem::linkToCrud('Vidéos', 'fa-solid fa-video', Video::class);
+
     }
 
     // lien vers les icones : https://fontawesome.com/icons/

@@ -12,19 +12,49 @@
     
     {# formulaire de connexion (on aurait aussi pu le faire avec un make:form) #}
 
-    {# path emmène sur la page login #}
+    {# path emmène sur la page login
     <form action="{{ path('app_login') }}" method="post">
         <label for="username">Email:</label>
         {# on met une valeur par défaut le lastUsername #}
-        <input type="text" id="username" name="_username" value="{{ last_username }}" required>
+        {# <input type="text" id="username" name="_username" value="{{ last_username }}" required>
 
         <label for="password">Password:</label>
-        <input type="password" id="password" name="_password" required>
+        <input type="password" id="password" name="_password" required> #}
 
         {# redirection vers la page d'accueil #}
-        <input type="hidden" name="_target_path" value="/">
+        {# <input type="hidden" name="_target_path" value="/">
 
         <button type="submit">login</button>
-    </form>
+    </form>  #}
+    <div class="bg-light d-flex align-items-center justify-content-center">
+        <div class="card shadow-lg w-100" style="max-width: 480px;">
+            <div class="card-body">
+                <div class="text-center">
+                    <h1 class="card-title h3">Connexion</h1>
+                    <p class="card-text text-muted">Connectez-vous pour accéder à votre compte</p>
+                </div>
+                <div class="mt-4">
+                    <form action="{{ path('app_login') }}" method="post">
+                        <div class="mb-4">
+                            <label for="username" class="form-label text-muted">E-mail</label>
+                            <input type="text" class="form-control" id="username" name="_username" placeholder="Saisir votre E-mail" value="{{ last_username }}" required>
+                        </div>
+                        <div class="mb-4">
+                            <label for="password" class="form-label text-muted">Mot de passe</label>
+                            <input type="password" class="form-control" id="password" placeholder="Saisir votre mot de passe" name="_password" required>
+                        </div>
+                        <div class="d-grid">
+                            {# redirection vers la page d'accueil #}
+                            <input type="hidden" name="_target_path" value="/">
+                            <button type="submit" class="btn btn-dark btn-lg">Se connecter</button>
+                        </div>
+                        <p class="text-center text-muted mt-4">Vous n'avez pas encore de compte ?
+                            <a href="{{ path('app_sign_in')}}" class="text-decoration-none">Créer un compte</a>.
+                        </p>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 
 {% endblock %}

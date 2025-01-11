@@ -56,7 +56,7 @@ class SignInController extends AbstractController
             $this->addFlash('success',"Compte créer avec succès, vérifiez vos e-mail pour complèter l'inscription.");
         }else{
             // afficher message erreur
-            $this->addFlash('fail',"Une erreur est survenue lors de la création du compte.");
+            $this->addFlash('danger',"Une erreur est survenue lors de la création du compte.");
         }
 
         return $this->render('sign_in/index.html.twig', [
