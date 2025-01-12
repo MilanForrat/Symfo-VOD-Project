@@ -11,13 +11,13 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class ArticleController extends AbstractController
 {
-    #[Route('/article', name: 'app_article')]
-    public function index(): Response
-    {
-        return $this->render('article/index.html.twig', [
-            'controller_name' => 'ArticleController',
-        ]);
-    }
+    // #[Route('/article', name: 'app_article')]
+    // public function index(): Response
+    // {
+    //     return $this->render('article/index.html.twig', [
+    //         'controller_name' => 'ArticleController',
+    //     ]);
+    // }
 
     // permet de trouver les articles par slug
     #[Route('/article/{slug}', name: 'app_article_details')]
@@ -36,4 +36,22 @@ class ArticleController extends AbstractController
             'article' => $article,
         ]);
     }
+
+        // page où l'on retrouve tous les articles
+        #[Route('/article', name: 'app_all_articles')]
+        public function viewAllArticles(EntityManagerInterface $entityManager): Response
+        {
+        
+            $article = $entityManager->getRepository(Article::class)->findAll();
+    
+            // si on ne trouve pas d'articles on redirige à la page d'accueil
+            if(!$article){
+                return $this->redirectToRoute('app_home');
+            }
+    
+            return $this->render('article/article_index.html.twig', [
+                // on passe l'objet en entier afin d'accéder à tous ses détails
+                'article' => $article,
+            ]);
+        }
 }

@@ -1,86 +1,73 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello HomeController!{% endblock %}
+{% block title %}Accueil VOD Project{% endblock %}
 
 {% block body %}
-        <section class="py-5 text-center container">
-            <div class="row py-lg-5">
-                <div class="col-lg-6 col-md-8 mx-auto">
-                    <h1 class="fw-light">Album example</h1>
-                    <p class="lead text-body-secondary">Something short and leading about the collection below—its contents, the creator, etc. Make it short and sweet, but not too short so folks don’t simply skip over it entirely.</p>
-                    <p>
-                    <button type="button" class="btn btn-danger">Danger</button>
-                    <a href="#" class="btn btn-primary my-2">Main call to action</a>
-                    <a href="#" class="btn btn-secondary my-2">Secondary action</a>
-                    </p>
-                </div>
-            </div>
-        </section>
-        <div class="album py-5 bg-body-tertiary">
-            <div class="container">
-                <div class="row g-3 justify-content-center">
-                {# debuggage #}
-                {# <pre>
-                    {{ dump(article) }}
-                </pre> #}
+    <div class="album py-5 bg-body-tertiary">
+        <div class="container">
+            <div class="row g-3 justify-content-center">
+            {# debuggage #}
+            {# <pre>
+                {{ dump(article) }}
+            </pre> #}
 
-                    {# on va boucler les cards pour les générer dynamiquement en fonction de la BDD #}
-                    {# pour chaque articleElement parmis les articles (passés en paramètres du controller) #}
-                    {% for articleElement in article %}
-                    <div class="card col-11 col-md-3 mb-3 mx-3" style="width: 18rem;">
-                        <img src="/uploads/{{articleElement.image}}" class="card-img-top" alt="...">
-                        <div class="my-3 text-start">
-                            <span class="badge rounded-pill text-bg-info ms-3 px-3">Article</span>
-                        </div>
-                        <div class="card-body">
-                            <h4 class="card-title">{{articleElement.title}}</h4>
-                            <hr>
-                            <h5>{{articleElement.subtitle}}</h5>                           
-                            {# <pre>
-                                {{ dump(article) }}
-                            </pre> #}
-                            {#  #}
-                        </div>
-                        <a href="{{ path('app_article_details', { 'slug' : articleElement.slug }) }}" class="btn btn-primary">Lire l'article</a>
-                        {# afficher le bouton uniquement pour les administrateurs #}
-                        {% if app.user and "ROLE_ADMIN" in app.user.roles %}
-                        <a href="{{ ea_url()
-                                    .setController('App\\Controller\\Admin\\ArticleCrudController')
-                                    .setAction('edit')
-                                    .setEntityId(articleElement.id)
-                                }}"
-                        class="btn btn-warning mt-3"><span class="me-2 fa fa-edit"></span>Editer</a>
-                        {% endif %}
+                {# on va boucler les cards pour les générer dynamiquement en fonction de la BDD #}
+                {# pour chaque articleElement parmis les articles (passés en paramètres du controller) #}
+                {% for articleElement in article %}
+                <div class="card col-11 col-md-3 mb-3 mx-3" style="width: 18rem;">
+                    <img src="/uploads/{{articleElement.image}}" class="card-img-top" alt="...">
+                    <div class="my-3 text-start">
+                        <span class="badge rounded-pill text-bg-info ms-3 px-3">Article</span>
                     </div>
-                    {% endfor %}
-                    {% for videoElement in video %}
-                    <div class="card col-11 col-md-3 mb-3 mx-3" style="width: 18rem;">
-                        <img src="/uploads/{{videoElement.image}}" class="card-img-top" alt="...">
-                            <div class="my-3 text-start">
-                            <span class="badge rounded-pill text-bg-warning ms-3 px-3">Vidéo</span>
-                        </div>
-                        <div class="card-body">
-                            <h4 class="card-title">{{videoElement.name}}</h4>
-                            <hr>
-                            <h5>{{videoElement.subtitle}}</h5>                           
-                            {# <pre>
-                                {{ dump(article) }}
-                            </pre> #}
-                            {#  #}
-                        </div>
-                        <a href="{{ path('app_video_details', { 'slug' : videoElement.slug }) }}" class="btn btn-primary">Voir la vidéo</a>
-                        {# afficher le bouton uniquement pour les administrateurs #}
-                        {% if app.user and "ROLE_ADMIN" in app.user.roles %}
-                        <a href="{{ ea_url()
-                                    .setController('App\\Controller\\Admin\\VideoCrudController')
-                                    .setAction('edit')
-                                    .setEntityId(videoElement.id)
-                                }}" 
-                                class="btn btn-warning mt-3"><span class="me-2 fa fa-edit"></span>Editer</a>
-                        {% endif %}
+                    <div class="card-body">
+                        <h4 class="card-title">{{articleElement.title}}</h4>
+                        <hr>
+                        <h5>{{articleElement.subtitle}}</h5>                           
+                        {# <pre>
+                            {{ dump(article) }}
+                        </pre> #}
+                        {#  #}
                     </div>
-                    {% endfor %}
+                    <a href="{{ path('app_article_details', { 'slug' : articleElement.slug }) }}" class="btn btn-primary">Lire l'article</a>
+                    {# afficher le bouton uniquement pour les administrateurs #}
+                    {% if app.user and "ROLE_ADMIN" in app.user.roles %}
+                    <a href="{{ ea_url()
+                                .setController('App\\Controller\\Admin\\ArticleCrudController')
+                                .setAction('edit')
+                                .setEntityId(articleElement.id)
+                            }}"
+                    class="btn btn-warning mt-3"><span class="me-2 fa fa-edit"></span>Editer</a>
+                    {% endif %}
                 </div>
+                {% endfor %}
+                {% for videoElement in video %}
+                <div class="card col-11 col-md-3 mb-3 mx-3" style="width: 18rem;">
+                    <img src="/uploads/{{videoElement.image}}" class="card-img-top" alt="...">
+                        <div class="my-3 text-start">
+                        <span class="badge rounded-pill text-bg-warning ms-3 px-3">Vidéo</span>
+                    </div>
+                    <div class="card-body">
+                        <h4 class="card-title">{{videoElement.name}}</h4>
+                        <hr>
+                        <h5>{{videoElement.subtitle}}</h5>                           
+                        {# <pre>
+                            {{ dump(article) }}
+                        </pre> #}
+                        {#  #}
+                    </div>
+                    <a href="{{ path('app_video_details', { 'slug' : videoElement.slug }) }}" class="btn btn-primary">Voir la vidéo</a>
+                    {# afficher le bouton uniquement pour les administrateurs #}
+                    {% if app.user and "ROLE_ADMIN" in app.user.roles %}
+                    <a href="{{ ea_url()
+                                .setController('App\\Controller\\Admin\\VideoCrudController')
+                                .setAction('edit')
+                                .setEntityId(videoElement.id)
+                            }}" 
+                            class="btn btn-warning mt-3"><span class="me-2 fa fa-edit"></span>Editer</a>
+                    {% endif %}
+                </div>
+                {% endfor %}
             </div>
         </div>
+    </div>
 {% endblock %}

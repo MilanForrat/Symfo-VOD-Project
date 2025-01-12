@@ -4,12 +4,6 @@
         <meta charset="UTF-8">
         <title>{% block title %}Welcome!{% endblock %}</title>
         <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
-        {% block stylesheets %}
-        {% endblock %}
-
-        {% block javascripts %}
-        {% endblock %}
-
         <script src="{{ asset('assets/js/color-modes.js') }}"></script>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link href="{{ asset('/styles/bootstrap.css') }}" rel="stylesheet">
@@ -19,6 +13,41 @@
     </head>
     <body> 
         <header data-bs-theme="dark">
+            <nav class="navbar navbar-expand-lg bg-body-tertiary">
+                <div class="container-fluid">
+                    <a class="navbar-brand" href="{{ path('app_home') }}">VOD Project</a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                        <ul class="navbar-nav">
+                            <li class="nav-item">
+                                <a class="nav-link active" aria-current="page" href="{{ path('app_home') }}">Accueil</a>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Catégories
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="{{ path('app_all_articles') }}">Articles</a></li>
+                                    <li><a class="dropdown-item" href="{{ path('app_all_videos') }}">Vidéos</a></li>
+                                </ul>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">Qui sommes-nous</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">Contact</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div>
+                    <a href="">Connexion</a>
+                    <a href="">Inscription</a>
+                </div>
+            </nav>
+             {# ---------------------- #}
             <h1>
             Bonjour {% if app.user and app.user.firstName %}
             {{app.user.firstName }}
@@ -37,13 +66,7 @@
         </main>
 
         <footer class="text-body-secondary py-5">
-        <div class="container">
-            <p class="float-end mb-1">
-            <a href="#">Back to top</a>
-            </p>
-            <p class="mb-1">Album example is &copy; Bootstrap, but please download and customize it for yourself!</p>
-            <p class="mb-0">New to Bootstrap? <a href="/">Visit the homepage</a> or read our <a href="/docs/5.3/getting-started/introduction/">getting started guide</a>.</p>
-        </div>
+        
         </footer>
         <script src="{{ asset('/js/bootstrap.bundle.js') }}"></script>
         <script src="{{ asset('/js/app.js') }}"></script>

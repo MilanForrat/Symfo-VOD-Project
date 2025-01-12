@@ -88,6 +88,23 @@ class VideoController extends AbstractController
         ]);
     }
 
+    // page où l'on retrouve toutes les video
+    #[Route('/video', name: 'app_all_videos')]
+    public function viewAllVideos(EntityManagerInterface $entityManager): Response
+    {
+    
+        $video = $entityManager->getRepository(Video::class)->findAll();
+
+        // si on ne trouve pas d'articles on redirige à la page d'accueil
+        if(!$video){
+            return $this->redirectToRoute('app_home');
+        }
+
+        return $this->render('video/video_index.html.twig', [
+            // on passe l'objet en entier afin d'accéder à tous ses détails
+            'video' => $video,
+        ]);
+    }
 
     #[Route('/add-video', name: 'create_video')]
     public function createvideo(EntityManagerInterface $entityManager): Response
