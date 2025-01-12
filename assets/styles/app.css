@@ -1,3 +1,47 @@
 body {
-    background-color: skyblue;
+    background-color: #242627;
+}
+.row{
+    margin: 0;
+    padding: 0;
+}
+.row > *{
+    padding: 0;
+}
+/* ----------------- HEADER -------------------- */
+header{
+    color: #f5deb3;
+}
+header a, header .nav-link, header .nav-item, header .navbar-brand{
+    color: wheat;
+    transition:all 0.400s;
+}
+header a:hover, header .nav-link:hover, header .nav-item:hover, header .navbar-brand:hover{
+    color: rgb(206, 206, 206);
+}
+.icon-perso{
+    width: 25px;
+}
+/* ----------------- ALL PAGES -------------------- */
+.card{
+    background-color: rgb(182, 179, 147);
+    border: 2px solid black;
+}
+.card img{
+    width: 100%;
+    object-fit: cover;
+    max-height: 200px;
+    object-position: 0% 100%;
+}
+.card .btn{
+    border-radius: 0%;
+}
+/* ----------------- HOME INDEX -------------------- */
+
+/* ----------------- FOOTER -------------------- */
+/* ----------------- FOOTER -------------------- */
+/* ----------------- FOOTER -------------------- */
+footer{
+    background-color: #2B3035;
+    color: wheat;
 }

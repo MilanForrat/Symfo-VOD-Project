@@ -3,7 +3,7 @@
 {% block title %}Hello VideoController!{% endblock %}
 
 {% block body %}
-    <div class="album py-5 bg-body-tertiary">
+    <div class="album py-5">
         <div class="container">
             <div class="row g-3 justify-content-center">
                 {% for videoElement in video %}
@@ -17,7 +17,7 @@
                         <hr>
                         <h5>{{videoElement.subtitle}}</h5>                           
                     </div>
-                    <a href="{{ path('app_video_details', { 'slug' : videoElement.slug }) }}" class="btn btn-primary">Voir la vidéo</a>
+                    <a href="{{ path('app_video_details', { 'slug' : videoElement.slug }) }}" class="btn btn-success">Voir la vidéo</a>
                     {# afficher le bouton uniquement pour les administrateurs #}
                     {% if app.user and "ROLE_ADMIN" in app.user.roles %}
                     <a href="{{ ea_url()

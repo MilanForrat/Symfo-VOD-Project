@@ -14,7 +14,7 @@
     <body> 
         <header data-bs-theme="dark">
             <nav class="navbar navbar-expand-lg bg-body-tertiary">
-                <div class="container-fluid">
+                <div class="container-fluid col-10">
                     <a class="navbar-brand" href="{{ path('app_home') }}">VOD Project</a>
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -42,17 +42,22 @@
                         </ul>
                     </div>
                 </div>
-                <div>
-                    <a href="">Connexion</a>
-                    <a href="">Inscription</a>
+                <div class="col-2 d-flex flex-column align-items-end pe-5">
+                    {% if app.user %}
+                        <p>Bonjour {{ app.user.firstName }} !</p>
+                        <a href="{{ path('app_user_account') }}"><img src="{{ asset('/img/account-icon.png') }}" class="icon-perso me-2">Mon compte</a>
+                    {% else %}
+                        <a href="{{ path('app_login') }}">Connexion</a>
+                        <a href="{{ path('app_sign_in') }}">Inscription</a>
+                    {% endif %}
                 </div>
             </nav>
              {# ---------------------- #}
-            <h1>
+            {# <h1>
             Bonjour {% if app.user and app.user.firstName %}
             {{app.user.firstName }}
             {% endif %}
-            </h1>
+            </h1> #}
         </header>
         {% for message in app.flashes('success') %}
             <div class="alert alert-success">
@@ -65,8 +70,8 @@
         {% endblock %}
         </main>
 
-        <footer class="text-body-secondary py-5">
-        
+        <footer class="py-5">
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quidem eum aperiam modi temporibus, eaque iusto eos porro fugit unde cum obcaecati itaque, culpa eveniet dolorem id sit autem! Minus, quas?</p>
         </footer>
         <script src="{{ asset('/js/bootstrap.bundle.js') }}"></script>
         <script src="{{ asset('/js/app.js') }}"></script>

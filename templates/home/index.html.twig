@@ -3,7 +3,7 @@
 {% block title %}Accueil VOD Project{% endblock %}
 
 {% block body %}
-    <div class="album py-5 bg-body-tertiary">
+    <div class="album py-5">
         <div class="container">
             <div class="row g-3 justify-content-center">
             {# debuggage #}
@@ -14,7 +14,7 @@
                 {# on va boucler les cards pour les générer dynamiquement en fonction de la BDD #}
                 {# pour chaque articleElement parmis les articles (passés en paramètres du controller) #}
                 {% for articleElement in article %}
-                <div class="card col-11 col-md-3 mb-3 mx-3" style="width: 18rem;">
+                <div class="card col-11 col-md-3 mb-3 mx-3">
                     <img src="/uploads/{{articleElement.image}}" class="card-img-top" alt="...">
                     <div class="my-3 text-start">
                         <span class="badge rounded-pill text-bg-info ms-3 px-3">Article</span>
@@ -28,7 +28,7 @@
                         </pre> #}
                         {#  #}
                     </div>
-                    <a href="{{ path('app_article_details', { 'slug' : articleElement.slug }) }}" class="btn btn-primary">Lire l'article</a>
+                    <a href="{{ path('app_article_details', { 'slug' : articleElement.slug }) }}" class="btn btn-success">Lire l'article</a>
                     {# afficher le bouton uniquement pour les administrateurs #}
                     {% if app.user and "ROLE_ADMIN" in app.user.roles %}
                     <a href="{{ ea_url()
@@ -41,7 +41,7 @@
                 </div>
                 {% endfor %}
                 {% for videoElement in video %}
-                <div class="card col-11 col-md-3 mb-3 mx-3" style="width: 18rem;">
+                <div class="card col-11 col-md-3 mb-3 mx-3">
                     <img src="/uploads/{{videoElement.image}}" class="card-img-top" alt="...">
                         <div class="my-3 text-start">
                         <span class="badge rounded-pill text-bg-warning ms-3 px-3">Vidéo</span>
@@ -55,7 +55,7 @@
                         </pre> #}
                         {#  #}
                     </div>
-                    <a href="{{ path('app_video_details', { 'slug' : videoElement.slug }) }}" class="btn btn-primary">Voir la vidéo</a>
+                    <a href="{{ path('app_video_details', { 'slug' : videoElement.slug }) }}" class="btn btn-success">Voir la vidéo</a>
                     {# afficher le bouton uniquement pour les administrateurs #}
                     {% if app.user and "ROLE_ADMIN" in app.user.roles %}
                     <a href="{{ ea_url()
