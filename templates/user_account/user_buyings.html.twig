@@ -1,0 +1,35 @@
+{% block body %}
+    <div class="container py-5">
+        <h1 class="mb-4">Mes informations</h1>
+        <hr>
+        <div class="album py-5">
+            <div class="container">
+                <div class="row g-3 justify-content-center">
+                    {% for videoElement in video %}
+                    <div class="card col-11 col-md-3 mb-3 mx-3" style="width: 18rem;">
+                        <img src="/uploads/{{videoElement.image}}" class="card-img-top" alt="...">
+                            <div class="my-3 text-start">
+                            <span class="badge rounded-pill text-bg-warning ms-3 px-3">Vidéo</span>
+                        </div>
+                        <div class="card-body">
+                            <h4 class="card-title">{{videoElement.name}}</h4>
+                            <hr>
+                            <h5>{{videoElement.subtitle}}</h5>                           
+                        </div>
+                        <a href="{{ path('app_video_details', { 'slug' : videoElement.slug }) }}" class="btn btn-success">Voir la vidéo</a>
+                        {# afficher le bouton uniquement pour les administrateurs #}
+                        {% if app.user and "ROLE_ADMIN" in app.user.roles %}
+                        <a href="{{ ea_url()
+                                    .setController('App\\Controller\\Admin\\VideoCrudController')
+                                    .setAction('edit')
+                                    .setEntityId(videoElement.id)
+                                }}" 
+                                class="btn btn-warning mt-3"><span class="me-2 fa fa-edit"></span>Editer</a>
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
