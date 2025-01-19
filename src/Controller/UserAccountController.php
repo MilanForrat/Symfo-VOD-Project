@@ -25,42 +25,22 @@ class UserAccountController extends AbstractController
      * @Template()
      */
     #[Route('/utilisateur/compte/{variable}', name: 'app_user_account_navbar')]
-    public function userIndexNavbar($variable): Response
+    public function userIndexNavbar($variable, EntityManagerInterface $entityManager): Response
     {
-        if($variable == 1){
 
-        }else if($variable == 2){
+        $video = $entityManager->getRepository(Video::class)->findAll();
 
-        }else if($variable == 3){
-
-        }else{
-            return $this->render('user_account/index.html.twig', [
-            ]);
+        // si le produit n'est pas trouvé 
+        if(!$video){
+            // lancer une erreur
+            throw $this->createNotFoundException(
+                'Aucun produit trouvé'
+            );
         }
+
+        return $this->render('user_account/index.html.twig', [
+            'variable' => $variable,
+            'video' => $video
+        ]);
     }
-
-
-
-
-
-    // #[Route('/utilisateur/compte/infos', name: 'app_user_infos')]
-    // public function personalInformation(): Response
-    // {
-    //     return $this->render('user_account/user_informations.html.twig', [
-    //     ]);
-    // }
-    // #[Route('/utilisateur/compte/achats', name: 'app_user_buyings')]
-    // public function userAchats(EntityManagerInterface $entityManager): Response
-    // {
-    //     $video = $entityManager->getRepository(Video::class)->findAll();
-
-    //     // si on ne trouve pas de vidéo on redirige à la page d'accueil
-    //     if(!$video){
-    //         return $this->redirectToRoute('app_user_buyings');
-    //     }
-
-    //     return $this->render('user_account/user_buyings.html.twig', [
-    //         'video' => $video,
-    //     ]);
-    // }
 }

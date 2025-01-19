@@ -28,9 +28,15 @@
                             <!-- Content Area -->
                             <div class="col-lg-9">
                                 <div>
+                                {# {{ dump(app.request.attributes.get('variable')) }} #}
                                     <!-- TROUVER DOCUMENTATION POUR INCLUDE EN FONCTION DU PARAMETRE URL -->
-                                    {# {% include 'user_account/user_informations.html.twig' %} #}
-                                    {# {% include 'user_account/user_informations.html.twig' %} #}
+                                    {% if( app.request.attributes.get('variable') == 1) %}
+                                        {% include 'user_account/user_informations.html.twig' %}
+                                    {% elseif(app.request.attributes.get('variable') == 2) %}
+                                        {% include 'user_account/user_buyings.html.twig' %}
+                                    {% elseif(app.request.attributes.get('variable') == 3) %}
+                                        {% include 'user_account/user_invoices.html.twig' %}
+                                    {% endif %}
                             </div>
                         </div>
                     </div>
