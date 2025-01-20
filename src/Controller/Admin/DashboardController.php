@@ -6,6 +6,7 @@ namespace App\Controller\Admin;
 use App\Entity\Video;
 use App\Entity\User;
 use App\Entity\Article;
+use App\Entity\Category;
 
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
@@ -67,6 +68,7 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Utilisateurs', 'fas fa-user', User::class);
         yield MenuItem::linkToCrud('Articles', 'fa-solid fa-newspaper', Article::class);
         yield MenuItem::linkToCrud('Vidéos', 'fa-solid fa-video', Video::class);
+        yield MenuItem::linkToCrud('Catégories', 'fa-solid fa-list', Category::class);
 
     }
 
