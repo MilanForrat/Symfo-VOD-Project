@@ -3,12 +3,16 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Article;
+use App\Entity\Category;
+
+
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\SlugField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 
 
 
@@ -23,6 +27,7 @@ class ArticleCrudController extends AbstractCrudController
     
     public function configureFields(string $pageName): iterable
     {
+
         $fields = [
             // personnalisation du système d'upload d'image
             // "image" est le nom du champ de l'entité et "Image" est le nom qui sera affiché dans easyAdmin
@@ -44,10 +49,13 @@ class ArticleCrudController extends AbstractCrudController
 
         $textContent = TextEditorField::new('textContent', "Contenu de l'article");
 
+        $relation = AssociationField::new('category')->setSortProperty('name');
+
         $fields[]=$slug;
         $fields[]=$title;
         $fields[]=$subtitle;
         $fields[]=$textContent;
+        $fields[]=$relation;
         
         return $fields;
     }

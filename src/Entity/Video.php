@@ -35,6 +35,9 @@ class Video
     #[ORM\Column(length: 255)]
     private ?string $link = null;
 
+    #[ORM\ManyToOne(inversedBy: 'videos')]
+    private ?Category $category = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -120,6 +123,18 @@ class Video
     public function setLink(string $link): static
     {
         $this->link = $link;
+
+        return $this;
+    }
+
+    public function getCategory(): ?Category
+    {
+        return $this->category;
+    }
+
+    public function setCategory(?Category $category): static
+    {
+        $this->category = $category;
 
         return $this;
     }
