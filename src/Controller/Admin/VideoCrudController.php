@@ -46,7 +46,7 @@ class VideoCrudController extends AbstractCrudController
                 ->setRequired(false),
         ];
 
-        $relation = AssociationField::new('category')->setSortProperty('name');
+        $relation = AssociationField::new('category', 'Catégorie')->setSortProperty('name');
 
         $fields[]=$slug;
         $fields[]=$title;

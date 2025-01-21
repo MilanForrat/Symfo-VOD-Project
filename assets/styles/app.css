@@ -39,6 +39,34 @@ header a:hover, header .nav-link:hover, header .nav-item:hover, header .navbar-b
 }
 /* ----------------- HOME INDEX -------------------- */
 
+
+/* ----------------- VIDEO CONTAINER ----------- */
+#fs-mode{
+    height: 55px;
+    background-color: black;
+    width: 100%;
+    z-index: 999999;
+    color: wheat;
+    margin-top: -10px;
+    border: none;
+}
+.video-container-toggle-class{
+    width: 100%;
+}
+#video-container #bloc-video{
+    height: 55px;
+    background-color: black;
+    width: 100%;
+    z-index: 9999;
+    position: relative;
+}
+#video-container iframe{
+    margin-top: -55px;
+    position: relative;
+    z-index: 0;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+}
 /* ----------------- FOOTER -------------------- */
 /* ----------------- FOOTER -------------------- */
 /* ----------------- FOOTER -------------------- */

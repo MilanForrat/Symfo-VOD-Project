@@ -63,7 +63,7 @@ class DashboardController extends AbstractDashboardController
     // c'est ici qu'on ajoute des menus/liens accès sur la plateforme admin
     public function configureMenuItems(): iterable
     {
-        yield MenuItem::linkToRoute('Page Accueil', 'fa-solid fa-house', 'app_home');
+        yield MenuItem::linkToRoute('Page Accueil Visiteurs', 'fa-solid fa-house', 'app_home');
         yield MenuItem::section();
         yield MenuItem::linkToCrud('Utilisateurs', 'fas fa-user', User::class);
         yield MenuItem::linkToCrud('Articles', 'fa-solid fa-newspaper', Article::class);

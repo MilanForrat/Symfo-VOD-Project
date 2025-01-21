@@ -3,79 +3,22 @@
 {% block title %}La vidéo{% endblock %}
 
 {% block body %}
-<div class="container mt-5">
-    <div class="row">
-        <div class="col-lg-8">
-            <div class="video-container mb-4">
-                <iframe width="560" height="315" src="{{video.link | replace({'watch':'embed','?v=':'/'}) }}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<div class="mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-10 d-flex justify-content-center">
+            <div id="video-container">
+                {# <iframe width="560" height="315" src="{{video.link | replace({'watch':'embed','?v=':'/'}) }}?rel=0&modestbranding=0"></iframe> #}
+                {# <iframe src="{{video.link}}&info=0&logo=0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen frameborder="0" width="640" height="360"></iframe> #}
+                <div id="bloc-video"></div>
+                <iframe src="https://drive.google.com/file/d/1HnOkJVXdrYGbxxRpbJ19eYg7lwGmTHV1/preview" allow="autoplay"></iframe>
+                <button id="fs-mode">Bascule : Plein écran / Petit écran</button>
             </div>
+        </div>
+        <div class="10 d-flex flex-column align-items-center justify-content-center">
             <h2 class="mb-3">{{video.name}}</h2>
             <h3 class="mb-3">{{video.subtitle}}</h3>
             <p class="mb-4">{{video.description}}</p>
         </div>
-        <div class="col-lg-4">
-        {# permet de copier code d'intégration youtube #}
-        {# src="{{video.trailer | replace({'watch':'embed','?v=':'/'}) }} #}
-            <img src="/uploads/{{video.image}}" alt="image de la video s'intitulant {{video.name}}">
-            <h3 class="mb-3">Autres vidéos</h3>
-            <a href="#" class="btn btn-success">Ajouter la vidéo au panier</a>
-        </div>
-        <div class="col-lg-4">
-            <h3 class="mb-3">Autres vidéos</h3>
-            <ul class="list-group">
-                <li class="list-group-item playlist-item active">
-                    <div class="d-flex w-100 justify-content-between">
-                        <h5 class="mb-1">Video 1</h5>
-                        <small>3:45</small>
-                    </div>
-                    <p class="mb-1">Short description of video 1.</p>
-                </li>
-            </ul>
-        </div>
     </div>
 </div>
-<script>
-    const video = document.getElementById('videoPlayer');
-        const playPauseBtn = document.getElementById('playPauseBtn');
-        const progressBar = document.getElementById('progressBar');
-        const muteBtn = document.getElementById('muteBtn');
-        const fullscreenBtn = document.getElementById('fullscreenBtn');
-
-        playPauseBtn.addEventListener('click', () => {
-            if (video.paused) {
-                video.play();
-                playPauseBtn.innerHTML = '<i class="bi bi-pause-fill"></i>';
-            } else {
-                video.pause();
-                playPauseBtn.innerHTML = '<i class="bi bi-play-fill"></i>';
-            }
-        });
-
-        video.addEventListener('timeupdate', () => {
-            const progress = (video.currentTime / video.duration) * 100;
-            progressBar.value = progress;
-        });
-
-        progressBar.addEventListener('input', () => {
-            const time = (progressBar.value / 100) * video.duration;
-            video.currentTime = time;
-        });
-
-        muteBtn.addEventListener('click', () => {
-            video.muted = !video.muted;
-            muteBtn.innerHTML = video.muted ? '<i class="bi bi-volume-mute-fill"></i>' : '<i class="bi bi-volume-up-fill"></i>';
-        });
-
-        fullscreenBtn.addEventListener('click', () => {
-            if (video.requestFullscreen) {
-                video.requestFullscreen();
-            } else if (video.mozRequestFullScreen) {
-                video.mozRequestFullScreen();
-            } else if (video.webkitRequestFullscreen) {
-                video.webkitRequestFullscreen();
-            } else if (video.msRequestFullscreen) {
-                video.msRequestFullscreen();
-            }
-        });
-</script>
 {% endblock %}

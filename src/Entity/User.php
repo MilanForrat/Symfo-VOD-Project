@@ -37,6 +37,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255)]
     private ?string $LastName = null;
 
+    #[ORM\ManyToOne(inversedBy: 'user')]
+    private ?Video $video = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -135,4 +138,34 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
+    public function getVideo(): ?Video
+    {
+        return $this->video;
+    }
+
+    public function setVideo(?Video $video): static
+    {
+        $this->video = $video;
+
+        return $this;
+    }
+
+    // test
+
+    
+    // public function addVideo(Video $video): void
+    // {
+    //     $video->setUser($this);
+
+    //     if (!$this->video->contains($video)) {
+    //         $this->video->add($video);
+    //     }
+    // }
+
+    // public function removeVideo(Video $video): void
+    // {
+    //     $this->video->removeElement($video);
+    // }
+
 }
