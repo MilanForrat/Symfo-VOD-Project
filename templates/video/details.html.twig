@@ -3,8 +3,26 @@
 {% block title %}La vidéo{% endblock %}
 
 {% block body %}
-<div class="mt-5">
+<div class="mt-5 d-flex flex-column align-items-center">
+    <img class="col-11 col-md-4 my-3" src="/uploads/{{video.image}}" alt="">
     <div class="row justify-content-center">
+        <div class="col- 11 col-md-6 d-flex flex-column">
+            <h2 class="mb-3">{{video.name}}</h2>
+            <h3 class="mb-3">{{video.subtitle}}</h3>
+            <p class="mb-4">{{video.description}}</p>
+        </div>
+        <div class="col-11 col-md-3 offset-md-2 d-flex flex-column justify-content-center">
+            <h3 class="mb-3">Informations :</h3>
+            {# <p class="mb-3">{{video.length}}</p>
+            <p class="mb-3">{{video.language}}</p>
+            <p class="mb-4">{{video.category}}</p>
+            <p class="mb-4">{{video.date}}</p> #}
+            <p>blablabla</p>
+            <p>blablabla</p>
+            <p>blablabla</p>
+            <p>blablabla</p>
+        </div>
+        <hr class="my-5">
         <div class="col-md-10 d-flex justify-content-center">
             <div id="video-container">
                 {# <iframe width="560" height="315" src="{{video.link | replace({'watch':'embed','?v=':'/'}) }}?rel=0&modestbranding=0"></iframe> #}
@@ -13,11 +31,6 @@
                 <iframe src="https://drive.google.com/file/d/1HnOkJVXdrYGbxxRpbJ19eYg7lwGmTHV1/preview" allow="autoplay"></iframe>
                 <button id="fs-mode">Bascule : Plein écran / Petit écran</button>
             </div>
-        </div>
-        <div class="10 d-flex flex-column align-items-center justify-content-center">
-            <h2 class="mb-3">{{video.name}}</h2>
-            <h3 class="mb-3">{{video.subtitle}}</h3>
-            <p class="mb-4">{{video.description}}</p>
         </div>
     </div>
 </div>

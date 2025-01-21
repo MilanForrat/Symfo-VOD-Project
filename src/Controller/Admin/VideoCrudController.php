@@ -33,6 +33,8 @@ class VideoCrudController extends AbstractCrudController
 
         $link = TextField::new('link', "Lien vers la vidéo complète");
 
+        $language = AssociationField::new('language', 'Langue');
+
         $fields = [
             // personnalisation du système d'upload d'image
             // "image" est le nom du champ de l'entité et "Image" est le nom qui sera affiché dans easyAdmin
@@ -55,6 +57,7 @@ class VideoCrudController extends AbstractCrudController
         $fields[]=$trailer;
         $fields[]=$link;
         $fields[]=$relation;
+        $fields[]=$language;
         
         return $fields;
     }

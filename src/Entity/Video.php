@@ -46,6 +46,15 @@ class Video
     #[ORM\OneToMany(targetEntity: User::class, mappedBy: 'video', orphanRemoval: true, cascade: ['persist'])]
     private Collection $user;
 
+    #[ORM\Column(type: Types::TIME_MUTABLE)]
+    private ?\DateTimeInterface $length = null;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    private ?\DateTimeInterface $uploaded_date = null;
+
+    #[ORM\ManyToOne(inversedBy: 'videos')]
+    private ?Language $language = null;
+
     // utilisée pour easyadmin crud
     public function __toString()
     {
@@ -184,6 +193,42 @@ class Video
                 $user->setVideo(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getLength(): ?\DateTimeInterface
+    {
+        return $this->length;
+    }
+
+    public function setLength(\DateTimeInterface $length): static
+    {
+        $this->length = $length;
+
+        return $this;
+    }
+
+    public function getuploadedDate(): ?\DateTimeInterface
+    {
+        return $this->uploaded_date;
+    }
+
+    public function setuploadedDate(\DateTimeInterface $uploaded_date): static
+    {
+        $this->uploaded_date = $uploaded_date;
+
+        return $this;
+    }
+
+    public function getLanguage(): ?Language
+    {
+        return $this->language;
+    }
+
+    public function setLanguage(?Language $language): static
+    {
+        $this->language = $language;
 
         return $this;
     }
