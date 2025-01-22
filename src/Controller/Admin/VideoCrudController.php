@@ -10,9 +10,18 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\SlugField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\TimeField;
 
 class VideoCrudController extends AbstractCrudController
 {
+    // public function configureDashboard(): Dashboard
+    // {
+    //     return Dashboard::new()
+    //     ->setTranslationDomain('fr');
+    // }
+
     public static function getEntityFqcn(): string
     {
         return Video::class;
@@ -23,15 +32,15 @@ class VideoCrudController extends AbstractCrudController
         $title=TextField::new('name', "Titre");
 
         // permet de construire le slug à partir du name
-        $slug=SlugField::new('slug')->setTargetFieldName('name');
+        $slug=SlugField::new('slug')->setTargetFieldName('name')->hideOnIndex();
 
-        $subtitle = TextField::new('subtitle', "titre");
+        $subtitle = TextField::new('subtitle', "Titre");
 
-        $description = TextEditorField::new('description', "Description de la vidéo");
+        $description = TextEditorField::new('description', "Description");
 
-        $trailer = TextField::new('trailer', "Lien vers la bande d'annonce");
+        $trailer = TextField::new('trailer', "Lien bande d'annonce");
 
-        $link = TextField::new('link', "Lien vers la vidéo complète");
+        $link = TextField::new('link', "Lien vidéo complète");
 
         $language = AssociationField::new('language', 'Langue');
 
@@ -48,6 +57,12 @@ class VideoCrudController extends AbstractCrudController
                 ->setRequired(false),
         ];
 
+        
+        $uploadedDate = DateField::new('uploadedDate', 'Date de mise en ligne')->setFormat('dd.MM.yyyy');
+
+        // enlever le AM / PM sur le dashboard
+        $length = TextField::new('length', 'Durée vidéo');
+
         $relation = AssociationField::new('category', 'Catégorie')->setSortProperty('name');
 
         $fields[]=$slug;
@@ -58,6 +73,8 @@ class VideoCrudController extends AbstractCrudController
         $fields[]=$link;
         $fields[]=$relation;
         $fields[]=$language;
+        $fields[]=$length;
+        $fields[]=$uploadedDate;
         
         return $fields;
     }

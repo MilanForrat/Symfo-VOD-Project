@@ -37,6 +37,12 @@ header a:hover, header .nav-link:hover, header .nav-item:hover, header .navbar-b
 .card .btn{
     border-radius: 0%;
 }
+.admin-link{
+    color: rgb(247, 90, 90) !important;
+}
+.admin-link:hover{
+    color: rgb(253, 221, 221) !important;
+}
 /* ----------------- HOME INDEX -------------------- */
 
 

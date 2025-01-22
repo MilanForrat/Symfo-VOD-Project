@@ -13,14 +13,10 @@
         </div>
         <div class="col-11 col-md-3 offset-md-2 d-flex flex-column justify-content-center">
             <h3 class="mb-3">Informations :</h3>
-            {# <p class="mb-3">{{video.length}}</p>
-            <p class="mb-3">{{video.language}}</p>
-            <p class="mb-4">{{video.category}}</p>
-            <p class="mb-4">{{video.date}}</p> #}
-            <p>blablabla</p>
-            <p>blablabla</p>
-            <p>blablabla</p>
-            <p>blablabla</p>
+            <p class="mb-3">Durée de la vidéo : {{video.length}}</p>
+            <p class="mb-3">Langue : {{video.language}}</p>
+            <p class="mb-4">Catégorie : {{video.category}}</p>
+            <p class="mb-4">Date de mise en ligne : {{video.uploadedDate|date('d-m-Y')}}</p>
         </div>
         <hr class="my-5">
         <div class="col-md-10 d-flex justify-content-center">

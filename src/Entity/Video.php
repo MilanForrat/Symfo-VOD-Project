@@ -37,6 +37,10 @@ class Video
     #[ORM\Column(length: 255)]
     private ?string $link = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $length = null;
+
+
     #[ORM\ManyToOne(inversedBy: 'videos')]
     private ?Category $category = null;
 
@@ -46,11 +50,11 @@ class Video
     #[ORM\OneToMany(targetEntity: User::class, mappedBy: 'video', orphanRemoval: true, cascade: ['persist'])]
     private Collection $user;
 
-    #[ORM\Column(type: Types::TIME_MUTABLE)]
-    private ?\DateTimeInterface $length = null;
+    // #[ORM\Column(type: Types::TIME_MUTABLE)]
+    // private ?\DateTimeInterface $length = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    private ?\DateTimeInterface $uploaded_date = null;
+    private ?\DateTimeInterface $uploadedDate = null;
 
     #[ORM\ManyToOne(inversedBy: 'videos')]
     private ?Language $language = null;
@@ -197,12 +201,12 @@ class Video
         return $this;
     }
 
-    public function getLength(): ?\DateTimeInterface
+    public function getLength(): ?string
     {
         return $this->length;
     }
 
-    public function setLength(\DateTimeInterface $length): static
+    public function setLength(string $length): static
     {
         $this->length = $length;
 
@@ -211,12 +215,12 @@ class Video
 
     public function getuploadedDate(): ?\DateTimeInterface
     {
-        return $this->uploaded_date;
+        return $this->uploadedDate;
     }
 
-    public function setuploadedDate(\DateTimeInterface $uploaded_date): static
+    public function setuploadedDate(\DateTimeInterface $uploadedDate): static
     {
-        $this->uploaded_date = $uploaded_date;
+        $this->uploadedDate = $uploadedDate;
 
         return $this;
     }
