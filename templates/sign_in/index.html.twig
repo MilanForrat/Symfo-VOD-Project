@@ -1,15 +1,15 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello SignInController!{% endblock %}
+{% block title %}Inscription{% endblock %}
 
 {% block body %}
 
-<div class="example-wrapper">
-    <h1>S'inscrire</h1>
-
-    {# on demande à Twig de générer le formulaire qu'on lui a passé en argument/paramètre dans le controller SignInController #}
-    {{ form(form) }}
-    
-
+<div class="bg-color min-height d-flex justify-content-center align-items-center">
+    <div class="col-8 col-md-3 card shadow-lg p-3">
+        <h1 class="text-center mb-4 h3">S'inscrire</h1>
+        <p class="card-text text-muted text-center">Inscrivez-vous pour accéder à votre compte</p>
+        {# on demande à Twig de générer le formulaire qu'on lui a passé en argument/paramètre dans le controller SignInController #}
+        {{ form(form) }}
+    </div>
 </div>
 {% endblock %}

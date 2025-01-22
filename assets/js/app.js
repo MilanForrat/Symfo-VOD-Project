@@ -1,6 +1,9 @@
 btnFullscreenVideo = document.getElementById('fs-mode');
 videoContainer = document.getElementById('video-container')
 
+btnSubmitSignIn = document.getElementById('sign_in_submit');
+console.log(btnSubmitSignIn);
+btnSubmitSignIn.className = 'btn-dark btn btn-lg w-100 mt-2';
 
 // console.log(btnFullscreenVideo)
 // console.log(videoContainer)

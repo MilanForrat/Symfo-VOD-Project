@@ -13,6 +13,8 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\SlugField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
+
 
 
 
@@ -41,7 +43,7 @@ class ArticleCrudController extends AbstractCrudController
                 ->setRequired(false),
         ];
         // permet de construire le slug à partir du name
-        $slug=SlugField::new('slug')->setTargetFieldName('title');
+        $slug=SlugField::new('slug')->setTargetFieldName('title')->hideOnIndex();
 
         $title=TextField::new('title', "Titre");
 
@@ -51,12 +53,15 @@ class ArticleCrudController extends AbstractCrudController
 
         $relation = AssociationField::new('category')->setSortProperty('name');
 
+        $uploadedDate = DateField::new('uploadedDate', 'Date de mise en ligne')->setFormat('dd.MM.yyyy');
+
         $fields[]=$slug;
         $fields[]=$title;
         $fields[]=$subtitle;
         $fields[]=$textContent;
         $fields[]=$relation;
-        
+        $fields[]=$uploadedDate;
+
         return $fields;
     }
     

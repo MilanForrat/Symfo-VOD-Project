@@ -6,6 +6,7 @@ use App\Repository\ArticleRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
+
 #[ORM\Entity(repositoryClass: ArticleRepository::class)]
 class Article
 {
@@ -31,6 +32,9 @@ class Article
 
     #[ORM\ManyToOne(inversedBy: 'articles')]
     private ?Category $category = null;
+
+    #[ORM\Column(type: Types::DATE_MUTABLE)]
+    private ?\DateTimeInterface $uploadedDate = null;
 
     // utilisée pour easyadmin crud
     public function __toString()
@@ -111,6 +115,18 @@ class Article
     public function setCategory(?Category $category): static
     {
         $this->category = $category;
+
+        return $this;
+    }
+
+    public function getUploadedDate(): ?\DateTimeInterface
+    {
+        return $this->uploadedDate;
+    }
+
+    public function setUploadedDate(\DateTimeInterface $uploadedDate): static
+    {
+        $this->uploadedDate = $uploadedDate;
 
         return $this;
     }
