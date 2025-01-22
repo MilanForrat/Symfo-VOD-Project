@@ -16,11 +16,11 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\TimeField;
 
 class VideoCrudController extends AbstractCrudController
 {
-    // public function configureDashboard(): Dashboard
-    // {
-    //     return Dashboard::new()
-    //     ->setTranslationDomain('fr');
-    // }
+    public function configureDashboard(): Dashboard
+    {
+        return Dashboard::new()
+        ->setTranslationDomain('fr');
+    }
 
     public static function getEntityFqcn(): string
     {
