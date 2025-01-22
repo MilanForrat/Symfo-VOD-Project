@@ -29,6 +29,9 @@ header a:hover, header .nav-link:hover, header .nav-item:hover, header .navbar-b
 .icon-perso{
     width: 25px;
 }
+#compte-menu{
+    list-style: none;
+}
 /* ----------------- ALL PAGES -------------------- */
 .card{
     background-color: rgb(182, 179, 147);
