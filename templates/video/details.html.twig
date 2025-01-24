@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}La vidéo{% endblock %}
+{% block title %}{{video.name}}{% endblock %}
 
 {% block body %}
 <div class="mt-5 d-flex flex-column align-items-center">
@@ -17,6 +17,7 @@
             <p class="mb-3">Langue : {{video.language}}</p>
             <p class="mb-4">Catégorie : {{video.category}}</p>
             <p class="mb-4">Date de mise en ligne : {{video.uploadedDate|date('d-m-Y')}}</p>
+            <a href="{{ path('app_add_panier',{id:video.id} ) }}" class="btn btn-success">Ajouter au panier</a>
         </div>
         <hr class="my-5">
         <div class="col-md-10 d-flex justify-content-center">
@@ -30,4 +31,5 @@
         </div>
     </div>
 </div>
+<script src="{{ asset('/js/videoFullScreen.js') }}"></script>
 {% endblock %}

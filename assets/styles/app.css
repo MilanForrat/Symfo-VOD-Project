@@ -12,6 +12,9 @@ body {
 .bg-color{
     background-color: #242627;
 }
+.bg-color-cart{
+    background-color: #79766faf;
+}
 .min-height{
     min-height: 80vh;
 }

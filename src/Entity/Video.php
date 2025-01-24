@@ -59,6 +59,9 @@ class Video
     #[ORM\ManyToOne(inversedBy: 'videos')]
     private ?Language $language = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $price = null;
+
     // utilisée pour easyadmin crud
     public function __toString()
     {
@@ -233,6 +236,18 @@ class Video
     public function setLanguage(?Language $language): static
     {
         $this->language = $language;
+
+        return $this;
+    }
+
+    public function getPrice(): ?string
+    {
+        return $this->price;
+    }
+
+    public function setPrice(string $price): static
+    {
+        $this->price = $price;
 
         return $this;
     }

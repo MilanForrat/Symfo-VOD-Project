@@ -63,6 +63,8 @@ class VideoCrudController extends AbstractCrudController
         // enlever le AM / PM sur le dashboard
         $length = TextField::new('length', 'Durée vidéo');
 
+        $price = TextField::new('price', "Prix");
+
         $relation = AssociationField::new('category', 'Catégorie')->setSortProperty('name');
 
         $fields[]=$slug;
@@ -75,6 +77,7 @@ class VideoCrudController extends AbstractCrudController
         $fields[]=$language;
         $fields[]=$length;
         $fields[]=$uploadedDate;
+        $fields[]=$price;
         
         return $fields;
     }
