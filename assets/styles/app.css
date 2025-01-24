@@ -100,7 +100,14 @@ h3{
 }
 /* ----------------- SIGN IN -------------------- */
 
-/* ----------------- FOOTER -------------------- */
+/* ----------------- CART / BASKET / PANIER -------------------- */
+.product-img{
+    width: 20%;
+    aspect-ratio: 16 / 9;
+}
+#recap-cart{
+    height: fit-content;
+}
 /* ----------------- FOOTER -------------------- */
 footer{
     background-color: #2B3035;
