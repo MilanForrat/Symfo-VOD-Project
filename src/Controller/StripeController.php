@@ -92,6 +92,6 @@ class StripeController extends AbstractController
         $this->entityManagerInterface->remove($order);
         $this->entityManagerInterface->flush();
 
-        return $this->redirectToRoute('app_panier');
+        return $this->redirectToRoute('app_panier',array('motif' => "annulation"));
     }
 }

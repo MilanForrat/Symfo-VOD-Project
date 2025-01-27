@@ -21,9 +21,28 @@ class PanierController extends AbstractController
     ) {
     }
 
-    #[Route('/panier', name: 'app_panier')]
-    public function index(SessionInterface $session): Response
+    #[Route('/panier/{motif}', name: 'app_panier', defaults:['motif'=>NULL])]
+    public function index(SessionInterface $session, $motif): Response
     {
+
+        if($motif =="annulation"){
+            $this->addFlash(
+                type:'info',
+                message:'Paiement annulé. Vous pouvez mettre à jour votre panier et votre commande.'
+            );
+        }
+        if($motif =="suppression"){
+            $this->addFlash(
+                type:'info',
+                message:'Article retiré du panier.'
+            );
+        }
+        if($motif =="ajout"){
+            $this->addFlash(
+                type:'success',
+                message:'Article ajouté au panier.'
+            );
+        }
 
         // check user connected
         if($user = $this->getUser()){
@@ -105,7 +124,7 @@ class PanierController extends AbstractController
         // dd($session);
 
         // ici on redirige vers le panier 
-        return $this->redirectToRoute("app_panier");
+        return $this->redirectToRoute("app_panier",array('motif' => "ajout"));
     }
 
     // route qui gère la suppression d'un élément au panier
@@ -135,17 +154,6 @@ class PanierController extends AbstractController
         // dd($session);
 
         // ici on redirige vers le panier 
-        return $this->redirectToRoute("app_panier");
-    }
-
-    // route qui gère la suppression de l'ensemble du panier
-    #[Route('/panier/deleteAll', name: 'app_deleteAll_panier')]
-    public function deleteAll(SessionInterface $session): Response
-    {
-
-        $session->remove('panier');
-
-        // ici on redirige vers le panier 
-        return $this->redirectToRoute("app_panier");
+        return $this->redirectToRoute("app_panier",array('motif' => "suppression"));
     }
 }

@@ -80,6 +80,16 @@
                 {{ message }}
             </div>
         {% endfor %}
+        {% for message in app.flashes('info') %}
+            <div class="alert alert-success">
+                {{ message }}
+            </div>
+        {% endfor %}
+        {% for message in app.flashes('warning') %}
+            <div class="alert alert-success">
+                {{ message }}
+            </div>
+        {% endfor %}
         <main>
         {% block body %}
         
