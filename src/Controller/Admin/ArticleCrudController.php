@@ -14,7 +14,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\SlugField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
-
+use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 
 
 
@@ -25,7 +25,13 @@ class ArticleCrudController extends AbstractCrudController
         return Article::class;
     }
 
-
+    public function configureCrud(Crud $crud): Crud
+    {
+        return $crud
+            // the labels used to refer to this entity in titles, buttons, etc.
+            ->setEntityLabelInSingular('Article')
+            ->setEntityLabelInPlural('Articles');
+    }
     
     public function configureFields(string $pageName): iterable
     {

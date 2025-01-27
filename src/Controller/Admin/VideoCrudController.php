@@ -13,6 +13,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TimeField;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 
 class VideoCrudController extends AbstractCrudController
 {
@@ -25,6 +26,14 @@ class VideoCrudController extends AbstractCrudController
     public static function getEntityFqcn(): string
     {
         return Video::class;
+    }
+
+    public function configureCrud(Crud $crud): Crud
+    {
+        return $crud
+            // the labels used to refer to this entity in titles, buttons, etc.
+            ->setEntityLabelInSingular('Vidéo')
+            ->setEntityLabelInPlural('Vidéos');
     }
 
     public function configureFields(string $pageName): iterable

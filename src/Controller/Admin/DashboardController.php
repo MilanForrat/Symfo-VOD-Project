@@ -8,6 +8,7 @@ use App\Entity\User;
 use App\Entity\Article;
 use App\Entity\Category;
 use App\Entity\Language;
+use App\Entity\Order;
 
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
@@ -71,6 +72,7 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Vidéos', 'fa-solid fa-video', Video::class);
         yield MenuItem::linkToCrud('Catégories', 'fa-solid fa-list', Category::class);
         yield MenuItem::linkToCrud('Langues', 'fa-solid fa-list', Language::class);
+        yield MenuItem::linkToCrud('Commandes', 'fa-solid fa-list', Order::class);
 
     }
 

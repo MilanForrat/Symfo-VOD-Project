@@ -25,6 +25,14 @@ class UserCrudController extends AbstractCrudController
     ) {
     }
 
+    public function configureCrud(Crud $crud): Crud
+    {
+        return $crud
+            // the labels used to refer to this entity in titles, buttons, etc.
+            ->setEntityLabelInSingular('Utilisateur')
+            ->setEntityLabelInPlural('Utilisateurs');
+    }
+
     // on ajoute des menus pour l'édition
     public function configureActions(Actions $actions): Actions
     {
