@@ -77,6 +77,13 @@ class StripeController extends AbstractController
 
         $order->setPaid(true);
 
+        $numberOfOrders = $order->getTotalNumberOfOrders();
+        
+        if($numberOfOrders == null){
+            $numberOfOrders=0;
+        }
+        $order->setTotalNumberOfOrders($numberOfOrders+1);
+
         $this->entityManagerInterface->flush();
 
         // si commande valider, on vide le panier

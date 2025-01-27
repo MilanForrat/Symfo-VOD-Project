@@ -25,6 +25,12 @@ class PanierController extends AbstractController
     public function index(SessionInterface $session): Response
     {
 
+        // check user connected
+        if($user = $this->getUser()){
+        }else{
+            return $this->redirectToRoute("app_login");
+        }
+
         // on récupère le panier de la session 
         $panier = $session->get('panier',[]);
 

@@ -27,6 +27,9 @@ class Order
     #[ORM\Column]
     private ?bool $isPaid = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?int $totalNumberOfOrders = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -76,6 +79,18 @@ class Order
     public function setPaid(bool $isPaid): static
     {
         $this->isPaid = $isPaid;
+
+        return $this;
+    }
+
+    public function getTotalNumberOfOrders(): ?int
+    {
+        return $this->totalNumberOfOrders;
+    }
+
+    public function setTotalNumberOfOrders(int $totalNumberOfOrders): static
+    {
+        $this->totalNumberOfOrders = $totalNumberOfOrders;
 
         return $this;
     }
