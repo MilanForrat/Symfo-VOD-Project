@@ -2,5 +2,8 @@
     "json.schemas": [
     
     ],
-    "emmet.includeLanguages": {"twig": "html"}
+    "emmet.includeLanguages": {
+        "twig": "html"
+    },
+    "php.validate.executablePath": ""
 }
