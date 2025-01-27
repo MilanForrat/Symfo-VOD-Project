@@ -1,48 +1,66 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Mon compte{% endblock %}
+{% block title %}Mes Informations{% endblock %}
 
 {% block body %}
-<div>
     <div class="container py-5">
-        <h1>Mon Compte</h1>
+        <h1 class="mb-4">Mes Informations</h1>
         <hr>
-        <div class="row">
-            <!-- Main Content -->
-            <div class="col-12">
-                <div class="card border-0 shadow-sm">
-                    <div class="card-body p-0">
-                        <div class="row g-0">
-                            <!-- Sidebar -->
-                            <div class="col-lg-3 border-end">
-                                <div class="p-4">
-                                    <div class="nav flex-column nav-pills">
-                                        <a class="nav-link active" href="{{ path('app_user_account_navbar',{'variable':1}) }}"><i class="fas fa-user me-2"></i>Informations Personnelles</a>
-                                        <a class="nav-link" href="{{ path('app_user_account_navbar',{'variable':2}) }}"><i class="fas fa-credit-card me-2"></i>Achats</a>
-                                        <a class="nav-link" href="{{ path('app_user_account_navbar',{'variable':3}) }}"><i class="fas fa-credit-card me-2"></i>Factures</a>
-                                        {# <a class="nav-link" href="#"><i class="fas fa-chart-line me-2"></i>Activity</a> #}
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Content Area -->
-                            <div class="col-lg-9">
-                                <div>
-                                {# {{ dump(app.request.attributes.get('variable')) }} #}
-                                    <!-- TROUVER DOCUMENTATION POUR INCLUDE EN FONCTION DU PARAMETRE URL -->
-                                    {% if( app.request.attributes.get('variable') == 1) %}
-                                        {% include 'user_account/user_informations.html.twig' %}
-                                    {% elseif(app.request.attributes.get('variable') == 2) %}
-                                        {% include 'user_account/user_buyings.html.twig' %}
-                                    {% elseif(app.request.attributes.get('variable') == 3) %}
-                                        {% include 'user_account/user_invoices.html.twig' %}
-                                    {% endif %}
-                            </div>
-                        </div>
+        <form>
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <h2>Informations Personnelles</h2>
+                    <div class="mb-3">
+                        <label for="fullName" class="form-label">Nom</label>
+                        <input type="text" class="form-control" id="fullName" value="{{app.user.lastName}}" disabled>
+                    </div>
+                    <div class="mb-3">
+                        <label for="fullName" class="form-label">Prénom</label>
+                        <input type="text" class="form-control" id="fullName" value="{{app.user.FirstName}}" disabled>
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Adresse e-mail</label>
+                        <input type="email" class="form-control" id="email" value="{{app.user.email}}" disabled>
                     </div>
                 </div>
             </div>
-        </div>
+            {# <hr> #}
+            {# ------------------- NEWSLETTER --------------- #}
+            {# <div class="row mb-4">
+                <div class="col-md-6">
+                    <h2>Email Preferences</h2>
+                    <div class="mb-3 form-check">
+                        <input type="checkbox" class="form-check-input" id="newsletterCheck" checked>
+                        <label class="form-check-label" for="newsletterCheck">Receive newsletter</label>
+                    </div>
+                    <div class="mb-3 form-check">
+                        <input type="checkbox" class="form-check-input" id="promotionsCheck">
+                        <label class="form-check-label" for="promotionsCheck">Receive promotional emails</label>
+                    </div>
+                </div>
+            </div> #}
+            <hr>
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <h2>Changer son mot de passe</h2>
+                    <div class="mb-3">
+                        <label for="currentPassword" class="form-label">Mot de passe actuel</label>
+                        <input type="password" class="form-control" id="currentPassword" placeholder="Ecrire le mot de passe actuel">
+                    </div>
+                    <div class="mb-3">
+                        <label for="newPassword" class="form-label">Nouveau mot de passe </label>
+                        <input type="password" class="form-control" id="newPassword" placeholder="Ecrire le nouveau mot de passe">
+                    </div>
+                    <div class="mb-3">
+                        <label for="confirmPassword" class="form-label">Confirmer nouveau mot de passe </label>
+                        <input type="password" class="form-control" id="confirmPassword" placeholder="Réécrire le nouveau mot de passe">
+                    </div>
+                </div>
+            </div>
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                <button type="submit" class="btn btn-primary">Enregistrer les modifications</button>
+            </div>
+        </form>
     </div>
-</div>
 {% endblock %}
+

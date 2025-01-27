@@ -9,38 +9,30 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
+
 class UserAccountController extends AbstractController
 {
-
-    #[Route('/utilisateur/compte', name: 'app_user_account')]
-    public function sindex(): Response
+    #[Route('/utilisateur/compte/informations', name: 'app_user_account')]
+    public function index(): Response
     {
         return $this->render('user_account/index.html.twig', [
         ]);
     }
 
-    /**
-     * @Route("/utilisateur/compte/{variable}", defaults={"variable" = 0})
-     * @Method("GET")
-     * @Template()
-     */
-    #[Route('/utilisateur/compte/{variable}', name: 'app_user_account_navbar')]
-    public function userIndexNavbar($variable, EntityManagerInterface $entityManager): Response
+    #[Route('/utilisateur/compte/factures', name: 'app_user_account_invoices')]
+    public function invoices(): Response
     {
+        return $this->render('user_account/user_invoices.html.twig', [
+        ]);
+    }
 
+    #[Route('/utilisateur/compte/catalog', name: 'app_user_account_catalog')]
+    public function catalog(EntityManagerInterface $entityManager): Response
+    {
         $video = $entityManager->getRepository(Video::class)->findAll();
 
-        // si le produit n'est pas trouvé 
-        if(!$video){
-            // lancer une erreur
-            throw $this->createNotFoundException(
-                'Aucun produit trouvé'
-            );
-        }
-
-        return $this->render('user_account/index.html.twig', [
-            'variable' => $variable,
-            'video' => $video
+        return $this->render('user_account/user_catalog.html.twig', [
+            "video"=>$video,
         ]);
     }
 }

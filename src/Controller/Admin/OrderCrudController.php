@@ -5,6 +5,7 @@ namespace App\Controller\Admin;
 use App\Entity\Order;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
@@ -39,10 +40,9 @@ class OrderCrudController extends AbstractCrudController
     public function configureFields(string $pageName): iterable
     {
         return [
-            IntegerField::new('totalNumberOfOrders', "Numéro de commandes"),
+            IdField::new("id","ID Référence"),
             NumberField::new('amountTotal', "Prix total"),
             BooleanField::new('isPaid', "Status Payé")->renderAsSwitch(false)->hideOnForm(),
-            TextField::new('paymentId', "Référence Stripe"),
         ];
     }
     
