@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\OrderRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -15,69 +17,94 @@ class Order
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column]
-    private ?float $amountTotal = null;
-
-    #[ORM\Column(type: Types::TEXT)]
-    private ?string $paymentId = null;
-
-    #[ORM\ManyToOne]
-    private ?User $user = null;
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    private ?\DateTimeInterface $createdAt = null;
 
     #[ORM\Column]
-    private ?bool $isPaid = null;
+    private ?int $status = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $addressFacturation = null;
+
+    /**
+     * @var Collection<int, OrderDetail>
+     */
+    #[ORM\OneToMany(targetEntity: OrderDetail::class, mappedBy: 'myOrder')]
+    private Collection $orderDetails;
+
+    public function __construct()
+    {
+        $this->orderDetails = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getAmountTotal(): ?float
+    public function getCreatedAt(): ?\DateTimeInterface
     {
-        return $this->amountTotal;
+        return $this->createdAt;
     }
 
-    public function setAmountTotal(float $amountTotal): static
+    public function setCreatedAt(\DateTimeInterface $createdAt): static
     {
-        $this->amountTotal = $amountTotal;
+        $this->createdAt = $createdAt;
 
         return $this;
     }
 
-    public function getPaymentId(): ?string
+    public function getStatus(): ?int
     {
-        return $this->paymentId;
+        return $this->status;
     }
 
-    public function setPaymentId(string $paymentId): static
+    public function setStatus(int $status): static
     {
-        $this->paymentId = $paymentId;
+        $this->status = $status;
 
         return $this;
     }
 
-    public function getUser(): ?User
+    public function getAddressFacturation(): ?string
     {
-        return $this->user;
+        return $this->addressFacturation;
     }
 
-    public function setUser(?User $user): static
+    public function setAddressFacturation(?string $addressFacturation): static
     {
-        $this->user = $user;
+        $this->addressFacturation = $addressFacturation;
 
         return $this;
     }
 
-    public function isPaid(): ?bool
+    /**
+     * @return Collection<int, OrderDetail>
+     */
+    public function getOrderDetails(): Collection
     {
-        return $this->isPaid;
+        return $this->orderDetails;
     }
 
-    public function setPaid(bool $isPaid): static
+    public function addOrderDetail(OrderDetail $orderDetail): static
     {
-        $this->isPaid = $isPaid;
+        if (!$this->orderDetails->contains($orderDetail)) {
+            $this->orderDetails->add($orderDetail);
+            $orderDetail->setMyOrder($this);
+        }
 
         return $this;
     }
 
+    public function removeOrderDetail(OrderDetail $orderDetail): static
+    {
+        if ($this->orderDetails->removeElement($orderDetail)) {
+            // set the owning side to null (unless already changed)
+            if ($orderDetail->getMyOrder() === $this) {
+                $orderDetail->setMyOrder(null);
+            }
+        }
+
+        return $this;
+    }
 }
