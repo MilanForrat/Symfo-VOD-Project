@@ -8,6 +8,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
+use EasyCorp\Bundle\EasyAdminBundle\Field\SlugField;
 
 class CategoryCrudController extends AbstractCrudController
 {
@@ -27,7 +28,8 @@ class CategoryCrudController extends AbstractCrudController
     public function configureFields(string $pageName): iterable
     {
         return [
-            TextField::new('name', 'Nom de la catégorie')
+            TextField::new('name', 'Nom de la catégorie'),
+            SlugField::new('slug')->setTargetFieldName('name'),
         ];
     }
     

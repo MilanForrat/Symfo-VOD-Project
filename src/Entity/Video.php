@@ -66,7 +66,7 @@ class Video
     private ?float $tva = null;
 
     // fonction pour récupéré prix TTC selon la tva choisie en BDD
-    public function getPriceTva(){
+    public function getPriceTvaCalculator(){
         $coeff= 1 +($this->tva/100);
         return $coeff*$this->price;
     }

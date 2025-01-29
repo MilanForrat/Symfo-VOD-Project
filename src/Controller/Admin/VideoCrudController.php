@@ -17,6 +17,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 
 class VideoCrudController extends AbstractCrudController
 {
@@ -41,18 +42,23 @@ class VideoCrudController extends AbstractCrudController
 
     public function configureFields(string $pageName): iterable
     {
+        $required = true;
+        if($pageName=="edit"){
+            $required=false;
+        }
+
         $title=TextField::new('name', "Titre");
 
         // permet de construire le slug à partir du name
-        $slug=SlugField::new('slug')->setTargetFieldName('name')->hideOnIndex();
+        $slug=SlugField::new('slug')->setTargetFieldName('name')->hideOnIndex()->setHelp('URL de votre vidéo générée automatiquement');
 
-        $subtitle = TextField::new('subtitle', "Titre");
+        $subtitle = TextField::new('subtitle', "Sous-titre");
 
-        $description = TextEditorField::new('description', "Description");
+        $description = TextEditorField::new('description', "Description")->hideOnIndex();
 
-        $trailer = TextField::new('trailer', "Lien bande d'annonce");
+        $trailer = TextField::new('trailer', "Lien bande d'annonce")->hideOnIndex();
 
-        $link = TextField::new('link', "Lien vidéo complète");
+        $link = TextField::new('link', "Lien vidéo complète")->setHelp('Lien de la vidéo payante')->hideOnIndex();
 
         $language = AssociationField::new('language', 'Langue');
 
@@ -63,10 +69,12 @@ class VideoCrudController extends AbstractCrudController
                 // répertoire dans lequel seront enregistrées les images
                 ->setBasePath('uploads/')
                 ->setUploadDir('public/uploads')
+                ->setLabel('Image')
+                ->setHelp("L'image ne doit pas dépasser 1200 Kb, soit 1,2 Mb")
                 // on renomme l'image sur le serveur pour éviter le duplicata (nom unique à chaque image)
                 ->setUploadedFileNamePattern('[randomhash].[extension]')
                 // rendre obligatoire l'upload d'image
-                ->setRequired(false),
+                ->setRequired($required)
         ];
 
         

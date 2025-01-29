@@ -94,7 +94,7 @@ class VideoController extends AbstractController
     {
     
         $video = $entityManager->getRepository(Video::class)->findAll();
-
+        
         // si on ne trouve pas d'articles on redirige à la page d'accueil
         if(!$video){
             return $this->redirectToRoute('app_home');

@@ -35,6 +35,10 @@ class ArticleCrudController extends AbstractCrudController
     
     public function configureFields(string $pageName): iterable
     {
+        $required = true;
+        if($pageName=="edit"){
+            $required=false;
+        }
 
         $fields = [
             // personnalisation du système d'upload d'image
@@ -46,26 +50,28 @@ class ArticleCrudController extends AbstractCrudController
                 // on renomme l'image sur le serveur pour éviter le duplicata (nom unique à chaque image)
                 ->setUploadedFileNamePattern('[randomhash].[extension]')
                 // rendre obligatoire l'upload d'image
-                ->setRequired(false),
+                ->setRequired($required),
         ];
         // permet de construire le slug à partir du name
-        $slug=SlugField::new('slug')->setTargetFieldName('title')->hideOnIndex();
+        $slug=SlugField::new('slug')->setTargetFieldName('title')->hideOnIndex()->setHelp('URL de votre article généré automatiquement');
+
+        $relation = AssociationField::new('category', 'Catégorie')->setSortProperty('name');
 
         $title=TextField::new('title', "Titre");
 
         $subtitle = TextField::new('subtitle', "Sous-titre");
 
-        $textContent = TextEditorField::new('textContent', "Contenu de l'article");
+        $textContent = TextEditorField::new('textContent', "Contenu de l'article")->hideOnIndex();
 
-        $relation = AssociationField::new('category')->setSortProperty('name');
 
         $uploadedDate = DateField::new('uploadedDate', 'Date de mise en ligne')->setFormat('dd.MM.yyyy');
 
-        $fields[]=$slug;
+        
+        $fields[]=$relation;
         $fields[]=$title;
+        $fields[]=$slug;
         $fields[]=$subtitle;
         $fields[]=$textContent;
-        $fields[]=$relation;
         $fields[]=$uploadedDate;
 
         return $fields;
