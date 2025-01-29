@@ -14,6 +14,9 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TimeField;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
+use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
 
 class VideoCrudController extends AbstractCrudController
 {
@@ -72,7 +75,13 @@ class VideoCrudController extends AbstractCrudController
         // enlever le AM / PM sur le dashboard
         $length = TextField::new('length', 'Durée vidéo');
 
-        $price = TextField::new('price', "Prix");
+        $price = TextField::new('price', "Prix HT");
+
+        $tva = ChoiceField::new('tva', "Taux de TVA")->setChoices([
+            '5,5%'=>'5.5',
+            '10%'=>'10',
+            '20%'=>'20',
+        ]);
 
         $relation = AssociationField::new('category', 'Catégorie')->setSortProperty('name');
 
@@ -85,9 +94,10 @@ class VideoCrudController extends AbstractCrudController
         $fields[]=$relation;
         $fields[]=$language;
         $fields[]=$length;
-        $fields[]=$uploadedDate;
         $fields[]=$price;
-        
+        $fields[]=$tva;
+        $fields[]=$uploadedDate;
+
         return $fields;
     }
 }

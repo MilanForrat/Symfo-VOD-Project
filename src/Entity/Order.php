@@ -20,6 +20,10 @@ class Order
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $createdAt = null;
 
+    /*
+    * 1 : en attente de paiement
+    * 2 : paiement validé
+    */ 
     #[ORM\Column]
     private ?int $status = null;
 
@@ -29,12 +33,66 @@ class Order
     /**
      * @var Collection<int, OrderDetail>
      */
-    #[ORM\OneToMany(targetEntity: OrderDetail::class, mappedBy: 'myOrder')]
+    #[ORM\OneToMany(targetEntity: OrderDetail::class, mappedBy: 'myOrder', cascade:['persist'])]
     private Collection $orderDetails;
+
+    #[ORM\ManyToOne(inversedBy: 'orders')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $user = null;
 
     public function __construct()
     {
         $this->orderDetails = new ArrayCollection();
+    }
+
+    // fonction pour récupéré le total TTC
+    public function getTotalTTC(){
+        $products = $this->getOrderDetails();
+        $totalTTC = 0;
+
+        foreach($products as $product){
+            // dd($product);
+            // on récupère le coefficient de tva et on le multiplie ce qui donne par ex: 1.2 pour 20% TVA
+            $coeff = 1+ ($product->getProductTva() / 100);
+            // nous renvoie le total de tva
+            $totalTTC += $product->getProductPrice()*$coeff;
+
+        }
+
+        return  $totalTTC;
+    }
+    // fonction pour récupéré le total de la TVA
+    public function getTotalTVA(){
+            $products = $this->getOrderDetails();
+            $totalTVA = 0;
+    
+            foreach($products as $product){
+                // dd($product);
+                // on récupère le coefficient de tva
+                $coeff = $product->getProductTva() / 100;
+                // nous renvoie le total de tva
+                $totalTVA += $product->getProductPrice()*$coeff;
+    
+            }
+    
+            return  $totalTVA;
+    }
+
+    // fonction pour récupéré le total hors taxe
+    public function getTotalHT(){
+        $products = $this->getOrderDetails();
+        $totalHT = 0;
+
+        foreach($products as $product){
+            // dd($product);
+            // on récupère le coefficient de tva
+            $coeff = $product->getProductPrice();
+            // nous renvoie le total de tva
+            $totalHT += $coeff;
+
+        }
+
+        return  $totalHT;
     }
 
     public function getId(): ?int
@@ -104,6 +162,18 @@ class Order
                 $orderDetail->setMyOrder(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): static
+    {
+        $this->user = $user;
 
         return $this;
     }

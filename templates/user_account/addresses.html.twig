@@ -10,6 +10,7 @@
                 <h2 class="h4">Liste des adresses de Facturation</h2>
             </div>
             <div class="col-md-3">
+                <a href="{{path('app_panier')}}" class="btn btn-info mb-3">Accéder au panier</a>
                 <a href="{{path('app_user_account_address_form')}}" class="btn btn-success">Ajouter une adresse de facturation</a>
             </div>
             {% if app.user.addresses|length == 0 %}

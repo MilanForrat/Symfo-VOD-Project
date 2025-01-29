@@ -1,0 +1,57 @@
+{% extends '@!EasyAdmin/layout.html.twig' %}
+{% block main %}
+    <style>
+        .product-img{
+                width: 100px;
+                aspect-ratio: 16 / 9;
+        }
+    </style>
+    {# {{dump(order)}} #}
+    <h1 class="h3 my-2">Commannde n° {{order.id}}</h1>
+    <div class="row justify-content-between">
+        <div class="col-md-4">Passée le : {{order.createdAt|date('d/m/Y')}}</div>
+        <div class="col-md-4">{{include('admin/status.html.twig', {field : {'value':order.status} } ) }}</div>
+    </div>
+    <div class="row mt-5">
+        <div class="col-md-10">
+            <h2 class="h5">Adresse de Facturation :</h2><br>
+            <p class="mt-2">{{order.addressFacturation|raw}}</p>
+        </div>
+         <div class="col-12 mt-5">
+            <h2 class="h5">Contenu de la commande :</h2><br>
+            <table class="table mt-2">
+                <thead>
+                    <tr>
+                        <th scope="col">Illustration</th>
+                        <th scope="col">Nom du produit</th>
+                        <th scope="col">Quantité</th>
+                        <th scope="col">Total HT</th>
+                        <th scope="col">Taux TVA</th>
+                        <th scope="col">Total TTC</th>
+                    </tr>
+                </thead>
+                <tbody>
+                        {% for product in order.orderDetails %}
+                            <tr>
+                                <td>
+                                    <img class="product-img" src="/uploads/{{product.productImage}}" alt="image de {{product.productName}}">
+                                </td>
+                                <td>{{product.productName}}</td>
+                                <td>{{product.productQuantity}}</td>
+                                <td>{{product.productPrice}}€</td>
+                                <td>{{product.productTVA}}%</td>
+                                {% set coeff= 1 + (product.productTVA /100) %}
+                                {# prix HT * 1,tva #}
+                                <td>{{ (product.productPrice * coeff) * product.productQuantity}}€</td>
+                            </tr>
+                        {% endfor %}
+                </tbody>
+            </table>
+            <div class="text-right fs-5">
+                <strong>Total H.T :</strong>{{order.totalHT}} €<br>
+                <strong>Total TVA : </strong>{{order.totalTVA}} €<br>
+                <strong>Total TTC : </strong>{{order.totalTTC}} €
+            </div>
+        </div>
+    </div>
+{% endblock %}

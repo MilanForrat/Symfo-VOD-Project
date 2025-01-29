@@ -62,6 +62,15 @@ class Video
     #[ORM\Column(length: 255)]
     private ?string $price = null;
 
+    #[ORM\Column]
+    private ?float $tva = null;
+
+    // fonction pour récupéré prix TTC selon la tva choisie en BDD
+    public function getPriceTva(){
+        $coeff= 1 +($this->tva/100);
+        return $coeff*$this->price;
+    }
+
     // utilisée pour easyadmin crud
     public function __toString()
     {
@@ -248,6 +257,18 @@ class Video
     public function setPrice(string $price): static
     {
         $this->price = $price;
+
+        return $this;
+    }
+
+    public function getTva(): ?float
+    {
+        return $this->tva;
+    }
+
+    public function setTva(float $tva): static
+    {
+        $this->tva = $tva;
 
         return $this;
     }
