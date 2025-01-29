@@ -108,6 +108,24 @@ h3{
 #recap-cart{
     height: fit-content;
 }
+
+/* ----------------- ORDER ADDRESSES -------------------- */
+.form-check{
+    background-color: #79766faf;
+    margin: 45px 35px 35px 65px;
+    padding: 10px 30px 10px 10px;
+    border-radius: 5px;
+    max-width: fit-content;
+}
+.form-check .form-check-input{
+    margin-left:10px;
+    margin-right: 30px;
+    margin-top: 50px;
+}
+.col-form-label{
+    margin-bottom: 10px;
+    margin-left: 25px;
+}
 /* ----------------- FOOTER -------------------- */
 footer{
     background-color: #2B3035;

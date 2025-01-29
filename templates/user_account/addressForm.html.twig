@@ -8,20 +8,23 @@
             <a href="{{path('app_user_account_addresses')}}" class="btn btn-warning px-5 me-3">Annuler</a>
         </div>
     </div>
-    <div class="col-md-5">
-        {{ form_start(addressForm) }}
-            <div class="row">
-                <div class="col-md-4">{{form_row(addressForm.firstName)}}</div>
-                <div class="col-md-4 ms-5">{{form_row(addressForm.lastName)}}</div>
-                <div class="col-md-6">{{form_row(addressForm.enterprise)}}</div>
-                <div class="col-md-7">{{form_row(addressForm.address)}}</div>
-                <div class="col-md-3 ms-5">{{form_row(addressForm.postCode)}}</div>
-                <div class="col-md-4">{{form_row(addressForm.city)}}</div>
-                <div class="col-md-4 ms-5">{{form_row(addressForm.country)}}</div>
-                <div class="col-md-5">{{form_row(addressForm.phone)}}</div>
-            </div>
-        {{ form_end(addressForm) }}
+    <div class=" d-flex justify-content-center">
+        <div class="col-md-5">
+            {{ form_start(addressForm) }}
+                <div class="row">
+                    <div class="col-md-4">{{form_row(addressForm.firstName)}}</div>
+                    <div class="col-md-4 ms-5">{{form_row(addressForm.lastName)}}</div>
+                    <div class="col-md-6">{{form_row(addressForm.enterprise)}}</div>
+                    <div class="col-md-7">{{form_row(addressForm.address)}}</div>
+                    <div class="col-md-3 ms-5">{{form_row(addressForm.postCode)}}</div>
+                    <div class="col-md-4">{{form_row(addressForm.city)}}</div>
+                    <div class="col-md-4 ms-5">{{form_row(addressForm.country)}}</div>
+                    <div class="col-md-5">{{form_row(addressForm.phone)}}</div>
+                </div>
+            {{ form_end(addressForm) }}
+        </div>
     </div>
+    
     
 
 {% endblock %}

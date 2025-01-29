@@ -29,14 +29,14 @@ class UserAccountController extends AbstractController
         ]);
     }
 
-    #[Route('/utilisateur/compte/factures', name: 'app_user_account_invoices')]
+    #[Route('/utilisateur/compte/commandes', name: 'app_user_account_invoices')]
     public function invoices(): Response
     {
         return $this->render('user_account/user_invoices.html.twig', [
         ]);
     }
 
-    #[Route('/utilisateur/compte/catalog', name: 'app_user_account_catalog')]
+    #[Route('/utilisateur/compte/catalogue', name: 'app_user_account_catalog')]
     public function catalog(): Response
     {
         $video = $this->entityManager->getRepository(Video::class)->findAll();

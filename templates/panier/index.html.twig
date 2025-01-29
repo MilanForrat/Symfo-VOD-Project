@@ -52,9 +52,11 @@
                     </li>
                 </ul>
                 {% if (isEmpty == false) %}
-                    <a href="{{path('app_payment')}}" class="btn btn-success w-100 mt-3">Valider le panier</a>
+                    {# <a href="{{path('app_payment')}}" class="btn btn-success w-100 mt-3">Valider le panier</a> #}
+                    <a href="{{path('app_order')}}" class="btn btn-success w-100 mt-3">Valider le panier</a>
                 {% else %}
-                    <a href="{{path('app_payment')}}" class="btn btn-success w-100 mt-3 disabled">Valider le panier</a>
+                    {# <a href="{{path('app_payment')}}" class="btn btn-success w-100 mt-3 disabled">Valider le panier</a> #}
+                    <a href="{{path('app_order')}}" class="btn btn-success w-100 mt-3 disabled">Valider le panier</a>
                 {% endif %}
             </div>
         </div>

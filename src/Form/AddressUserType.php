@@ -70,7 +70,7 @@ class AddressUserType extends AbstractType
             ->add('submit', SubmitType::class, [
                 'label'=>'Enregistrer la nouvelle adresse',
                 'attr'=>[
-                    'class'=>'btn btn-success mt-5'
+                    'class'=>'btn btn-success mt-5 w-100'
                 ]
             ]);
     }

@@ -34,7 +34,8 @@ security:
     # on créer les roles pour limiter les accès
     access_control:
         - { path: ^/admin, roles: ROLE_ADMIN }
-        #- { path: ^/profile, roles: ROLE_USER }
+        - { path: ^/utilisateur, roles: ROLE_USER }
+        - { path: ^/commande, roles: ROLE_USER }
 
 when@test:
     security:
