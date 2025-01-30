@@ -6,7 +6,6 @@ use App\Entity\User;
 use App\Form\SignInType;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\ORM\EntityManagerInterface;
-use App\Controller\SignInController;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

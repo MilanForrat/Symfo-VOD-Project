@@ -5,12 +5,16 @@ namespace App\Controller;
 use App\Entity\Address;
 use App\Entity\Video;
 use App\Entity\Article;
+use App\Entity\User;
 use App\Repository\AddressRepository;
 use App\Form\AddressUserType;
+use App\Form\PasswordUserType;
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
 
 
@@ -113,6 +117,30 @@ class UserAccountController extends AbstractController
         $this->entityManager->flush();
 
         return $this->redirectToRoute('app_user_account_addresses');
+    }
+
+    #[Route('/utilisateur/compte/informations/modifier/mot-de-passe', name: 'app_user_account_password')]
+    public function modifyPassword(Request $request, UserPasswordHasherInterface $userPasswordHasherInterface, EntityManagerInterface $entityManagerInterface): Response
+    {
+        $user= $this->getUser();
+
+        $form=$this->createForm(PasswordUserType::class, $user, [
+            'passwordHasher'=>$userPasswordHasherInterface,
+        ]);
+
+        $form->handleRequest($request);
+        
+        if($form->isSubmitted() && $form->isValid()){
+            $entityManagerInterface->flush();
+            $this->addFlash(
+                'success',
+                'Votre nouveau mot de passe est enregistré.'
+            );
+        }
+
+        return $this->render('user_account/password.html.twig', [
+            'form'=>$form->createView(),
+        ]);
     }
 
 }
