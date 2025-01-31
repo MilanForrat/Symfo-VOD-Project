@@ -3,46 +3,53 @@
 {% block title %}Mes Informations{% endblock %}
 
 {% block body %}
-    <div class="container py-5">
-        <h1 class="mb-4">Mes Informations</h1>
-        <hr>
-        <form>
-            <div class="row mb-4">
-                <div class="col-md-6">
-                    <h2>Informations Personnelles</h2>
-                    <div class="mb-3">
-                        <label for="fullName" class="form-label">Nom</label>
-                        <input type="text" class="form-control" id="fullName" value="{{app.user.lastName}}" disabled>
-                    </div>
-                    <div class="mb-3">
-                        <label for="fullName" class="form-label">Prénom</label>
-                        <input type="text" class="form-control" id="fullName" value="{{app.user.FirstName}}" disabled>
-                    </div>
-                    <div class="mb-3">
-                        <label for="email" class="form-label">Adresse e-mail</label>
-                        <input type="email" class="form-control" id="email" value="{{app.user.email}}" disabled>
-                    </div>
-                </div>
-            </div>
-            {# <hr> #}
-            {# ------------------- NEWSLETTER --------------- #}
-            {# <div class="row mb-4">
-                <div class="col-md-6">
-                    <h2>Email Preferences</h2>
-                    <div class="mb-3 form-check">
-                        <input type="checkbox" class="form-check-input" id="newsletterCheck" checked>
-                        <label class="form-check-label" for="newsletterCheck">Receive newsletter</label>
-                    </div>
-                    <div class="mb-3 form-check">
-                        <input type="checkbox" class="form-check-input" id="promotionsCheck">
-                        <label class="form-check-label" for="promotionsCheck">Receive promotional emails</label>
+    <div class="row mt-4">
+        <div class="col-md-2">
+            {% include 'user_account/_menu.html.twig' %}
+        </div>
+        <div class="col-md-8">
+            <h1 class="mb-4">Mes Informations</h1>
+            <small>Ces informations ne peuvent pas être modifiées, elles sont liées à votre compte.</small>
+            <hr>
+            <form>
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <h2>Informations Personnelles</h2>
+                        <div class="mb-3">
+                            <label for="fullName" class="form-label">Nom</label>
+                            <input type="text" class="form-control" id="fullName" value="{{app.user.lastName}}" disabled>
+                        </div>
+                        <div class="mb-3">
+                            <label for="fullName" class="form-label">Prénom</label>
+                            <input type="text" class="form-control" id="fullName" value="{{app.user.FirstName}}" disabled>
+                        </div>
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Adresse e-mail</label>
+                            <input type="email" class="form-control" id="email" value="{{app.user.email}}" disabled>
+                        </div>
                     </div>
                 </div>
-            </div> #}           
-            <div class="d-grid gap-2 col-3">
-                <a href="{{path('app_user_account_password')}}" class="btn btn-primary">Changer son mot de passe</a>
-            </div>
-        </form>
+                <hr>
+                {# ------------------- NEWSLETTER --------------- #}
+                {# <div class="row mb-4">
+                    <div class="col-md-6">
+                        <h2>Email Preferences</h2>
+                        <div class="mb-3 form-check">
+                            <input type="checkbox" class="form-check-input" id="newsletterCheck" checked>
+                            <label class="form-check-label" for="newsletterCheck">Receive newsletter</label>
+                        </div>
+                        <div class="mb-3 form-check">
+                            <input type="checkbox" class="form-check-input" id="promotionsCheck">
+                            <label class="form-check-label" for="promotionsCheck">Receive promotional emails</label>
+                        </div>
+                    </div>
+                </div> #}           
+                <div class="d-grid gap-2 col-4 text-center">
+                    <a href="{{path('app_user_account_password')}}" class="btn btn-primary">Modifier votre mot de passe</a>
+                    <small>Cliquez ci-dessus pour modifier votre mot de passe actuel.</small>
+                </div>
+            </form>
+        </div>
     </div>
 {% endblock %}
 

@@ -3,8 +3,12 @@
 {% block title %}Mon Catalogue{% endblock %}
 
 {% block body %}
-    <div class="container py-5">
-        <h1 class="mb-4">Mes Achats</h1>
+<div class="row mt-4">
+    <div class="col-md-2">
+        {% include 'user_account/_menu.html.twig' %}
+    </div>
+    <div class="col-md-8">
+        <h1 class="mb-4">Mon Catalogue</h1>
         <hr>
         <div class="album py-5">
             <div class="container">
@@ -36,4 +40,5 @@
             </div>
         </div>
     </div>
+</div>
 {% endblock %}

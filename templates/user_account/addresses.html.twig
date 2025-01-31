@@ -3,40 +3,48 @@
 {% block title %}Mes Adresses{% endblock %}
 
 {% block body %}
-    <div class="container">
-        <h1 class="my-5">Mes Adresses</h1>
-        <div class="row justify-content-between">
-            <div class="col-md-9">
-                <h2 class="h4">Liste des adresses de Facturation</h2>
-            </div>
-            <div class="col-md-3">
-                <a href="{{path('app_panier')}}" class="btn btn-info mb-3">Accéder au panier</a>
-                <a href="{{path('app_user_account_address_form')}}" class="btn btn-success">Ajouter une adresse de facturation</a>
-            </div>
-            {% if app.user.addresses|length == 0 %}
-                <p>Vous n'avez pas encore enregistré d'adresse.</p>
-            {% else %}
-            <div class="row my-5">
-                {% for address in app.user.addresses %}
-                    <div class="col-md-4">
-                        <div class="p-2 m-3 bg-color-cart text-center">
-                            <strong>{{address.enterprise}}</strong><br>
-                            <strong>{{address.firstName}} {{address.lastName}}</strong><br>
-                            {{address.phone}}<br>
-                            {{address.address}}<br>
-                            {{address.postCode}}, {{address.city}}<br>
-                            {{address.country}}<br>
-                            <div class="d-flex justify-content-around">
-                                <a href="{{path('app_user_account_address_form', {id:address.id})}}" class="btn btn-warning mt-4">Modifier</a>
-                                <a href="{{path('app_user_account_address_delete', {id:address.id})}}" class="btn btn-danger mt-4">Supprimer</a>
+<div class="row mt-4">
+    <div class="col-md-2">
+        {% include 'user_account/_menu.html.twig' %}
+    </div>
+    <div class="col-md-8">
+        <div class="container">
+            <h1>Mes Adresses</h1>
+            <hr>
+            <div class="row justify-content-between">
+                <div class="col-md-9">
+                    <h2 class="h4">Liste des adresses de Facturation</h2>
+                </div>
+                <div class="col-md-3">
+                    <a href="{{path('app_panier')}}" class="btn btn-info mb-3">Accéder au panier</a>
+                    <a href="{{path('app_user_account_address_form')}}" class="btn btn-success">Ajouter une adresse de facturation</a>
+                </div>
+                {% if app.user.addresses|length == 0 %}
+                    <p>Vous n'avez pas encore enregistré d'adresse.</p>
+                {% else %}
+                <div class="row my-2">
+                    {% for address in app.user.addresses %}
+                        <div class="col-md-4">
+                            <div class="p-2 m-3 bg-color-cart text-center">
+                                <strong>{{address.enterprise}}</strong><br>
+                                <strong>{{address.firstName}} {{address.lastName}}</strong><br>
+                                {{address.phone}}<br>
+                                {{address.address}}<br>
+                                {{address.postCode}}, {{address.city}}<br>
+                                {{address.country}}<br>
+                                <div class="d-flex justify-content-around">
+                                    <a href="{{path('app_user_account_address_form', {id:address.id})}}" class="btn btn-warning mt-4">Modifier</a>
+                                    <a href="{{path('app_user_account_address_delete', {id:address.id})}}" class="btn btn-danger mt-4">Supprimer</a>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                {% endfor %}
+                    {% endfor %}
+                </div>
+                {% endif %}
+                
             </div>
-            {% endif %}
-            
         </div>
     </div>
+</div>
 
 {% endblock %}

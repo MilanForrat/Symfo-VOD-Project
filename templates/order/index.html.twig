@@ -1,13 +1,14 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Panier{% endblock %}
+{% block title %}Ma Commande{% endblock %}
 
 {% block body %}
 <div class="container mt-5">
     <div class="d-flex justify-content-end">
             <a href="{{path('app_panier')}}" class="btn btn-warning">Revenir à l'étape précédente</a>
     </div>
-    <h1 class="mb-5">Ma commande</h1>
+    <h1>Ma commande</h1>
+    <hr class="mb-5">
     <div class="row justify-content-between">
         <!-- Shopping Cart Items -->
         <div class="col-10 col-md-9">
@@ -17,7 +18,7 @@
             </div>
         </div>
         <div class="col-md-3">
-                <a href="{{path('app_user_account_address_form')}}" class="btn btn-success">Ajouter une adresse de facturation</a>
+                <a href="{{path('app_user_account_address_form')}}" class="btn btn-primary">Ajouter une adresse de facturation</a>
         </div>
     </div>
 </div>
