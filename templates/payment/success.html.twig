@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Merci pour votre commande{% endblock %}
+
+{% block body %}
+
+<div class="bg-color min-height d-flex justify-content-center align-items-center flex-column">
+    <div>
+        <img src="{{ asset('/img/check-icon.png') }}" class="mb-3" width='58px' height="58px" alt="commande confirmée">
+    </div>
+    <div class="col-8 col-md-3 d-flex justify-content-center align-items-center">
+        <h1 class="text-center mb-4 h3">Merci pour votre commande</h1>
+    </div>
+    <a href="{{path('app_user_account_invoices')}}" class="btn btn-success col-md-3 col-6 mt-5">Retourner à mon espace membre</a>
+</div>
+<script src="{{ asset('/js/signIn.js') }}"></script>
+{% endblock %}

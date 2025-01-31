@@ -108,4 +108,9 @@ class OrderDetail
 
         return $this;
     }
+
+    public function getTotalTTC(){
+        $coeff= 1 +($this->productTVA/100);
+        return $coeff*$this->productPrice;
+    }
 }

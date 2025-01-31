@@ -107,6 +107,7 @@ final class OrderController extends AbstractController
             'address' => $form->getData(),
             'data' => $data,
             'total' => $total,
+            'order'=>$order,
         ]);
     }
 }

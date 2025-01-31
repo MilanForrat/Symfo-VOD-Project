@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Repository\OrderRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Stripe\Stripe;
 use Stripe\Checkout\Session;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -11,32 +13,83 @@ use Symfony\Component\Routing\Attribute\Route;
 
 final class PaymentController extends AbstractController
 {
-    #[Route('/payment', name: 'app_payment')]
-    public function index(): Response
+    #[Route('/payment/{id_order}', name: 'app_payment')]
+    public function index($id_order, OrderRepository $orderRepository, EntityManagerInterface $entityManagerInterface): Response
     {
-        Stripe::setApiKey('sk_test_51QlnPV2MqM4P0NuXnPTGW7qFniI0Qq4DdpdyTPB3qmPQE4ZwnX5adx1M2Myl8Un5i9RUzMe6APaORbXsJT6wvYTW00vstsOew3');
 
-        $YOUR_DOMAIN = 'http://127.0.0.1:8000/';
+        Stripe::setApiKey($_ENV['STRIPE_SECRET_KEY']);
 
-        
+        // dd($id_order);
+
+        $order= $orderRepository->findOneBy([
+            'id'=>$id_order,
+            'user'=>$this->getUser(),
+        ]);
+
+        // dd($order);
+
+        if(!$order){
+            return $this->redirectToRoute('app_home');
+        }
+
+        $productForStripe = [];
+
+        foreach ($order->getOrderDetails() as $product){
+
+            // dd($product);
+            $productForStripe[]= [
+                'price_data' => [
+                    'currency'=>'eur',
+                    'unit_amount'=>number_format($product->getTotalTTC()*100, 0,'',''),
+                    'product_data'=>[
+                        'name'=>$product->getProductName(),
+                        'images'=>[
+                           $_ENV['DOMAIN'].'uploads/'.$product->getProductImage(),
+                      ]
+                    ]
+              ],
+              'quantity' => $product->getProductQuantity(),
+            ];
+        }
+
+        // dd($productForStripe);
+
 
         $checkout_session = Session::create([
         'line_items' => [[
-          # Provide the exact Price ID (e.g. pr_1234) of the product you want to sell
-          'price_data' => [
-                'currency'=>'eur',
-                'unit_amount'=>'1500',
-                'product_data'=>[
-                    'name'=>'produit de test'
-                ]
-          ],
-          'quantity' => 1,
+            $productForStripe
         ]],
         'mode' => 'payment',
-        'success_url' => $YOUR_DOMAIN . '/success.html',
-        'cancel_url' => $YOUR_DOMAIN . '/cancel.html',
+        'success_url' => $_ENV['DOMAIN'] . 'commande/merci/{CHECKOUT_SESSION_ID}',
+        'cancel_url' => $_ENV['DOMAIN'] . 'panier/annulation',
         ]);
+
+        $order->setStripeSessionId($checkout_session->id);
+        $entityManagerInterface->flush();
       
         return $this->redirect($checkout_session->url);
+    }
+
+    #[Route('/commande/merci/{stripe_session_id}', name: 'app_payment_success')]
+    public function success($stripe_session_id, OrderRepository $orderRepository, EntityManagerInterface $entityManagerInterface): Response
+    {
+        $order=$orderRepository->findOneBy([
+            'stripe_session_id'=>$stripe_session_id,
+            'user'=>$this->getUser(),
+        ]);
+
+        if(!$order){
+            return $this->redirectToRoute('app_home');
+        }
+
+        if($order->getStatus()==1){
+            $order->setStatus(2);
+        }
+        $entityManagerInterface->flush();
+        // dd($order);
+
+        return $this->render('payment/success.html.twig', [
+            'order'=>$order
+        ]);
     }
 }
