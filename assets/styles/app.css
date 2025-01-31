@@ -4,7 +4,7 @@
     --main-bg-second-color:#79766faf;
     --main-header-footer-bg-color: #2b3035;
     --main-text-color: rgb(226, 185, 107);
-    --main-link-color: wheat;
+    --main-link-color: #f5deb3;
     --main-link-hover-color:rgb(206, 206, 206);
     --main-card-bg-color:rgb(182, 179, 147);
     --main-admin-link-color: rgb(247, 90, 90);
@@ -30,17 +30,16 @@ body {
 .min-height{
     min-height: 80vh;
 }
-
 /* ----------------- HEADER -------------------- */
 header{
     color: var(--main-text-color);
     background-color: var(--main-header-footer-bg-color);
 }
-header a, header .nav-link, header .nav-item, header .navbar-brand, ul .nav-link{
+header a, header .nav-link, header .nav-item, header .navbar-brand, ul .nav-link, .nav-link{
     color: var(--main-link-color);
     transition:all 0.400s;
 }
-header a:hover, header .nav-link:hover, header .nav-item:hover, header .navbar-brand:hover, ul .nav-link:hover{
+header a:hover, header .nav-link:hover, header .nav-item:hover, header .navbar-brand:hover, ul .nav-link:hover, .nav-link:hover{
     color: var(--main-link-hover-color);
 }
 .icon-perso{

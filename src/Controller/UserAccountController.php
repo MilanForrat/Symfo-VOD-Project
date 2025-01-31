@@ -4,11 +4,13 @@ namespace App\Controller;
 
 use App\Entity\Address;
 use App\Entity\Video;
-use App\Entity\Article;
+use App\Entity\Order;
 use App\Entity\User;
+
 use App\Repository\AddressRepository;
 use App\Form\AddressUserType;
 use App\Form\PasswordUserType;
+use App\Repository\OrderRepository;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -34,9 +36,35 @@ class UserAccountController extends AbstractController
     }
 
     #[Route('/utilisateur/compte/commandes', name: 'app_user_account_invoices')]
-    public function invoices(): Response
+    public function invoices(OrderRepository $orderRepository): Response
     {
+        $orders = $orderRepository->findBy([
+            'user'=>$this->getUser(),
+            'status'=>[2]
+        ]);
+
+        // dd($orders);
         return $this->render('user_account/user_invoices.html.twig', [
+            'orders'=>$orders,
+        ]);
+    }
+
+    
+    #[Route('/utilisateur/compte/commandes/{id_order}', name: 'app_user_account_invoice_id')]
+    public function invoiceById($id_order, OrderRepository $orderRepository): Response
+    {
+        $order = $orderRepository->findOneBy([
+            'id'=>$id_order,
+            'user'=>$this->getUser()
+        ]);
+
+        if(!$order){
+            return $this->redirectToRoute('app_home');
+        }
+
+        // dd($orders);
+        return $this->render('user_account/invoice_by_id.html.twig', [
+            'order'=>$order,
         ]);
     }
 

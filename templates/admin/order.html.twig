@@ -49,9 +49,9 @@
                 </tbody>
             </table>
             <div class="text-right fs-5">
-                <strong>Total H.T :</strong>{{order.totalHT}} €<br>
-                <strong>Total TVA : </strong>{{order.totalTVA}} €<br>
-                <strong>Total TTC : </strong>{{order.totalTTC}} €
+                <strong>Total H.T :</strong>{{order.totalHT|price}}<br>
+                <strong>Total TVA : </strong>{{order.totalTVA|price}}<br>
+                <strong>Total TTC : </strong>{{order.totalTTC|price}}
             </div>
         </div>
     </div>

@@ -9,35 +9,36 @@
         </div>
         <div class="col-md-8">
             <h1>Mes Commandes</h1>
+            {% if orders|length ==0 %}
+                <p>Vous n'avez pas encore de commande(s).</p>
             <hr>
-            <table class="table">
+            {% else %}
+                <p>Vous avez {{orders|length}} commande(s).</p>
+            <hr>
+            <table class="table table-dark">
                 <thead>
-                    <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">First</th>
-                        <th scope="col">Last</th>
-                        <th scope="col">Handle</th>
+                    <tr class="table-secondary">
+                        <th scope="col">N°</th>
+                        <th scope="col">Date</th>
+                        <th scope="col">Statut</th>
+                        <th scope="col">Total TTC</th>
+                        <th scope="col"></th>
                     </tr>
                 </thead>
                 <tbody>
+                    {% for order in orders %}
                     <tr>
-                        <th scope="row">1</th>
-                        <td>Mark</td>
-                        <td>Otto</td>
-                        <td>@mdo</td>
+                        <td>{{order.id}}</td>
+                        <td>{{order.createdAt|date('d/m/Y')}}</td>
+                        <td>{{include('admin/status.html.twig', {field : {'value':order.status} } ) }}</td>
+                        <td>{{order.totalTTC|price}}</td>
+                        <td class='text-end'>
+                            <a href="{{path('app_user_account_invoice_id', {'id_order' : order.id} ) }}" class="btn btn-primary me-2">Détails</a>
+                        </td>
                     </tr>
-                    <tr>
-                        <th scope="row">2</th>
-                        <td>Jacob</td>
-                        <td>Thornton</td>
-                        <td>@fat</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">3</th>
-                        <td colspan="2">Larry the Bird</td>
-                        <td>@twitter</td>
-                    </tr>
+                    {% endfor %}
                 </tbody>
             </table>
+            {% endif %}
         </div>
 {% endblock %}

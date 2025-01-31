@@ -68,7 +68,21 @@ class Video
     // fonction pour récupéré prix TTC selon la tva choisie en BDD
     public function getPriceTvaCalculator(){
         $coeff= 1 +($this->tva/100);
-        return $coeff*$this->price;
+        $result=$coeff*$this->price;
+        $result=$result-$this->price;
+        return $result;
+    }
+
+    // fonction pour récupéré le total TTC
+    public function getVideoTTC(){;
+        $videoTTC = 0;
+
+        $coeff = 1+ ($this->getTva() / 100);
+        // nous renvoie le total de tva
+        $videoTTC += $this->getPrice()*$coeff;
+
+
+        return  $videoTTC;
     }
 
     // utilisée pour easyadmin crud

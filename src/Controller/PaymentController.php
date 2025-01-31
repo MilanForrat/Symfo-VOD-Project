@@ -8,6 +8,7 @@ use Stripe\Stripe;
 use Stripe\Checkout\Session;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Attribute\Route;
 
 
@@ -71,7 +72,7 @@ final class PaymentController extends AbstractController
     }
 
     #[Route('/commande/merci/{stripe_session_id}', name: 'app_payment_success')]
-    public function success($stripe_session_id, OrderRepository $orderRepository, EntityManagerInterface $entityManagerInterface): Response
+    public function success($stripe_session_id, OrderRepository $orderRepository, EntityManagerInterface $entityManagerInterface, SessionInterface $session): Response
     {
         $order=$orderRepository->findOneBy([
             'stripe_session_id'=>$stripe_session_id,
@@ -84,9 +85,12 @@ final class PaymentController extends AbstractController
 
         if($order->getStatus()==1){
             $order->setStatus(2);
+            $session->remove('panier');
         }
         $entityManagerInterface->flush();
         // dd($order);
+
+
 
         return $this->render('payment/success.html.twig', [
             'order'=>$order

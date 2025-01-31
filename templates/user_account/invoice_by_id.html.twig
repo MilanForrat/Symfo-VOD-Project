@@ -1,0 +1,77 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mes Commandes{% endblock %}
+
+{% block body %}
+<div class="row mt-4">
+    <div class="col-md-2">
+        {% include 'user_account/_menu.html.twig' %}
+    </div>
+    <div class="col-md-8">
+        <small>
+            <a href="{{path('app_user_account_invoices')}}" class="nav-link mb-3"><img src="{{ asset('/img/back-icon.png')}}" class="me-2" width="22px" height="22px" alt="">Retour</a>
+        </small>
+        <h1>Ma Commande N° {{order.id}}</h1>
+        <style>
+            .product-img{
+                    width: 100px;
+                    aspect-ratio: 16 / 9;
+            }
+        </style>
+        {# {{dump(order)}} #}
+        <hr>
+        {# <p class="mt-5">Stripe Session Id : {{order.stripeSessionId}}</p> #}
+        <div class="row justify-content-between">
+            <div class="col-md-4 mt-3">Passée le : {{order.createdAt|date('d/m/Y')}}</div>
+            <div class="col-md-4 mt-3 mb-5">{{include('admin/status.html.twig', {field : {'value':order.status} } ) }}</div>
+        </div>
+        <div class="col-6 my-3">
+            <hr>
+        </div>
+        <div class="row mt-5">
+            <div class="col-md-10">
+                <h2 class="h5">Adresse de Facturation :</h2><br>
+                <p class="mt-2">{{order.addressFacturation|raw}}</p>
+            </div>
+            <div class="col-6 my-3">
+                <hr>
+            </div>
+            <div class="col-12">
+                <h2 class="h5">Contenu de la commande :</h2><br>
+                <table class="table mt-2 table-dark">
+                    <thead>
+                        <tr class="table-secondary">
+                            <th scope="col">Illustration</th>
+                            <th scope="col">Nom du produit</th>
+                            <th scope="col">Quantité</th>
+                            <th scope="col">Total HT</th>
+                            <th scope="col">Taux TVA</th>
+                            <th scope="col">Total TTC</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                            {% for product in order.orderDetails %}
+                                <tr>
+                                    <td>
+                                        <img class="product-img" src="/uploads/{{product.productImage}}" alt="image de {{product.productName}}">
+                                    </td>
+                                    <td>{{product.productName}}</td>
+                                    <td>{{product.productQuantity}}</td>
+                                    <td>{{product.productPrice}}€</td>
+                                    <td>{{product.productTVA}}%</td>
+                                    {% set coeff= 1 + (product.productTVA /100) %}
+                                    {# prix HT * 1,tva #}
+                                    <td>{{ (product.productPrice * coeff) * product.productQuantity}}€</td>
+                                </tr>
+                            {% endfor %}
+                    </tbody>
+                </table>
+                <div class="text-end fs-5 my-5">
+                    <strong>Total H.T :</strong>{{order.totalHT|price}}<br><br>
+                    <strong>Total TVA : </strong>{{order.totalTVA|price}}<br><br>
+                    <strong>Total TTC : </strong>{{order.totalTTC|price}}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

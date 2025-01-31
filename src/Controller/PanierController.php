@@ -68,7 +68,9 @@ class PanierController extends AbstractController
         // data sera le tableau de tous les produits/videos...
         // total sera le prix total 
         $data=[];
-        $total=0;
+        $totalHT=0;
+        $totalTTC=0;
+        $totalTVA=0;
 
         // boucle des produits/videos... du panier de la session
         // pour chaque clé du panier en face tu as une Quantité
@@ -85,7 +87,9 @@ class PanierController extends AbstractController
                 "video"=>$video,
                 "quantity"=>$quantity,
             ];
-            $total += $video->getPrice() * $quantity;
+            $totalHT += $video->getPrice() * $quantity;
+            $totalTTC += $video->getVideoTTC()*$quantity;
+            $totalTVA += $video->getPriceTvaCalculator()*$quantity;
         }
 
         // pour mieux comprendre
@@ -95,7 +99,9 @@ class PanierController extends AbstractController
         // on envoie les variables à la template pour accéder à ces dernières
         return $this->render('panier/index.html.twig', [
             'data' => $data,
-            'total' => $total,
+            'totalHT' => $totalHT,
+            'totalTTC' => $totalTTC,
+            'totalTVA' => $totalTVA,
             "isEmpty" =>$isEmpty
         ]);
     }
@@ -156,4 +162,14 @@ class PanierController extends AbstractController
         // ici on redirige vers le panier 
         return $this->redirectToRoute("app_panier",array('motif' => "suppression"));
     }
+
+    #[Route('/panier/vide', name: 'app_empty_panier')]
+    public function trash(SessionInterface $session): Response
+    {
+        dd($session);
+        $session->remove('panier');
+
+        return $this->redirectToRoute("app_panier");
+    }
+
 }
