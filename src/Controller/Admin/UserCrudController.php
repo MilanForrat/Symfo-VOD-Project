@@ -7,7 +7,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\{Action, Actions, Crud, KeyValueStore
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto;
-use EasyCorp\Bundle\EasyAdminBundle\Field\{IdField, EmailField, TextField, ArrayField, CollectionField,AssociationField, ChoiceField};
+use EasyCorp\Bundle\EasyAdminBundle\Field\{IdField, EmailField, TextField, ArrayField, CollectionField,AssociationField, ChoiceField, DateField};
 use Symfony\Component\Form\Extension\Core\Type\{PasswordType, RepeatedType};
 use Symfony\Component\Form\{FormBuilderInterface, FormEvent, FormEvents};
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
@@ -50,6 +50,7 @@ class UserCrudController extends AbstractCrudController
             EmailField::new('email', 'Adresse e-mail'),
             TextField::new('firstName', 'Prénom'),
             TextField::new('LastName', 'Nom'),
+            DateField::new('lastLoginAt', 'Date de dernière connexion')->onlyOnIndex(),
             ChoiceField::new('roles', 'Rôles')->setHelp("Il s'agit des permissions données à l'utilisateur.")->setChoices([
                 'ROLE_USER'=>'ROLE_USER',
                 'ROLE_ADMIN'=>'ROLE_ADMIN',
