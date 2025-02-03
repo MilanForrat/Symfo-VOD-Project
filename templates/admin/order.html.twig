@@ -7,6 +7,14 @@
         }
     </style>
     {# {{dump(order)}} #}
+    <div class="d-flex justify-content-between">
+        <small>
+            <a href="{{path('admin_order_index')}}" class="nav-link mb-3"><img src="{{ asset('/img/back-icon.png')}}" class="me-2" width="22px" height="22px" alt="">Retour</a>
+        </small>
+        <small>
+            <a target="_blank" href="{{path('app_invoice_admin', {"id_order":order.id})}}" class="nav-link mb-3"><img src="{{ asset('/img/down-icon.png')}}" class="me-2 mb-1" width="22px" height="22px" alt="">Télécharger la facture</a>
+        </small>
+    </div>
     <h1 class="h3 my-2">Commande n° {{order.id}}</h1>
     <span>Stripe Session Id : {{order.stripeSessionId}}</span>
     <div class="row justify-content-between">

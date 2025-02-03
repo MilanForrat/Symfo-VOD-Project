@@ -23,6 +23,7 @@
                         <th scope="col">Statut</th>
                         <th scope="col">Total TTC</th>
                         <th scope="col"></th>
+                        <th scope="col"></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -34,6 +35,9 @@
                         <td>{{order.totalTTC|price}}</td>
                         <td class='text-end'>
                             <a href="{{path('app_user_account_invoice_id', {'id_order' : order.id} ) }}" class="btn btn-primary me-2">Détails</a>
+                        </td>
+                        <td class='text-end'>
+                            <a target="_blank" href="{{path('app_invoice_client', {"id_order":order.id})}}" class="btn btn-secondary"><img src="{{ asset('/img/down-icon.png')}}" class="me-2 mb-1" width="22px" height="22px" alt="">Télécharger la facture</a>
                         </td>
                     </tr>
                     {% endfor %}

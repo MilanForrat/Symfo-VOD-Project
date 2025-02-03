@@ -7,10 +7,15 @@
     <div class="col-md-2">
         {% include 'user_account/_menu.html.twig' %}
     </div>
-    <div class="col-md-8">
-        <small>
-            <a href="{{path('app_user_account_invoices')}}" class="nav-link mb-3"><img src="{{ asset('/img/back-icon.png')}}" class="me-2" width="22px" height="22px" alt="">Retour</a>
-        </small>
+    <div class="col-md-9">
+        <div class="d-flex justify-content-between">
+            <small>
+                <a href="{{path('app_user_account_invoices')}}" class="nav-link mb-3"><img src="{{ asset('/img/back-icon.png')}}" class="me-2" width="22px" height="22px" alt="">Retour</a>
+            </small>
+            <small>
+                <a target="_blank" href="{{path('app_invoice_client', {"id_order":order.id})}}" class="nav-link mb-3"><img src="{{ asset('/img/down-icon.png')}}" class="me-2 mb-1" width="22px" height="22px" alt="">Télécharger la facture</a>
+            </small>
+        </div>
         <h1>Ma Commande N° {{order.id}}</h1>
         <style>
             .product-img{
@@ -22,8 +27,8 @@
         <hr>
         {# <p class="mt-5">Stripe Session Id : {{order.stripeSessionId}}</p> #}
         <div class="row justify-content-between">
-            <div class="col-md-4 mt-3">Passée le : {{order.createdAt|date('d/m/Y')}}</div>
-            <div class="col-md-4 mt-3 mb-5">{{include('admin/status.html.twig', {field : {'value':order.status} } ) }}</div>
+            <div class="col-md-6 mt-3">Passée le : {{order.createdAt|date('d/m/Y')}}</div>
+            <div class="col-md-1 mt-3 mb-3">{{include('admin/status.html.twig', {field : {'value':order.status} } ) }}</div>
         </div>
         <div class="col-6 my-3">
             <hr>
