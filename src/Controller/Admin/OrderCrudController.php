@@ -9,7 +9,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
@@ -58,7 +58,7 @@ class OrderCrudController extends AbstractCrudController
     {
         return [
             IdField::new('Id'),
-            DateField::new('createdAt')->setLabel('Date'),
+            DateTimeField::new('createdAt')->setLabel('Date'),
             NumberField::new('status', 'Statut')->setTemplatePath('admin/status.html.twig'),
             AssociationField::new('user')->setLabel('Utilisateur/Client'),
             // récupère les getters dans l'entité Order

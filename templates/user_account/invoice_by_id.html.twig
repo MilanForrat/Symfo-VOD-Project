@@ -27,7 +27,7 @@
         <hr>
         {# <p class="mt-5">Stripe Session Id : {{order.stripeSessionId}}</p> #}
         <div class="row justify-content-between">
-            <div class="col-md-6 mt-3">Passée le : {{order.createdAt|date('d/m/Y')}}</div>
+            <div class="col-md-6 mt-3">Passée le : {{order.createdAt|format_datetime(locale: 'fr')}}</div>
             <div class="col-md-1 mt-3 mb-3">{{include('admin/status.html.twig', {field : {'value':order.status} } ) }}</div>
         </div>
         <div class="col-6 my-3">
