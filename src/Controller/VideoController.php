@@ -3,6 +3,9 @@
 namespace App\Controller;
 
 // appel de l'entité sur laquelle on souhaite modifier la BDD
+
+use App\Entity\Catalog;
+use App\Entity\User;
 use App\Entity\Video;
 // appel de doctrine pour communiquer avec la BDD
 use Doctrine\ORM\EntityManagerInterface;
@@ -14,6 +17,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 // appel du repository VideoRepository
 use App\Repository\VideoRepository;
+use Symfony\Component\HttpFoundation\Request;
 
 class VideoController extends AbstractController
 {
@@ -87,6 +91,43 @@ class VideoController extends AbstractController
             'video' => $video,
         ]);
     }
+
+    // permet de trouver les videos par id POUR les videos PAYEES
+    #[Route('/catalogue/video/{id}', name: 'app_paid_video_details')]
+    public function viewPaidVideoDetails(EntityManagerInterface $entityManager, $id): Response
+    {
+    
+        $video = $entityManager->getRepository(Video::class)->findOneById($id);
+        $catalog = $entityManager->getRepository(Catalog::class)->findAll();
+        $videosIdFromCatalog=[];
+
+        // dd($video);
+        $catalogs=[];
+        // il faut parcourir l'objet catalogue
+        foreach($catalog as $element){
+            // dd($element->getVideoId());
+            // ajouter les ids des videos catalogue dans un tableau
+            $videosIdFromCatalog[]=$element->getVideoId();
+        }
+        // dd($videosIdFromCatalog);
+        // puis on vérifie si l'id video existe dans le tableau catalogue
+        if(in_array($id,$videosIdFromCatalog)){
+            return $this->render('video/paid_video_details.html.twig', [
+                // on passe l'objet en entier afin d'accéder à tous ses détails
+                'video' => $video,
+            ]);
+        }else{
+            return $this->redirectToRoute('app_home');
+        }
+
+
+        // si on ne trouve pas de vidéo on redirige à la page d'accueil
+        if(!$video){
+            return $this->redirectToRoute('app_home');
+        }
+      
+    }
+
 
     // page où l'on retrouve toutes les video
     #[Route('/video', name: 'app_all_videos')]

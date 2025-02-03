@@ -10,7 +10,9 @@ use App\Entity\User;
 use App\Repository\AddressRepository;
 use App\Form\AddressUserType;
 use App\Form\PasswordUserType;
+use App\Repository\CatalogRepository;
 use App\Repository\OrderRepository;
+use App\Repository\VideoRepository;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -69,12 +71,31 @@ class UserAccountController extends AbstractController
     }
 
     #[Route('/utilisateur/compte/catalogue', name: 'app_user_account_catalog')]
-    public function catalog(): Response
+    public function catalog(CatalogRepository $catalogRepository,VideoRepository $videoRepository): Response
     {
-        $video = $this->entityManager->getRepository(Video::class)->findAll();
+        $videosById=[];
+        $videosObjects=[];
+        $catalogs = $catalogRepository->findBy([
+            'user_id'=>$this->getUser()->getId(),
+        ]);
 
+        // rajouter if pas de videos
+
+        // pour chaque objet catalogue, je récupère la clé "video_id"
+        foreach($catalogs as $catalog){
+            $video = $catalog->getVideoId();
+            $videosById[]=$video;
+        }
+        // pour chaque video_id je cherche la video correspondante 
+        foreach($videosById as $videoObject){
+            $videosObjects[] = $videoRepository->findById($videoObject);
+        }
+        // dd($videosObjects);
+        
         return $this->render('user_account/user_catalog.html.twig', [
-            "video"=>$video,
+            // on passe l'objet en entier afin d'accéder à tous ses détails
+            'catalog'=>$catalog,
+            'videosObject'=>$videosObjects,
         ]);
     }
 

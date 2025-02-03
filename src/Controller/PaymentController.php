@@ -2,7 +2,9 @@
 
 namespace App\Controller;
 
+use App\Entity\Catalog;
 use App\Repository\OrderRepository;
+use App\Repository\VideoRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Stripe\Stripe;
 use Stripe\Checkout\Session;
@@ -72,8 +74,11 @@ final class PaymentController extends AbstractController
     }
 
     #[Route('/commande/merci/{stripe_session_id}', name: 'app_payment_success')]
-    public function success($stripe_session_id, OrderRepository $orderRepository, EntityManagerInterface $entityManagerInterface, SessionInterface $session): Response
+    public function success($stripe_session_id, OrderRepository $orderRepository, EntityManagerInterface $entityManager, SessionInterface $session, VideoRepository $videoRepository): Response
     {
+        $data=[];
+
+
         $order=$orderRepository->findOneBy([
             'stripe_session_id'=>$stripe_session_id,
             'user'=>$this->getUser(),
@@ -85,10 +90,24 @@ final class PaymentController extends AbstractController
 
         if($order->getStatus()==1){
             $order->setStatus(2);
+            $products = $order->getOrderDetails();
+            foreach($products as $product){
+                $element = $product->getProductName();
+                $video = $videoRepository->findOneBy([
+                    'name'=>$element,
+                ]);
+                $videoToAdd = $video->getId();
+                // $order->getUser()->setVideo($videoToAdd);
+                $catalog = New Catalog;
+                $catalog->setUserId($order->getUser()->getId());
+                $catalog->setVideoId($videoToAdd);
+            }
+            $entityManager->persist($catalog);
+            // dd($video->isPaid());
             $session->remove('panier');
         }
-        $entityManagerInterface->flush();
-        // dd($order);
+        $entityManager->flush();
+       
 
 
 

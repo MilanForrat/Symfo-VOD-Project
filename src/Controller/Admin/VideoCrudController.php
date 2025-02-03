@@ -15,6 +15,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TimeField;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
+use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
@@ -46,6 +47,8 @@ class VideoCrudController extends AbstractCrudController
         if($pageName=="edit"){
             $required=false;
         }
+
+        $id=IdField::new('id', "Id");
 
         $title=TextField::new('name', "Titre");
 
@@ -93,6 +96,7 @@ class VideoCrudController extends AbstractCrudController
 
         $relation = AssociationField::new('category', 'Catégorie')->setSortProperty('name');
 
+        $fields[]=$id;
         $fields[]=$slug;
         $fields[]=$title;
         $fields[]=$subtitle;
