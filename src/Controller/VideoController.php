@@ -18,6 +18,8 @@ use Symfony\Component\Routing\Attribute\Route;
 // appel du repository VideoRepository
 use App\Repository\VideoRepository;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class VideoController extends AbstractController
 {
@@ -75,12 +77,14 @@ class VideoController extends AbstractController
 
     // permet de trouver les videos par slug
     #[Route('/video/{slug}', name: 'app_video_details')]
-    public function viewVideoDetails(EntityManagerInterface $entityManager, $slug): Response
+    public function viewVideoDetails(EntityManagerInterface $entityManager, $slug, Session $session): Response
     {
     
         $video = $entityManager->getRepository(Video::class)->findOneBySlug($slug);
         $id = $video->getId();
         $isInCatalog=false;
+        $isInCart=false;
+
         // si on ne trouve pas de vidéo on redirige à la page d'accueil
         if(!$video){
             return $this->redirectToRoute('app_home');
@@ -88,7 +92,6 @@ class VideoController extends AbstractController
 
         $catalog = $entityManager->getRepository(Catalog::class)->findAll();
         $videosIdFromCatalog=[];
-        $catalogs=[];
         // il faut parcourir l'objet catalogue
         foreach($catalog as $element){
             // dd($element->getVideoId());
@@ -100,12 +103,23 @@ class VideoController extends AbstractController
         if(in_array($id,$videosIdFromCatalog)){
             $isInCatalog=true;
         }
+        
+        // si la video est déjà dans le panier
+        if(array_key_exists($id,$session->get('panier', [$id]))){
+            $isInCart=true;
+            // dd($isInCart);
+        }
+       
+        // if($sessionInterface){
+        //     $isInCart=true;
+        // }
 
         return $this->render('video/details.html.twig', [
             'controller_name' => 'VideoController',
             // on passe l'objet en entier afin d'accéder à tous ses détails
             'video' => $video,
-            'isInCatalog'=>$isInCatalog
+            'isInCatalog'=>$isInCatalog,
+            'isInCart'=>$isInCart,
         ]);
     }
 
