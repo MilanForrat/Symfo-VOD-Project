@@ -79,16 +79,33 @@ class VideoController extends AbstractController
     {
     
         $video = $entityManager->getRepository(Video::class)->findOneBySlug($slug);
-
+        $id = $video->getId();
+        $isInCatalog=false;
         // si on ne trouve pas de vidéo on redirige à la page d'accueil
         if(!$video){
             return $this->redirectToRoute('app_home');
+        }
+
+        $catalog = $entityManager->getRepository(Catalog::class)->findAll();
+        $videosIdFromCatalog=[];
+        $catalogs=[];
+        // il faut parcourir l'objet catalogue
+        foreach($catalog as $element){
+            // dd($element->getVideoId());
+            // ajouter les ids des videos catalogue dans un tableau
+            $videosIdFromCatalog[]=$element->getVideoId();
+        }
+        // dd($videosIdFromCatalog);
+        // puis on vérifie si l'id video existe dans le tableau catalogue
+        if(in_array($id,$videosIdFromCatalog)){
+            $isInCatalog=true;
         }
 
         return $this->render('video/details.html.twig', [
             'controller_name' => 'VideoController',
             // on passe l'objet en entier afin d'accéder à tous ses détails
             'video' => $video,
+            'isInCatalog'=>$isInCatalog
         ]);
     }
 

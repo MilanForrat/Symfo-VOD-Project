@@ -17,7 +17,12 @@
             <p class="mb-3">Langue : {{video.language}}</p>
             <p class="mb-4">Catégorie : {{video.category}}</p>
             <p class="mb-4">Date de mise en ligne : {{video.uploadedDate|date('d-m-Y')}}</p>
+            {% if isInCatalog == false %}
             <a href="{{ path('app_add_panier',{id:video.id} ) }}" class="btn btn-success">Ajouter au panier</a>
+            {% else %}
+            <span class="badge rounded-pil text-bg-light p-3">Vous avez déjà acheté cette vidéo.</span>
+            <a href="{{path('app_user_account_catalog')}}" class="btn btn-success mt-4">Cliquez ici pour accéder à votre catalogue</a>
+            {% endif %}
         </div>
         <hr class="my-5">
         <div class="col-md-10 d-flex justify-content-center">
