@@ -65,6 +65,9 @@ class Video
     #[ORM\Column]
     private ?float $tva = null;
 
+    #[ORM\Column]
+    private ?bool $isHomepage = null;
+
     // fonction pour récupéré prix TTC selon la tva choisie en BDD
     public function getPriceTvaCalculator(){
         $coeff= 1 +($this->tva/100);
@@ -283,6 +286,18 @@ class Video
     public function setTva(float $tva): static
     {
         $this->tva = $tva;
+
+        return $this;
+    }
+
+    public function isHomepage(): ?bool
+    {
+        return $this->isHomepage;
+    }
+
+    public function setIsHomepage(bool $isHomepage): static
+    {
+        $this->isHomepage = $isHomepage;
 
         return $this;
     }

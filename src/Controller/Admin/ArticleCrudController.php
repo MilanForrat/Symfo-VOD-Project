@@ -15,8 +15,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\SlugField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
-
-
+use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 
 class ArticleCrudController extends AbstractCrudController
 {
@@ -63,6 +62,7 @@ class ArticleCrudController extends AbstractCrudController
 
         $textContent = TextEditorField::new('textContent', "Contenu de l'article")->hideOnIndex();
 
+        $isHomepage = BooleanField::new('isHomepage', "A là une ?")->setHelp('Vidéo mise à la une sur la page d\'accueil');
 
         $uploadedDate = DateField::new('uploadedDate', 'Date de mise en ligne')->setFormat('dd.MM.yyyy');
 
@@ -73,6 +73,7 @@ class ArticleCrudController extends AbstractCrudController
         $fields[]=$subtitle;
         $fields[]=$textContent;
         $fields[]=$uploadedDate;
+        $fields[]=$isHomepage;
 
         return $fields;
     }

@@ -3,6 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Video;
+use Doctrine\DBAL\Types\BooleanType;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
@@ -80,6 +81,7 @@ class VideoCrudController extends AbstractCrudController
                 ->setRequired($required)
         ];
 
+        $isHomepage = BooleanField::new('isHomepage', "A là une ?")->setHelp('Vidéo mise à la une sur la page d\'accueil');
         
         $uploadedDate = DateField::new('uploadedDate', 'Date de mise en ligne')->setFormat('dd.MM.yyyy');
 
@@ -109,6 +111,7 @@ class VideoCrudController extends AbstractCrudController
         $fields[]=$price;
         $fields[]=$tva;
         $fields[]=$uploadedDate;
+        $fields[]=$isHomepage;
 
         return $fields;
     }

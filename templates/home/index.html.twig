@@ -5,7 +5,66 @@
 {% block body %}
     <div class="album py-5">
         <div class="container">
+            <div class="row justify-content-center">
+                <h1 class="mb-5 h3">A la Une en ce moment</h1>
+                {% for articleElement in articlesInHomepage %}
+                <div class="card col-11 col-md-3 mb-3 mx-3">
+                    <img src="/uploads/{{articleElement.image}}" class="card-img-top" alt="...">
+                    <div class="my-3 text-start">
+                        <span class="badge rounded-pill text-bg-info ms-3 px-3">Article</span>
+                    </div>
+                    <div class="card-body">
+                        <h4 class="card-title">{{articleElement.title}}</h4>
+                        <hr>
+                        <h5>{{articleElement.subtitle}}</h5>                           
+                        {# <pre>
+                            {{ dump(article) }}
+                        </pre> #}
+                        {#  #}
+                    </div>
+                    <a href="{{ path('app_article_details', { 'slug' : articleElement.slug }) }}" class="btn btn-success">Lire l'article</a>
+                    {# afficher le bouton uniquement pour les administrateurs #}
+                    {% if app.user and "ROLE_ADMIN" in app.user.roles %}
+                    <a href="{{ ea_url()
+                                .setController('App\\Controller\\Admin\\ArticleCrudController')
+                                .setAction('edit')
+                                .setEntityId(articleElement.id)
+                            }}"
+                    class="btn btn-warning mt-3"><span class="me-2 fa fa-edit"></span>Editer</a>
+                    {% endif %}
+                </div>
+                {% endfor %}
+                {% for videoElement in videosInHomepage %}
+                <div class="card col-11 col-md-3 mb-3 mx-3">
+                    <img src="/uploads/{{videoElement.image}}" class="card-img-top" alt="...">
+                        <div class="my-3 text-start">
+                        <span class="badge rounded-pill text-bg-warning ms-3 px-3">Vidéo</span>
+                    </div>
+                    <div class="card-body">
+                        <h4 class="card-title">{{videoElement.name}}</h4>
+                        <hr>
+                        <h5>{{videoElement.subtitle}}</h5>                           
+                        {# <pre>
+                            {{ dump(article) }}
+                        </pre> #}
+                        {#  #}
+                    </div>
+                    <a href="{{ path('app_video_details', { 'slug' : videoElement.slug }) }}" class="btn btn-success">Voir la vidéo</a>
+                    {# afficher le bouton uniquement pour les administrateurs #}
+                    {% if app.user and "ROLE_ADMIN" in app.user.roles %}
+                    <a href="{{ ea_url()
+                                .setController('App\\Controller\\Admin\\VideoCrudController')
+                                .setAction('edit')
+                                .setEntityId(videoElement.id)
+                            }}" 
+                            class="btn btn-warning mt-3"><span class="me-2 fa fa-edit"></span>Editer</a>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </div>
+            <hr>
             <div class="row g-3 justify-content-center">
+            <h1 class="mb-5 mt-5 h3">Tous les Articles et toutes les Vidéos</h1>
             {# debuggage #}
             {# <pre>
                 {{ dump(article) }}

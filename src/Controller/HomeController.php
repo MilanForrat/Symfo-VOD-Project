@@ -25,6 +25,8 @@ class HomeController extends AbstractController
         return $this->render('home/index.html.twig', [
             'article' => $article,
             'video' => $video,
+            'videosInHomepage'=> $entityManager->getRepository(Video::class)->findByIsHomepage(true),
+            'articlesInHomepage'=>$entityManager->getRepository(Article::class)->findByIsHomepage(true),
         ]);
     }
 }

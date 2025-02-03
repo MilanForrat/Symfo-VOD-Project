@@ -36,6 +36,9 @@ class Article
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $uploadedDate = null;
 
+    #[ORM\Column]
+    private ?bool $isHomepage = null;
+
     // utilisée pour easyadmin crud
     public function __toString()
     {
@@ -127,6 +130,18 @@ class Article
     public function setUploadedDate(\DateTimeInterface $uploadedDate): static
     {
         $this->uploadedDate = $uploadedDate;
+
+        return $this;
+    }
+
+    public function isHomepage(): ?bool
+    {
+        return $this->isHomepage;
+    }
+
+    public function setIsHomepage(bool $isHomepage): static
+    {
+        $this->isHomepage = $isHomepage;
 
         return $this;
     }
