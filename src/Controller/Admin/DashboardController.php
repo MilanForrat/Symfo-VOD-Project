@@ -74,7 +74,7 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Catégories', 'fa-solid fa-list', Category::class);
         yield MenuItem::linkToCrud('Langues', 'fa-solid fa-list', Language::class);
         yield MenuItem::linkToCrud('Commandes', 'fa-solid fa-list', Order::class);
-        yield MenuItem::linkToCrud('Header', 'fa-solid fa-list', Header::class);
+        yield MenuItem::linkToCrud('Bannières', 'fa-solid fa-list', Header::class);
 
     }
 
