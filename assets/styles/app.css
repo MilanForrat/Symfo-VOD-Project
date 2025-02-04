@@ -94,7 +94,34 @@ header a:hover, header .nav-link:hover, header .nav-item:hover, header .navbar-b
 .card-contact{
     background-color: var(--main-bg-second-color);
 }
+/* ----------------- PAGE TEAM / QUI SOMMES NOUS ? ----------------- */
+.social-links a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    background-color: #f8f9fa;
+    color: #0d6efd;
+    margin: 0 5px;
+    transition: all 0.3s ease;
+}
 
+.social-links a:hover {
+    background-color: #0d6efd;
+    color: white;
+    transform: translateY(-3px);
+}
+
+.team-member img {
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 5px solid #f8f9fa;
+    transition: transform 0.3s ease;
+}
 /* ----------------- VIDEO CONTAINER ----------- */
 #fs-mode{
     height: 55px;
