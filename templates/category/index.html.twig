@@ -3,10 +3,11 @@
 {% block title %}{{category.name}}{% endblock %}
 
 {% block body %}
-    <h1 class="h3">{{category.name}}</h1>
     <div class="album py-5">
         <div class="container">
-        <p>Cette page contient {{category.videos|length}} vidéo(s) et {{category.articles|length}} article(s).</p>
+            <h1 class="h3">{{category.name}}</h1>
+            <hr>
+            <p>Cette page contient {{category.videos|length}} vidéo(s) et {{category.articles|length}} article(s).</p>
             <div class="row g-3 justify-content-center">
                {% for videoElement in category.videos %}
                 <div class="card col-11 col-md-3 mb-3 mx-3" style="width: 18rem;">

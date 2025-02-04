@@ -49,7 +49,7 @@ class VideoCrudController extends AbstractCrudController
             $required=false;
         }
 
-        $id=IdField::new('id', "Id");
+        // $id=IdField::new('id', "Id");
 
         $title=TextField::new('name', "Titre");
 
@@ -98,7 +98,7 @@ class VideoCrudController extends AbstractCrudController
 
         $relation = AssociationField::new('category', 'Catégorie')->setSortProperty('name');
 
-        $fields[]=$id;
+        // $fields[]=$id;
         $fields[]=$slug;
         $fields[]=$title;
         $fields[]=$subtitle;

@@ -90,6 +90,10 @@ header a:hover, header .nav-link:hover, header .nav-item:hover, header .navbar-b
 .isHomepage-card{
     margin: 10px 10px;
 }
+/* ----------------- PAGE CONTACT ----------- */
+.card-contact{
+    background-color: var(--main-bg-second-color);
+}
 
 /* ----------------- VIDEO CONTAINER ----------- */
 #fs-mode{
@@ -161,6 +165,7 @@ h3{
 }
 /* ----------------- FOOTER -------------------- */
 footer{
+    text-align: center;
     background-color: var(--main-header-footer-bg-color);
     color: var(--main-text-color);
 }

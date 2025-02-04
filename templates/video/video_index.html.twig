@@ -3,9 +3,11 @@
 {% block title %}Vidéos{% endblock %}
 
 {% block body %}
-    <h1 class="h3">Toutes les vidéos</h1>
+    
     <div class="album py-5">
         <div class="container">
+        <h1 class="h3">Toutes les vidéos</h1>
+        <hr>
         <p>Cette page contient {{video|length}} résultats.</p>
             <div class="row g-3 justify-content-center">
                 {% for videoElement in video %}
