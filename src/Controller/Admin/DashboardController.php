@@ -7,6 +7,7 @@ use App\Entity\Video;
 use App\Entity\User;
 use App\Entity\Article;
 use App\Entity\Category;
+use App\Entity\Event;
 use App\Entity\Header;
 use App\Entity\Language;
 use App\Entity\Order;
@@ -71,6 +72,7 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Utilisateurs', 'fas fa-user', User::class);
         yield MenuItem::linkToCrud('Articles', 'fa-solid fa-newspaper', Article::class);
         yield MenuItem::linkToCrud('Vidéos', 'fa-solid fa-video', Video::class);
+        yield MenuItem::linkToCrud('Evènements', 'fa-solid fa-list', Event::class);
         yield MenuItem::linkToCrud('Catégories', 'fa-solid fa-list', Category::class);
         yield MenuItem::linkToCrud('Langues', 'fa-solid fa-list', Language::class);
         yield MenuItem::linkToCrud('Commandes', 'fa-solid fa-list', Order::class);
