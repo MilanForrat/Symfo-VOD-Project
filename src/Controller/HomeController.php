@@ -6,6 +6,7 @@ namespace App\Controller;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\Article;
 use App\Entity\Video;
+use App\Entity\Header;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,12 +20,14 @@ class HomeController extends AbstractController
 
         $video = $entityManager->getRepository(Video::class)->findAll();
         $article = $entityManager->getRepository(Article::class)->findAll();
+        $headers = $entityManager->getRepository(Header::class)->findAll();
         // débugger 
         // var_dump($video); die;
 
         return $this->render('home/index.html.twig', [
             'article' => $article,
             'video' => $video,
+            'headers'=>$headers,
             'videosInHomepage'=> $entityManager->getRepository(Video::class)->findByIsHomepage(true),
             'articlesInHomepage'=>$entityManager->getRepository(Article::class)->findByIsHomepage(true),
         ]);

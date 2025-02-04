@@ -3,130 +3,125 @@
 {% block title %}Accueil VOD Project{% endblock %}
 
 {% block body %}
-    <div class="album py-5">
-        <div class="container">
-            <div class="row justify-content-center">
-                <h1 class="mb-5 h3">A la Une en ce moment</h1>
-                {% for articleElement in articlesInHomepage %}
-                <div class="card col-11 col-md-3 mb-3 mx-3">
-                    <img src="/uploads/{{articleElement.image}}" class="card-img-top" alt="...">
-                    <div class="my-3 text-start">
-                        <span class="badge rounded-pill text-bg-info ms-3 px-3">Article</span>
-                    </div>
-                    <div class="card-body">
-                        <h4 class="card-title">{{articleElement.title}}</h4>
-                        <hr>
-                        <h5>{{articleElement.subtitle}}</h5>                           
-                        {# <pre>
-                            {{ dump(article) }}
-                        </pre> #}
-                        {#  #}
-                    </div>
-                    <a href="{{ path('app_article_details', { 'slug' : articleElement.slug }) }}" class="btn btn-success">Lire l'article</a>
-                    {# afficher le bouton uniquement pour les administrateurs #}
-                    {% if app.user and "ROLE_ADMIN" in app.user.roles %}
-                    <a href="{{ ea_url()
-                                .setController('App\\Controller\\Admin\\ArticleCrudController')
-                                .setAction('edit')
-                                .setEntityId(articleElement.id)
-                            }}"
-                    class="btn btn-warning mt-3"><span class="me-2 fa fa-edit"></span>Editer</a>
-                    {% endif %}
+<div id="homepage-header-carousel" class="carousel slide mb-6" data-bs-ride="carousel">
+    <div class="carousel-indicators">
+        {% if headers|length > 1 %}
+            {% for key, header in headers %}
+                <button type="button" data-bs-target="#homepage-header-carousel" data-bs-slide-to="{{key}}" {% if key == 0 %}class="active" aria-current="true"{% endif %} aria-label="{{header.title}}"></button>
+            {% endfor %}
+        {% endif %}
+    </div>
+    <div class="carousel-inner">
+    {% for key, header in headers %}
+        {# si la clé est à zéro (donc 1er élément du tableau), affiche classe active pour bootstrap #}
+        <div class="carousel-item {% if key == 0 %}active{% endif %}">
+            <img class="homepage-header-img" src="/uploads/{{header.image}}" alt="Image de la bannière de : {{header.title}}">
+            <div class="container">
+                <div class="carousel-caption text-start">
+                  <h1>{{header.title}}</h1>
+                  <p class="bg-header-opacity">{{header.content}}</p>
+                  <p>
+                    <a class="btn btn-lg btn-primary" href="{{header.buttonLink}}">{{header.buttonTitle}}</a>
+                </p>
                 </div>
-                {% endfor %}
-                {% for videoElement in videosInHomepage %}
-                <div class="card col-11 col-md-3 mb-3 mx-3">
-                    <img src="/uploads/{{videoElement.image}}" class="card-img-top" alt="...">
-                        <div class="my-3 text-start">
-                        <span class="badge rounded-pill text-bg-warning ms-3 px-3">Vidéo</span>
-                    </div>
-                    <div class="card-body">
-                        <h4 class="card-title">{{videoElement.name}}</h4>
-                        <hr>
-                        <h5>{{videoElement.subtitle}}</h5>                           
-                        {# <pre>
-                            {{ dump(article) }}
-                        </pre> #}
-                        {#  #}
-                    </div>
-                    <a href="{{ path('app_video_details', { 'slug' : videoElement.slug }) }}" class="btn btn-success">Voir la vidéo</a>
-                    {# afficher le bouton uniquement pour les administrateurs #}
-                    {% if app.user and "ROLE_ADMIN" in app.user.roles %}
-                    <a href="{{ ea_url()
-                                .setController('App\\Controller\\Admin\\VideoCrudController')
-                                .setAction('edit')
-                                .setEntityId(videoElement.id)
-                            }}" 
-                            class="btn btn-warning mt-3"><span class="me-2 fa fa-edit"></span>Editer</a>
-                    {% endif %}
-                </div>
-                {% endfor %}
-            </div>
-            <hr>
-            <div class="row g-3 justify-content-center">
-            <h1 class="mb-5 mt-5 h3">Tous les Articles et toutes les Vidéos</h1>
-            {# debuggage #}
-            {# <pre>
-                {{ dump(article) }}
-            </pre> #}
-
-                {# on va boucler les cards pour les générer dynamiquement en fonction de la BDD #}
-                {# pour chaque articleElement parmis les articles (passés en paramètres du controller) #}
-                {% for articleElement in article %}
-                <div class="card col-11 col-md-3 mb-3 mx-3">
-                    <img src="/uploads/{{articleElement.image}}" class="card-img-top" alt="...">
-                    <div class="my-3 text-start">
-                        <span class="badge rounded-pill text-bg-info ms-3 px-3">Article</span>
-                    </div>
-                    <div class="card-body">
-                        <h4 class="card-title">{{articleElement.title}}</h4>
-                        <hr>
-                        <h5>{{articleElement.subtitle}}</h5>                           
-                        {# <pre>
-                            {{ dump(article) }}
-                        </pre> #}
-                        {#  #}
-                    </div>
-                    <a href="{{ path('app_article_details', { 'slug' : articleElement.slug }) }}" class="btn btn-success">Lire l'article</a>
-                    {# afficher le bouton uniquement pour les administrateurs #}
-                    {% if app.user and "ROLE_ADMIN" in app.user.roles %}
-                    <a href="{{ ea_url()
-                                .setController('App\\Controller\\Admin\\ArticleCrudController')
-                                .setAction('edit')
-                                .setEntityId(articleElement.id)
-                            }}"
-                    class="btn btn-warning mt-3"><span class="me-2 fa fa-edit"></span>Editer</a>
-                    {% endif %}
-                </div>
-                {% endfor %}
-                {% for videoElement in video %}
-                <div class="card col-11 col-md-3 mb-3 mx-3">
-                    <img src="/uploads/{{videoElement.image}}" class="card-img-top" alt="...">
-                        <div class="my-3 text-start">
-                        <span class="badge rounded-pill text-bg-warning ms-3 px-3">Vidéo</span>
-                    </div>
-                    <div class="card-body">
-                        <h4 class="card-title">{{videoElement.name}}</h4>
-                        <hr>
-                        <h5>{{videoElement.subtitle}}</h5>                           
-                        {# <pre>
-                            {{ dump(article) }}
-                        </pre> #}
-                        {#  #}
-                    </div>
-                    <a href="{{ path('app_video_details', { 'slug' : videoElement.slug }) }}" class="btn btn-success">Voir la vidéo</a>
-                    {# afficher le bouton uniquement pour les administrateurs #}
-                    {% if app.user and "ROLE_ADMIN" in app.user.roles %}
-                    <a href="{{ ea_url()
-                                .setController('App\\Controller\\Admin\\VideoCrudController')
-                                .setAction('edit')
-                                .setEntityId(videoElement.id)
-                            }}" 
-                            class="btn btn-warning mt-3"><span class="me-2 fa fa-edit"></span>Editer</a>
-                    {% endif %}
-                </div>
-                {% endfor %}
             </div>
         </div>
+    {% endfor %}
     </div>
+    {% if headers|length > 1 %}
+        <button class="carousel-control-prev" type="button" data-bs-target="#homepage-header-carousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#homepage-header-carousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    {% endif %}
+</div>
+
+
+  <!-- Marketing messaging and featurettes
+  ================================================== -->
+  <!-- Wrap the rest of the page in another container to center all the content. -->
+
+<div class="container marketing mt-5">
+
+    <!-- Three columns of text below the carousel -->
+    <h2>Articles et vidéos à la une !</h2>
+    <div class="row">
+        {% for video in videosInHomepage %}
+            <div class="card col-11 col-md-3 mb-3 mx-3" style="width: 18rem;">
+                <img src="/uploads/{{video.image}}" class="card-img-top" alt="...">
+                    <div class="my-3 text-start">
+                    <span class="badge rounded-pill text-bg-warning ms-3 px-3">Vidéo</span>
+                </div>
+                <div class="card-body">
+                    <h4 class="card-title">{{video.name}}</h4>
+                    <hr>
+                    <h5>{{video.subtitle}}</h5>                           
+                </div>
+                <a href="{{ path('app_video_details', { 'slug' : video.slug }) }}" class="btn btn-success">Voir la vidéo</a>
+            </div>
+        {% endfor %}
+        {% for article in articlesInHomepage %}
+            <div class="card col-11 col-md-3 mb-3 mx-3" style="width: 18rem;">
+                <img src="/uploads/{{article.image}}" class="card-img-top" alt="...">
+                <div class="my-3 text-start">
+                    <span class="badge rounded-pill text-bg-info ms-3 px-3">Article</span>
+                </div>
+                <div class="card-body">
+                    <h4 class="card-title">{{article.title}}</h4>
+                    <hr>
+                    <h5>{{article.subtitle}}</h5>                           
+                </div>
+                <a href="{{ path('app_article_details', { 'slug' : article.slug }) }}" class="btn btn-success">Lire l'article</a>
+            </div>
+        {% endfor %}
+    </div>
+
+
+    <!-- START THE FEATURETTES -->
+
+    <hr class="featurette-divider">
+
+    <div class="row featurette">
+        <div class="col-md-7">
+            <h2 class="featurette-heading fw-normal lh-1">First featurette heading. <span class="text-body-secondary">It’ll blow your mind.</span></h2>
+            <p class="lead">Some great placeholder content for the first featurette here. Imagine some exciting prose here.</p>
+        </div>
+        <div class="col-md-5">
+            <svg class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto" width="500" height="500" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 500x500" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="var(--bs-secondary-bg)"/><text x="50%" y="50%" fill="var(--bs-secondary-color)" dy=".3em">500x500</text></svg>
+        </div>
+    </div>
+
+    <hr class="featurette-divider">
+
+    <div class="row featurette">
+        <div class="col-md-7 order-md-2">
+            <h2 class="featurette-heading fw-normal lh-1">Oh yeah, it’s that good. <span class="text-body-secondary">See for yourself.</span></h2>
+            <p class="lead">Another featurette? Of course. More placeholder content here to give you an idea of how this layout would work with some actual real-world content in place.</p>
+        </div>
+        <div class="col-md-5 order-md-1">
+            <svg class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto" width="500" height="500" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 500x500" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="var(--bs-secondary-bg)"/><text x="50%" y="50%" fill="var(--bs-secondary-color)" dy=".3em">500x500</text></svg>
+        </div>
+    </div>
+
+    <hr class="featurette-divider">
+
+    <div class="row featurette">
+        <div class="col-md-7">
+            <h2 class="featurette-heading fw-normal lh-1">And lastly, this one. <span class="text-body-secondary">Checkmate.</span></h2>
+            <p class="lead">And yes, this is the last block of representative placeholder content. Again, not really intended to be actually read, simply here to give you a better view of what this would look like with some actual content. Your content.</p>
+        </div>
+        <div class="col-md-5">
+            <svg class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto" width="500" height="500" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 500x500" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="var(--bs-secondary-bg)"/><text x="50%" y="50%" fill="var(--bs-secondary-color)" dy=".3em">500x500</text></svg>
+        </div>
+    </div>
+
+    <hr class="featurette-divider">
+
+    <!-- /END THE FEATURETTES -->
+
+</div>
 {% endblock %}
