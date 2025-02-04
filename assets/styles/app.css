@@ -30,6 +30,9 @@ body {
 .min-height{
     min-height: 80vh;
 }
+.product-description{
+    
+}
 /* ----------------- HEADER -------------------- */
 header{
     color: var(--main-text-color);

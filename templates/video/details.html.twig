@@ -3,39 +3,38 @@
 {% block title %}{{video.name}}{% endblock %}
 
 {% block body %}
-<div class="mt-5 d-flex flex-column align-items-center">
-    <img class="col-11 col-md-4 my-3" src="/uploads/{{video.image}}" alt="">
-    <div class="row justify-content-center">
-        <div class="col- 11 col-md-6 d-flex flex-column">
-            <h2 class="mb-3">{{video.name}}</h2>
-            <h3 class="mb-3">{{video.subtitle}}</h3>
-            <p class="mb-4">{{video.description}}</p>
+<div class="mt-5 container d-flex flex-column align-items-center"> 
+    <div class="row w-100">
+        <div class="col-11 text-center">
+            <h1 class="mb-5">{{video.name}}</h1>
+            <h3 class="my-5">{{video.subtitle}}</h3>
         </div>
-        <div class="col-11 col-md-3 offset-md-2 d-flex flex-column justify-content-center">
-            <h3 class="mb-3">Informations :</h3>
-            <p class="mb-3">Durée de la vidéo : {{video.length}}</p>
-            <p class="mb-3">Langue : {{video.language}}</p>
-            <p class="mb-4">Catégorie : {{video.category}}</p>
-            <p class="mb-4">Date de mise en ligne : {{video.uploadedDate|date('d-m-Y')}}</p>
-            {% if isInCatalog == false and isInCart == false %}
-                <a href="{{ path('app_add_panier',{id:video.id} ) }}" class="btn btn-success">Ajouter au panier</a>
-            {% elseif isInCart == true %}
-                <span class="badge rounded-pil text-bg-light p-3">Cet article est déjà dans votre panier.</span>
-                <a href="{{ path('app_add_panier',{id:video.id}) }}" class="btn btn-success mt-4">Voir mon panier</a>
-            {% elseif isInCatalog == true %}
-                <span class="badge rounded-pil text-bg-light p-3">Vous avez déjà acheté cette vidéo.</span>
-                <a href="{{path('app_user_account_catalog')}}" class="btn btn-success mt-4">Accéder mon catalogue</a>
-            {% endif %}
-        </div>
-        <hr class="my-5">
-        <div class="col-md-10 d-flex justify-content-center">
-            <div id="video-container">
-                {# <iframe width="560" height="315" src="{{video.link | replace({'watch':'embed','?v=':'/'}) }}?rel=0&modestbranding=0"></iframe> #}
-                {# <iframe src="{{video.link}}&info=0&logo=0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen frameborder="0" width="640" height="360"></iframe> #}
-                <div id="bloc-video"></div>
-                <iframe src="https://drive.google.com/file/d/1HnOkJVXdrYGbxxRpbJ19eYg7lwGmTHV1/preview" allow="autoplay"></iframe>
-                <button id="fs-mode">Bascule : Plein écran / Petit écran</button>
+        <hr>
+        <div class="row justify-content-around">
+            <div class="col-11 col-md-6 my-5">
+                <img class="my-3" src="/uploads/{{video.image}}" alt="">  
             </div>
+            <div class="col-11 col-md-3 d-flex flex-column justify-content-center">
+                <h3 class="mb-3">Informations :</h3>
+                <p class="mb-3">Durée de la vidéo : {{video.length}}</p>
+                <p class="mb-3">Langue : {{video.language}}</p>
+                <p class="mb-4">Catégorie : {{video.category}}</p>
+                <p class="mb-4">Date de mise en ligne : {{video.uploadedDate|date('d-m-Y')}}</p>
+                {% if isInCatalog == false and isInCart == false %}
+                    <a href="{{ path('app_add_panier',{id:video.id} ) }}" class="btn btn-success">Ajouter au panier</a>
+                {% elseif isInCart == true %}
+                    <span class="badge rounded-pil text-bg-light p-3">Cet article est déjà dans votre panier.</span>
+                    <a href="{{ path('app_add_panier',{id:video.id}) }}" class="btn btn-success mt-4">Voir mon panier</a>
+                {% elseif isInCatalog == true %}
+                    <span class="badge rounded-pil text-bg-light p-3">Vous avez déjà acheté cette vidéo.</span>
+                    <a href="{{path('app_user_account_catalog')}}" class="btn btn-success mt-4">Accéder mon catalogue</a>
+                {% endif %}
+            </div>
+        </div>
+        <hr>
+        <div class="col-10">
+        <h3>Description :</h3>
+            <p class="mb-4">{{video.description|raw}}</p>
         </div>
     </div>
 </div>

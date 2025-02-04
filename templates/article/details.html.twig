@@ -3,15 +3,23 @@
 {% block title %}L'article{% endblock %}
 
 {% block body %}
-<div class="">
-    <img src="/uploads/{{article.image}}" alt="">
-    <p>Date de parution : </p>
+<div class="mt-5 container d-flex flex-column align-items-center"> 
+    <div class="row w-100">
+        <div class="col-11 text-center">
+            <h1 class="mb-5">{{article.title}}</h1>
+            <h3 class="my-5">{{article.subtitle}}</h3>
+        </div>
+        <hr>
+        <div class="row justify-content-around">
+            <div class="col-11 col-md-6 my-5">
+                <img class="my-3" src="/uploads/{{article.image}}" alt="">  
+            </div>
+        </div>
+        <hr>
+        <div class="col-10 my-5">
+        <h3>Description :</h3>
+            <p class="mb-4 product-description">{{article.textContent|raw}}</p>
+        </div>
+    </div>
 </div>
-<div>
-    <h1>{{article.title}}</h1>
-    <h2>{{article.subtitle}}</h2>
-    {# il faut afficher le contenu de la bdd mais celui ci comprend des balises HTML donc on doit utiliser un filtre "raw" #}
-    <p>{{article.textContent | raw}}</p>
-</div>
-
 {% endblock %}
