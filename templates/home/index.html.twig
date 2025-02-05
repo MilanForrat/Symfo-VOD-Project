@@ -48,7 +48,7 @@
 <div class="container marketing mt-5">
 
     <!-- Three columns of text below the carousel -->
-    <h1 class="h3">Articles & vidéos à la une !</h1>
+    <h1 class="h3">En ce moment !</h1>
     <hr>
     <div class="row">
         {% for video in videosInHomepage %}
@@ -77,6 +77,20 @@
                     <h5>{{article.subtitle}}</h5>                           
                 </div>
                 <a href="{{ path('app_article_details', { 'slug' : article.slug }) }}" class="btn btn-success">Lire l'article</a>
+            </div>
+        {% endfor %}
+        {% for event in eventsInHomepage %}
+            <div class="card col-11 col-md-3 mb-3 mx-3" style="width: 18rem;">
+                <img src="/uploads/{{event.image}}" class="card-img-top" alt="...">
+                <div class="my-3 text-start">
+                    <span class="badge rounded-pill text-bg-danger ms-3 px-3">Evènement</span>
+                </div>
+                <div class="card-body">
+                    <h4 class="card-title">{{event.name}}</h4>
+                    <hr>
+                    <h5 class="text-center">Le {{event.eventDate|format_datetime('full','short',locale: 'fr')}}</h5>                           
+                </div>
+                <a href="{{ path('app_event_details', { 'id' : event.id }) }}" class="btn btn-success">Découvrir l'évènement</a>
             </div>
         {% endfor %}
     </div>

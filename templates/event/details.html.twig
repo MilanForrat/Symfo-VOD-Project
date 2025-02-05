@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ event.name }}{% endblock %}
+
+{% block body %}
+<div class="mt-5 container d-flex flex-column align-items-center"> 
+    <div class="row w-100">
+        <div class="col-11 text-center">
+            <h1 class="mb-5">{{event.name}}</h1>
+            <h2 class="my-5 h3">{{event.subtitle}}</h2>
+            <hr>
+            <h3 class="text-center">Le {{event.eventDate|format_datetime('full','short',locale: 'fr')}}</h3>       
+            <hr>        
+        </div>
+        <div class="row col-11 justify-content-around">
+            <div class="col-11 col-md-6 my-5">
+                <img class="my-3" src="/uploads/{{event.image}}" alt="">  
+            </div>
+        </div>
+        <hr>
+        <div class="d-flex flex-column justify-content-center align-items-center">
+            <h4 class="text-center my-5">Date de clôture des réservations : le {{event.reservationDateEnd|format_datetime('full','short',locale: 'fr')}}</h4>
+            <a href="{{ path('app_event_reservation', { 'id' : event.id }) }}" id="reservation-event-btn" class="btn btn-success mb-5">Réserver dès maintenant</a>       
+        </div>
+        <hr>
+        <div class="col-10 my-5">
+        <h3>Description :</h3>
+            <p class="mb-4 product-description">{{event.description|raw}}</p>
+        </div>
+    </div>
+</div>
+{% endblock %}

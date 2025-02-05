@@ -5,6 +5,7 @@ namespace App\Controller;
 // appel de doctrine pour communiquer avec la BDD
 use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\Article;
+use App\Entity\Event;
 use App\Entity\Video;
 use App\Entity\Header;
 
@@ -30,6 +31,7 @@ class HomeController extends AbstractController
             'headers'=>$headers,
             'videosInHomepage'=> $entityManager->getRepository(Video::class)->findByIsHomepage(true),
             'articlesInHomepage'=>$entityManager->getRepository(Article::class)->findByIsHomepage(true),
+            'eventsInHomepage' => $entityManager->getRepository(Event::class)->findByIsHomepage(true),
         ]);
     }
 }

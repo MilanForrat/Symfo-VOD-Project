@@ -18,9 +18,6 @@ class Event
     private ?string $name = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    private ?\DateTimeInterface $createdAt = null;
-
-    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $reservationDateEnd = null;
 
     #[ORM\Column(length: 255)]
@@ -36,13 +33,27 @@ class Event
     private ?string $description = null;
 
     #[ORM\Column(length: 255)]
-    private ?float $eventPriceNoFood = null;
+    private ?string $eventPriceNoFood = null;
 
     #[ORM\Column]
-    private ?float $eventPriceWithFood = null;
+    private ?string $eventPriceWithFood = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $hourOfEvent = null;
+    private ?string $slug = null;
+
+    #[ORM\Column]
+    private ?bool $isHomepage = null;
+
+
+        // utilisée pour easyadmin crud
+    public function __toString()
+    {
+        return 
+            $this->name;
+            $this->eventPriceNoFood;
+            $this->eventPriceWithFood;
+        ;
+    }      
 
     public function getId(): ?int
     {
@@ -57,18 +68,6 @@ class Event
     public function setName(string $name): static
     {
         $this->name = $name;
-
-        return $this;
-    }
-
-    public function getCreatedAt(): ?\DateTimeInterface
-    {
-        return $this->createdAt;
-    }
-
-    public function setCreatedAt(\DateTimeInterface $createdAt): static
-    {
-        $this->createdAt = $createdAt;
 
         return $this;
     }
@@ -133,39 +132,52 @@ class Event
         return $this;
     }
 
-    public function getEventPriceNoFood(): ?float
+    public function getEventPriceNoFood(): ?string
     {
         return $this->eventPriceNoFood;
     }
 
-    public function setEventPriceNoFood(float $eventPriceNoFood): static
+    public function setEventPriceNoFood(string $eventPriceNoFood): static
     {
         $this->eventPriceNoFood = $eventPriceNoFood;
 
         return $this;
     }
 
-    public function getEventPriceWithFood(): ?float
+    public function getEventPriceWithFood(): ?string
     {
         return $this->eventPriceWithFood;
     }
 
-    public function setEventPriceWithFood(float $eventPriceWithFood): static
+    public function setEventPriceWithFood(string $eventPriceWithFood): static
     {
         $this->eventPriceWithFood = $eventPriceWithFood;
 
         return $this;
     }
 
-    public function getHourOfEvent(): ?string
+    public function getSlug(): ?string
     {
-        return $this->hourOfEvent;
+        return $this->slug;
     }
 
-    public function setHourOfEvent(string $hourOfEvent): static
+    public function setSlug(string $slug): static
     {
-        $this->hourOfEvent = $hourOfEvent;
+        $this->slug = $slug;
 
         return $this;
     }
+
+    public function isHomepage(): ?bool
+    {
+        return $this->isHomepage;
+    }
+
+    public function setIsHomepage(bool $isHomepage): static
+    {
+        $this->isHomepage = $isHomepage;
+
+        return $this;
+    }
+
 }
