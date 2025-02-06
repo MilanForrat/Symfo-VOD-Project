@@ -3,5 +3,74 @@
 {% block title %}{{ event.name }}{% endblock %}
 
 {% block body %}
+<div class="container">
     <h1>Réservation de l'évènement : {{event.name}}</h1>
+    <hr>
+    <h2>Vous avez le choix entre deux formules :</h2>
+    <div class="row">
+        <div class="col-md-8 row justify-content-around">
+            <div class="col-md-5 text-center card p-5">
+                <h3>Formule Pass'Evènement</h3>
+                <p>Vous permet d'accéder à l'évènement. Ticket valable pour 1 personne.</p>
+                <p>{{event.eventPriceNoFood}}</p>
+                {# donner deux paramètres pour dire type formule #}
+                <a href="{{path('app_add_reservation_no_food',{id:event.id,formule:"1"} ) }}" class="btn btn-success">Ajouter un ticket</a>
+            </div>
+            <div class="col-md-5 text-center card p-5">
+                <h3>Formule Pass'Evènement + Repas</h3>
+                <p>Vous permet d'accéder à l'évènement et de vous y restaurer par la suite. Ticket valable pour 1 personne.</p>
+                <p>{{event.eventPriceWithFood}}</p>
+                <a href="{{path('app_add_reservation_with_food',{id:event.id, formule:"2"} ) }}" class="btn btn-success">Ajouter un ticket</a>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div id="recap-cart" class="bg-color-cart p-3 rounded">
+                <div class="cart-summary">
+                    <h2 class="h4 mb-3 text-center">Récapitulatif de vos tickets :</h2>
+                    <div class="text-center">
+                        <small class="text-center">Pour l'évènement : {{event.name}}</small>
+                    </div>
+                    <ul class="list-unstyled mt-2">
+                        <hr class="my-4">
+                        <li class="my-2">
+                            <h3 class="h5 mb-3">Formule Pass'Evènement :</h3>
+                            <div class="d-flex justify-content-between ms-4 mb-2">
+                                <span class="total-price">Quantité :</span>
+                                <span class="total-price">{{totalNumberOfEventNoFood}}</span>
+                            </div>
+                            <div class="d-flex justify-content-between ms-4 mb-2">
+                                <span class="total-price">Prix :</span>
+                                <span class="total-price">{{totalPriceEventNoFood|price}}</span>
+                            </div>
+                        </li>
+                        <li class="my-2">
+                            <h3 class="h5 mb-3 mt-5">Formule Pass'Evènement + Repas :</h3>
+                            <div class="d-flex justify-content-between ms-4 mb-2">
+                                <span class="total-price">Quantité :</span>
+                                <span class="total-price">{{totalNumberOfEventWithFood}}</span>
+                            </div>
+                            <div class="d-flex justify-content-between ms-4 mb-4">
+                                <span class="total-price">Prix :</span>
+                                <span class="total-price">{{totalPriceEventWithFood|price}}</span>
+                            </div>
+                        </li>
+                        <hr class="my-4">
+                        <li class="d-flex justify-content-between  my-2">
+                            <strong class="total-price">Total TTC :</strong>
+                            <strong class="total-price">{{totalPriceReservations|price}}</strong>
+                        </li>
+                    </ul>
+                    {% if (isEmpty == false) %}
+                        <a href="{{path('app_order')}}" class="btn btn-success w-100 mt-3">Valider le panier</a>
+                    {% else %}
+                        <a href="{{path('app_order')}}" class="btn btn-success w-100 mt-3 disabled">Valider le panier</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+       
+    </div>
+</div>
+    
+
 {% endblock %}

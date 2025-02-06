@@ -3,13 +3,23 @@
 namespace App\Controller;
 
 use App\Entity\Event;
+use App\Repository\EventRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpFoundation\Request;
 
 final class EventController extends AbstractController
 {
+
+    public function __construct(
+        private readonly EventRepository $eventRepository,
+    ) {
+    }
+
     #[Route('/evenement', name: 'app_all_events')]
     public function index(EntityManagerInterface $entityManager): Response
     {
@@ -34,17 +44,136 @@ final class EventController extends AbstractController
         ]);
     }
 
-    #[Route('/evenement/reservation/{id}', name: 'app_event_reservation')]
-    public function evenementReservation(EntityManagerInterface $entityManager, int $id): Response
+    // Route qui affiche le récapitulatif de la réservation
+    #[Route('/evenement/reservation/{id}', name: 'app_event_reservation', defaults:['formule'=>NULL])]
+    public function evenementReservation(EntityManagerInterface $entityManager,Session $session , int $id, $formule, Request $request): Response
     {
+        $isEmpty=true;
         $evenement = $entityManager->getRepository(Event::class)->findOneById($id);
 
         if(!$evenement){
             return $this->redirectToRoute('app_home');
         }
 
+        // afficher le panier
+        $panierReservationNoFood = $session->get('panierReservationNoFood', []);
+        $panierReservationWithFood = $session->get('panierReservationWithFood', []);
+
+        // dd($panierReservationNoFood[$id]);
+
+        $data=[];
+        $totalPriceEventWithFood=0;
+        $totalPriceEventNoFood=0;
+        $totalPriceReservations=0;
+
+        $totalNumberOfEventWithFood=0;
+        $totalNumberOfEventNoFood=0;
+        $totalNumberOfReservations=0;
+
+        if(array_key_exists($id,$panierReservationNoFood) || array_key_exists($id,$panierReservationWithFood)){
+            $isEmpty=false;
+
+            $quantityNoFood=$panierReservationNoFood[$id];
+            $quantityWithFood=$panierReservationWithFood[$id];
+
+
+            $panierReservationNoFood=$this->eventRepository->find($id);
+            $panierReservationWithFood=$this->eventRepository->find($id);
+
+
+            // dd($quantityWithFood);
+            $data[]= [
+                
+                "panierReservationNoFood"=>$panierReservationNoFood,
+                "quantity"=>$quantityNoFood,
+            ];
+            
+            $totalPriceEventNoFood += $panierReservationNoFood->getEventPriceNoFood()*$quantityNoFood;
+            $totalNumberOfEventNoFood= $quantityNoFood;
+
+            // dd($totalEventNoFood);
+
+            $totalPriceReservations+=$totalPriceEventNoFood;
+            $totalNumberOfReservations+=$totalNumberOfEventNoFood;
+      
+
+            $panierReservationWithFood=$this->eventRepository->find($id);
+            $data[]= [
+                
+                "panierReservationWithFood"=>$panierReservationWithFood,
+                "quantity"=>$quantityWithFood,
+            ];
+
+            $totalPriceEventWithFood += $panierReservationWithFood->getEventPriceWithFood()*$quantityWithFood;
+            $totalNumberOfEventWithFood= $quantityWithFood;
+
+            // dd($totalEventWithFood);
+
+            $totalPriceReservations+=$totalPriceEventWithFood;
+            $totalNumberOfReservations+=$totalNumberOfEventWithFood;
+            
+        }
+
         return $this->render('event/reservation_events.html.twig', [
             'event' => $evenement,
+            'data' => $data,
+            'totalPriceEventNoFood' => $totalPriceEventNoFood,
+            'totalPriceEventWithFood'=>$totalPriceEventWithFood,
+            'isEmpty'=>$isEmpty,
+            'totalPriceReservations'=>$totalPriceReservations,
+            'totalNumberOfEventNoFood'=>$totalNumberOfEventNoFood,
+            'totalNumberOfEventWithFood'=>$totalNumberOfEventWithFood,
+            'totalNumberOfReservations'=>$totalNumberOfReservations,
         ]);
     }
+
+    #[Route('/evenement/ajouter/reservation/formule-1/{id}', name: 'app_add_reservation_no_food')]
+    public function addReservationNoFoodPanier($id,SessionInterface $session, Request $request): Response
+    {
+        $panierReservationNoFood = $session->get('panierReservationNoFood', []);
+
+        if(empty($panierReservationNoFood[$id])){
+            $panierReservationNoFood[$id]=1;
+        }else{
+            $panierReservationNoFood[$id]++;
+        }
+        
+        $session->set('panierReservationNoFood', $panierReservationNoFood);
+        // dd($panierReservationNoFood);
+
+        $this->addFlash(
+            'success',
+            'Formule Pass\'Evènement ajoutée au panier'
+        );
+
+        return $this->redirect($request->headers->get('referer'));
+    }
+    #[Route('/evenement/ajouter/reservation/formule-2/{id}', name: 'app_add_reservation_with_food')]
+    public function addReservationWithFoodPanier($id,SessionInterface $session, Request $request): Response
+    {
+
+        $panierReservationWithFood = $session->get('panierReservationWithFood', []);
+
+        if(empty($panierReservationWithFood[$id])){
+
+            $panierReservationWithFood[$id]=1;
+        }else{
+            $panierReservationWithFood[$id]++;
+        }
+        
+
+        $session->set('panierReservationWithFood', $panierReservationWithFood);
+        // dd($panierReservationWithFood);
+
+        $this->addFlash(
+            'success',
+            'Formule Pass\'Evènement + Repas ajoutée au panier'
+        );
+   
+        return $this->redirect($request->headers->get('referer'));
+    }
+
+    // créer route pour enlever 1 ticket
+
+
 }

@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
 use App\Repository\VideoRepository;
-
+use Symfony\Component\HttpFoundation\Request;
 // pour la session
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
@@ -53,6 +53,7 @@ class PanierController extends AbstractController
         // on récupère le panier de la session 
         $panier = $session->get('panier',[]);
 
+        // dd($panier);
         if(empty($panier)){
             $isEmpty=true;
             // dd($isEmpty);
@@ -75,18 +76,19 @@ class PanierController extends AbstractController
         // boucle des produits/videos... du panier de la session
         // pour chaque clé du panier en face tu as une Quantité
         // on parcourt le tableau panier (voir dd($session) si besoin)
+       
         foreach($panier as $key => $quantity){
             // je récupère les infos de chaque video/product... en fonction de la clé (qui est l'id)
             $video = $this->videoRepository->find($key);
 
             // pour mieux comprendre
             // dd($video);
-
             // dans notre tableau data, on va avoir un sous-tableau de produit => quantity
             $data[]= [
                 "video"=>$video,
                 "quantity"=>$quantity,
             ];
+         
             $totalHT += $video->getPrice() * $quantity;
             $totalTTC += $video->getVideoTTC()*$quantity;
             $totalTVA += $video->getPriceTvaCalculator()*$quantity;
@@ -107,8 +109,8 @@ class PanierController extends AbstractController
     }
 
     // Route qui gère l'ajout au panier (dans la session)
-    #[Route('/panier/add/{id}', name: 'app_add_panier')]
-    public function add($id,SessionInterface $session): Response
+    #[Route('/panier/ajouter/{id}', name: 'app_add_panier')]
+    public function add($id,SessionInterface $session, Request $request): Response
     {
         // on donne à la session la variable panier comme un tableau vide
         $panier = $session->get('panier', []);
@@ -126,16 +128,23 @@ class PanierController extends AbstractController
         // on envoie la variable panier à la session pour récupérer son contenu plus tard
         $session->set('panier', $panier);
 
+        $this->addFlash(
+            'success',
+            'Produit ajouté au panier'
+        );
         // voir le contenu de la session
         // dd($session);
 
         // ici on redirige vers le panier 
-        return $this->redirectToRoute("app_panier",array('motif' => "ajout"));
+        // return $this->redirectToRoute("app_panier",array('motif' => "ajout"));
+
+        // redirige l'utilisateur vers la dernière page visitée
+        return $this->redirect($request->headers->get('referer'));
     }
 
     // route qui gère la suppression d'un élément au panier
-    #[Route('/panier/delete/{id}', name: 'app_delete_panier')]
-    public function delete($id,SessionInterface $session): Response
+    #[Route('/panier/supprimer/{id}', name: 'app_delete_panier')]
+    public function delete($id,SessionInterface $session, Request $request): Response
     {
 
         // on donne à la session la variable panier comme un tableau vide
@@ -160,7 +169,16 @@ class PanierController extends AbstractController
         // dd($session);
 
         // ici on redirige vers le panier 
-        return $this->redirectToRoute("app_panier",array('motif' => "suppression"));
+        // return $this->redirectToRoute("app_panier",array('motif' => "suppression"));
+
+        $this->addFlash(
+            'success',
+            'Produit retiré du panier'
+        );
+
+
+        // redirige l'utilisateur vers la dernière page visitée
+        return $this->redirect($request->headers->get('referer'));
     }
 
     #[Route('/panier/vide', name: 'app_empty_panier')]

@@ -133,7 +133,6 @@ class VideoController extends AbstractController
         $videosIdFromCatalog=[];
 
         // dd($video);
-        $catalogs=[];
         // il faut parcourir l'objet catalogue
         foreach($catalog as $element){
             // dd($element->getVideoId());

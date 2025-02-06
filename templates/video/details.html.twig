@@ -24,7 +24,7 @@
                     <a href="{{ path('app_add_panier',{id:video.id} ) }}" class="btn btn-success">Ajouter au panier</a>
                 {% elseif isInCart == true %}
                     <span class="badge rounded-pil text-bg-light p-3">Cet article est déjà dans votre panier.</span>
-                    <a href="{{ path('app_add_panier',{id:video.id}) }}" class="btn btn-success mt-4">Voir mon panier</a>
+                    <a href="{{ path('app_panier',{id:video.id}) }}" class="btn btn-success mt-4">Voir mon panier</a>
                 {% elseif isInCatalog == true %}
                     <span class="badge rounded-pil text-bg-light p-3">Vous avez déjà acheté cette vidéo.</span>
                     <a href="{{path('app_user_account_catalog')}}" class="btn btn-success mt-4">Accéder mon catalogue</a>
