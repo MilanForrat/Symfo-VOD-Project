@@ -62,7 +62,7 @@
                     <tr>
                         <td class="text-left">{{product.productName}}</td>
                         <td class="text-left">{{product.productQuantity}}</td>
-                        <td class="text-left">{{product.productPrice}}€</td>
+                        <td class="text-left">{{product.productPrice|price}}</td>
                         <td class="text-left">{{product.productTVA}}%</td>
                         {% set coeff= 1 + (product.productTVA /100) %}
                         {# prix HT * 1,tva #}

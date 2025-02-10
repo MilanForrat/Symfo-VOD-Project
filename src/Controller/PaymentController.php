@@ -76,8 +76,7 @@ final class PaymentController extends AbstractController
     #[Route('/commande/merci/{stripe_session_id}', name: 'app_payment_success')]
     public function success($stripe_session_id, OrderRepository $orderRepository, EntityManagerInterface $entityManager, SessionInterface $session, VideoRepository $videoRepository): Response
     {
-        $data=[];
-
+        $catalogExists=false;
 
         $order=$orderRepository->findOneBy([
             'stripe_session_id'=>$stripe_session_id,
@@ -96,15 +95,22 @@ final class PaymentController extends AbstractController
                 $video = $videoRepository->findOneBy([
                     'name'=>$element,
                 ]);
-                $videoToAdd = $video->getId();
-                // $order->getUser()->setVideo($videoToAdd);
-                $catalog = New Catalog;
-                $catalog->setUserId($order->getUser()->getId());
-                $catalog->setVideoId($videoToAdd);
+                if($video != NULL){
+                    $videoToAdd = $video->getId();
+                    $catalog = New Catalog;
+                    $catalog->setUserId($order->getUser()->getId());
+                    $catalog->setVideoId($videoToAdd);
+                    $catalogExists=true;
+                }
             }
-            $entityManager->persist($catalog);
+            if($catalogExists == true){
+                $entityManager->persist($catalog);
+            }
+
             // dd($video->isPaid());
             $session->remove('panier');
+            $session->remove('panierReservationNoFood');
+            $session->remove('panierReservationWithFood');
         }
         $entityManager->flush();
        

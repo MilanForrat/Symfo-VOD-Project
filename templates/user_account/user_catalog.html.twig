@@ -14,11 +14,11 @@
             <div class="container">
                 <div class="row g-3 justify-content-center">
                     {# {{dump(videosObject)}} #}
-                        {% if catalog|length ==0 %}
+                    {% if catalogs|length == 0 %}
                     <p>Vous n'avez pas encore de vidéo(s) dans votre catalogue.</p>
                     <hr>
                     {% else %}
-                        <p>Vous avez {{catalog|length}} vidéo(s) dans votre catalogue.</p>
+                        <p>Vous avez {{catalogs|length}} vidéo(s) dans votre catalogue.</p>
                         {% for key, video in videosObject %}
                             {% for videoElement in video %}
                             {# {{dump(videoElement)}} #}

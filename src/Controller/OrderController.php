@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Order;
 use App\Entity\OrderDetail;
 use App\Form\OrderType;
+use App\Repository\EventRepository;
 use App\Repository\VideoRepository;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
@@ -18,6 +19,7 @@ final class OrderController extends AbstractController
 {
     public function __construct(
         private readonly VideoRepository $videoRepository,
+        private readonly EventRepository $eventRepository,
     ) {
     }
 
@@ -50,7 +52,14 @@ final class OrderController extends AbstractController
 
         $panier = $session->get('panier',[]);
         $data=[];
-        $total=0;
+
+        $totalVideoHT=0;
+        $totalVideoTTC=0;
+        $totalVideoTVA=0;
+
+        $totalHT=0;
+        $totalTTC=0;
+        $totalTVA=0;
 
         foreach($panier as $key => $quantity){
             $video = $this->videoRepository->find($key);
@@ -58,8 +67,80 @@ final class OrderController extends AbstractController
                 "video"=>$video,
                 "quantity"=>$quantity,
             ];
-            $total += $video->getPrice() * $quantity;
+            $totalVideoHT += $video->getPrice() * $quantity;
+            $totalVideoTTC += $video->getVideoTTC()*$quantity;
+            $totalVideoTVA += $video->getPriceTvaCalculator()*$quantity;
         }
+
+        // ----------- TICKETS ---------
+        $panierReservationNoFood = $session->get('panierReservationNoFood', []);
+        $panierReservationWithFood = $session->get('panierReservationWithFood', []);
+
+        $dataEventNoFood=[];
+        $dataEventWithFood=[];
+
+        $totalPriceEventWithFood=0;
+        $totalPriceEventNoFood=0;
+        $totalPriceReservations=0;
+
+        $totalNumberOfEventWithFood=0;
+        $totalNumberOfEventNoFood=0;
+        $totalNumberOfReservations=0;
+
+        foreach($panierReservationNoFood as $key => $quantity){
+
+            $quantityNoFood=$panierReservationNoFood[$key];
+
+            $eventReservationNoFood=$this->eventRepository->find($key);
+
+            // dd($eventReservationNoFood);
+
+            $dataEventNoFood[]= [
+                "panierReservationNoFood"=>$eventReservationNoFood,
+                "quantity"=>$quantityNoFood,
+            ];
+         
+            $eventReservationNoFood->getEventPriceNoFood()*$quantityNoFood;
+            $totalNumberOfEventNoFood= $quantityNoFood;
+
+            $totalPriceEventNoFood += $eventReservationNoFood->getEventPriceNoFood()*$quantityNoFood;
+            $totalNumberOfEventNoFood= $quantityNoFood;
+
+            $totalPriceReservations+=$totalPriceEventNoFood;
+            $totalNumberOfReservations+=$totalNumberOfEventNoFood;
+        }
+
+        foreach($panierReservationWithFood as $key => $quantity){
+
+            $quantityWithFood=$panierReservationWithFood[$key];
+
+            $eventReservationWithFood=$this->eventRepository->find($key);
+
+            $dataEventWithFood[]= [
+                "panierReservationWithFood"=>$eventReservationWithFood,
+                "quantity"=>$quantityWithFood,
+            ];
+         
+            $eventReservationWithFood->getEventPriceWithFood()*$quantityWithFood;
+            $totalNumberOfEventWithFood= $quantityWithFood;
+
+            $totalPriceEventWithFood += $eventReservationWithFood->getEventPriceWithFood()*$quantityWithFood;
+            $totalNumberOfEventWithFood= $quantityWithFood;
+
+            $totalPriceReservations+=$totalPriceEventWithFood;
+            $totalNumberOfReservations+=$totalNumberOfEventWithFood;
+        }
+
+        // ---------- FIN TICKETS --------
+
+        // ------------ CALCULS TOTAUX $ ----------
+        $totalEventsHT = $totalPriceReservations/1.2;
+        $totalEventsTTC= $totalPriceReservations;
+        $totalEventsTVA = $totalPriceReservations*0.2;
+        
+        $totalHT=$totalVideoHT+$totalEventsHT;
+        $totalTTC=$totalVideoTTC+$totalEventsTTC;
+        $totalTVA=$totalVideoTVA+$totalEventsTVA;
 
         $form=$this->createForm(OrderType::class, null, [
             'addresses'=>$this->getUser()->getAddresses(),
@@ -93,10 +174,37 @@ final class OrderController extends AbstractController
                 $orderDetail->setProductQuantity($product['quantity']);
                 $orderDetail->setProductPrice($product['video']->getPrice());
                 $orderDetail->setProductTVA($product['video']->getTva());
+                // dd($product['video']->getTva());
 
                 // on récupère le contenu du panier et on le greffe à orderDetail
                 $order->addOrderDetail($orderDetail);
             }
+            foreach($dataEventNoFood as $eventNoFood){
+                $orderDetail= New OrderDetail();
+                $orderDetail->setProductName($eventNoFood['panierReservationNoFood']->getName().' : Formule Pass\'Evènement');
+                $orderDetail->setProductImage($eventNoFood['panierReservationNoFood']->getImage());
+                // dd($eventNoFood['panierReservationNoFood']->getImage());
+                $orderDetail->setProductQuantity($eventNoFood['quantity']);
+                $orderDetail->setProductPrice($eventNoFood['panierReservationNoFood']->getEventPriceNoFoodHT());
+                // dd($eventNoFood['panierReservationNoFood']->getEventPriceNoFoodHT());
+                $orderDetail->setProductTVA(20.0);
+
+                // on récupère le contenu du panier et on le greffe à orderDetail
+                $order->addOrderDetail($orderDetail);
+            }
+            foreach($dataEventWithFood as $eventWithFood){
+                // dd($dataEventWithFood);
+                $orderDetail= New OrderDetail();
+                $orderDetail->setProductName($eventWithFood['panierReservationWithFood']->getName().' : Formule Pass\'Evènement + Repas');
+                $orderDetail->setProductImage($eventWithFood['panierReservationWithFood']->getImage());
+                $orderDetail->setProductQuantity($eventWithFood['quantity']);
+                $orderDetail->setProductPrice($eventWithFood['panierReservationWithFood']->getEventPriceWithFoodHT());
+                $orderDetail->setProductTVA(20.0);
+
+                // on récupère le contenu du panier et on le greffe à orderDetail
+                $order->addOrderDetail($orderDetail);
+            }
+            
             // on envoie en BDD
             $entityManager->persist($order);
             $entityManager->flush();
@@ -106,8 +214,18 @@ final class OrderController extends AbstractController
         return $this->render('order/recap.html.twig', [
             'address' => $form->getData(),
             'data' => $data,
-            'total' => $total,
+            'dataEventNoFood'=>$dataEventNoFood,
+            'dataEventWithFood'=>$dataEventWithFood,
+            'totalHT' => $totalHT,
+            'totalTTC' => $totalTTC,
+            'totalTVA' => $totalTVA,
             'order'=>$order,
+            'totalPriceEventNoFood' => $totalPriceEventNoFood,
+            'totalPriceEventWithFood'=>$totalPriceEventWithFood,
+            'totalPriceReservations'=>$totalPriceReservations,
+            'totalNumberOfEventNoFood'=>$totalNumberOfEventNoFood,
+            'totalNumberOfEventWithFood'=>$totalNumberOfEventWithFood,
+            'totalNumberOfReservations'=>$totalNumberOfReservations,
         ]);
     }
 }

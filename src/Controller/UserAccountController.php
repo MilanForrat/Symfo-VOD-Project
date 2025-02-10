@@ -94,7 +94,7 @@ class UserAccountController extends AbstractController
         
         return $this->render('user_account/user_catalog.html.twig', [
             // on passe l'objet en entier afin d'accéder à tous ses détails
-            'catalog'=>$catalog,
+            'catalogs'=>$catalogs,
             'videosObject'=>$videosObjects,
         ]);
     }

@@ -11,6 +11,7 @@
             <hr class="mb-5">
             <!-- Cart Item 1 -->
             {% if (isEmpty == false) %}
+            {# videos #}
                 {% for item in data %}
                 <div class="cart-item d-flex justify-content-between bg-color-cart p-3 rounded mb-4">
                     <div class="d-flex">
@@ -18,13 +19,46 @@
                         <div>
                             <h3 class="h5">{{item.video.name}}</h3>
                             <p class="text-muted">{{item.video.subtitle}}</p>
-                            <span class="badge badge-pill badge-primary p-2">{{item.video.category}}</span>
+                            <span class="badge badge-pill badge-primary fs-6 p-2">Vidéo à la demande</span>
                         </div>
                     </div>
                     <div class="d-flex flex-column justify-content-between">
                         <span>{{item.video.videoTTC|price}}</span>
                         {# on transmet à la route l'id de l'item en question #}
                         <a href="{{path('app_delete_panier', {id:item.video.id})}}" class="btn btn-sm btn-danger">Supprimer</a>
+                    </div>
+                </div>
+                {% endfor %}
+                {# tickets #}
+                {% for item in dataEventNoFood %}
+                <div class="cart-item d-flex justify-content-between bg-color-cart p-3 rounded mb-4">
+                    <div class="d-flex">
+                        <img src="/uploads/{{item.panierReservationNoFood.image}}" alt="Product" class="product-img me-3">
+                        <div>
+                            <h3 class="h5">{{item.panierReservationNoFood.name}}</h3>
+                            <p class="text-muted">{{item.panierReservationNoFood.subtitle}}</p>
+                            <p class="badge badge-pill badge-primary fs-6 p-2">Formule Pass'Evènement | {{item.quantity}} tickets</p>
+                        </div>
+                    </div>
+                    <div class="d-flex flex-column justify-content-between">
+                        <span>{{totalPriceEventNoFood|price}}</span>
+                        <a href="{{path('app_event_reservation', {id:item.panierReservationNoFood.id})}}" class="btn btn-sm btn-danger">Modifier la formule</a>
+                    </div>
+                </div>
+                {% endfor %}
+                {% for item in dataEventWithFood %}
+                <div class="cart-item d-flex justify-content-between bg-color-cart p-3 rounded mb-4">
+                    <div class="d-flex">
+                        <img src="/uploads/{{item.panierReservationWithFood.image}}" alt="Product" class="product-img me-3">
+                        <div>
+                            <h3 class="h5">{{item.panierReservationWithFood.name}}</h3>
+                            <p class="text-muted">{{item.panierReservationWithFood.subtitle}}</p>
+                            <p class="badge badge-pill badge-primary fs-6 p-2">Formule Pass'Evènement + Repas | {{item.quantity}} tickets</p>
+                        </div>
+                    </div>
+                    <div class="d-flex flex-column justify-content-between">
+                        <span>{{totalPriceEventWithFood|price}}</span>
+                        <a href="{{path('app_event_reservation', {id:item.panierReservationWithFood.id})}}" class="btn btn-sm btn-danger">Modifier la formule</a>
                     </div>
                 </div>
                 {% endfor %}
@@ -38,14 +72,6 @@
             <div class="cart-summary">
                 <h2 class="h4 mb-4 text-center mb-5">Récapitulatif du panier</h2>
                 <ul class="list-unstyled">
-                    {# <li class="d-flex justify-content-between my-2">
-                        <span>Hors-taxes:</span>
-                        <span>45.98€</span>
-                    </li>
-                    <li class="d-flex justify-content-between  my-2">
-                        <span>TVA:</span>
-                        <span>5.00€</span>
-                    </li> #}
                     <li class="d-flex justify-content-between  my-2">
                         <span class="total-price">Total HT :</span>
                         <span class="total-price">{{totalHT|price}}</span>

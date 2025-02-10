@@ -229,7 +229,6 @@ final class EventController extends AbstractController
 
         return $this->redirect($request->headers->get('referer'));
 
-
     }
 
     // créer fonction dans le panier pour afficher les évènements 

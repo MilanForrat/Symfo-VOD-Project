@@ -59,7 +59,7 @@ class EventCrudController extends AbstractCrudController
             SlugField::new('slug')->setTargetFieldName('name')->hideOnIndex()->setHelp('URL de votre évènement générée automatiquement'),
             TextEditorField::new('description', "Description")->hideOnIndex(),
             TextField::new('eventPriceNoFood', "Prix TTC évènement sans repas")->hideOnIndex()->setHelp('Généralement 10.40'),
-            TextField::new('eventPriceWithFood', "Prix TTC évènement + repas")->hideOnIndex()->setHelp('Généralement 26.40'),       
+            TextField::new('eventPriceWithFood', "Prix TTC évènement + repas")->hideOnIndex()->setHelp('Généralement 26.40'),      
             DateTimeField::new('reservationDateEnd', 'Fin des réservations')->setFormat('dd.MM.yyyy'),
             DateTimeField::new('eventDate', 'Date évènement')->setFormat('dd.MM.yyyy'),
             BooleanField::new('isHomepage', "A là une ?")->setHelp('Evènement mis à la une sur la page d\'accueil'),

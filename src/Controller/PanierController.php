@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-
+use App\Repository\EventRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -18,6 +18,7 @@ class PanierController extends AbstractController
     // nécessaire pour la suite du panier
     public function __construct(
         private readonly VideoRepository $videoRepository,
+        private readonly EventRepository $eventRepository,
     ) {
     }
 
@@ -52,13 +53,15 @@ class PanierController extends AbstractController
 
         // on récupère le panier de la session 
         $panier = $session->get('panier',[]);
+        $panierReservationNoFood = $session->get('panierReservationNoFood', []);
+        $panierReservationWithFood = $session->get('panierReservationWithFood', []);
 
         // dd($panier);
-        if(empty($panier)){
-            $isEmpty=true;
+        if(!empty($panier) || !empty($panierReservationNoFood) || !empty($panierReservationWithFood)){
+            $isEmpty=false;
             // dd($isEmpty);
         }else{
-            $isEmpty=false;
+            $isEmpty=true;
             // dd($isEmpty);
         }
 
@@ -69,6 +72,10 @@ class PanierController extends AbstractController
         // data sera le tableau de tous les produits/videos...
         // total sera le prix total 
         $data=[];
+        $totalVideoHT=0;
+        $totalVideoTTC=0;
+        $totalVideoTVA=0;
+
         $totalHT=0;
         $totalTTC=0;
         $totalTVA=0;
@@ -89,22 +96,95 @@ class PanierController extends AbstractController
                 "quantity"=>$quantity,
             ];
          
-            $totalHT += $video->getPrice() * $quantity;
-            $totalTTC += $video->getVideoTTC()*$quantity;
-            $totalTVA += $video->getPriceTvaCalculator()*$quantity;
+            $totalVideoHT += $video->getPrice() * $quantity;
+            $totalVideoTTC += $video->getVideoTTC()*$quantity;
+            $totalVideoTVA += $video->getPriceTvaCalculator()*$quantity;
         }
 
-        // pour mieux comprendre
-        // dd($data);
-        // dd($total);
+        // ------------ TICKETS -----------
+        $dataEventNoFood=[];
+        $dataEventWithFood=[];
 
-        // on envoie les variables à la template pour accéder à ces dernières
+        $totalPriceEventWithFood=0;
+        $totalPriceEventNoFood=0;
+        $totalPriceReservations=0;
+
+        $totalNumberOfEventWithFood=0;
+        $totalNumberOfEventNoFood=0;
+        $totalNumberOfReservations=0;
+
+        foreach($panierReservationNoFood as $key => $quantity){
+
+            $quantityNoFood=$panierReservationNoFood[$key];
+
+            $eventReservationNoFood=$this->eventRepository->find($key);
+
+            // dd($eventReservationNoFood);
+
+            $dataEventNoFood[]= [
+                "panierReservationNoFood"=>$eventReservationNoFood,
+                "quantity"=>$quantityNoFood,
+            ];
+         
+            $eventReservationNoFood->getEventPriceNoFood()*$quantityNoFood;
+            $totalNumberOfEventNoFood= $quantityNoFood;
+
+            $totalPriceEventNoFood += $eventReservationNoFood->getEventPriceNoFood()*$quantityNoFood;
+            $totalNumberOfEventNoFood= $quantityNoFood;
+
+            $totalPriceReservations+=$totalPriceEventNoFood;
+            $totalNumberOfReservations+=$totalNumberOfEventNoFood;
+        }
+
+        foreach($panierReservationWithFood as $key => $quantity){
+
+            $quantityWithFood=$panierReservationWithFood[$key];
+
+            $eventReservationWithFood=$this->eventRepository->find($key);
+
+            $dataEventWithFood[]= [
+                "panierReservationWithFood"=>$eventReservationWithFood,
+                "quantity"=>$quantityWithFood,
+            ];
+         
+            $eventReservationWithFood->getEventPriceWithFood()*$quantityWithFood;
+            $totalNumberOfEventWithFood= $quantityWithFood;
+
+            $totalPriceEventWithFood += $eventReservationWithFood->getEventPriceWithFood()*$quantityWithFood;
+            $totalNumberOfEventWithFood= $quantityWithFood;
+
+            $totalPriceReservations+=$totalPriceEventWithFood;
+            $totalNumberOfReservations+=$totalNumberOfEventWithFood;
+        }
+
+
+        // ------------ FIN TICKETS ----------
+
+        // ------------ CALCULS TOTAUX $ ----------
+        $totalEventsHT = $totalPriceReservations/1.2;
+        $totalEventsTTC= $totalPriceReservations;
+        $totalEventsTVA = $totalPriceReservations*0.2;
+
+        // dd($totalEventsTVA);
+
+        $totalHT=$totalVideoHT+$totalEventsHT;
+        $totalTTC=$totalVideoTTC+$totalEventsTTC;
+        $totalTVA=$totalVideoTVA+$totalEventsTVA;
+
         return $this->render('panier/index.html.twig', [
             'data' => $data,
+            'dataEventNoFood'=>$dataEventNoFood,
+            'dataEventWithFood'=>$dataEventWithFood,
             'totalHT' => $totalHT,
             'totalTTC' => $totalTTC,
             'totalTVA' => $totalTVA,
-            "isEmpty" =>$isEmpty
+            "isEmpty" =>$isEmpty,
+            'totalPriceEventNoFood' => $totalPriceEventNoFood,
+            'totalPriceEventWithFood'=>$totalPriceEventWithFood,
+            'totalPriceReservations'=>$totalPriceReservations,
+            'totalNumberOfEventNoFood'=>$totalNumberOfEventNoFood,
+            'totalNumberOfEventWithFood'=>$totalNumberOfEventWithFood,
+            'totalNumberOfReservations'=>$totalNumberOfReservations,
         ]);
     }
 

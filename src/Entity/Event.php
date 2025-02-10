@@ -44,7 +44,6 @@ class Event
     #[ORM\Column]
     private ?bool $isHomepage = null;
 
-
         // utilisée pour easyadmin crud
     public function __toString()
     {
@@ -178,6 +177,17 @@ class Event
         $this->isHomepage = $isHomepage;
 
         return $this;
+    }
+    // HT Prices
+    public function getEventPriceWithFoodHT()
+    {
+        $eventWithFoodHTPrice=$this->eventPriceWithFood/1.2;
+        return $eventWithFoodHTPrice;
+    }
+    public function getEventPriceNoFoodHT()
+    {
+        $eventNoFoodHTPrice=$this->eventPriceNoFood/1.2;
+        return $eventNoFoodHTPrice;
     }
 
 }
