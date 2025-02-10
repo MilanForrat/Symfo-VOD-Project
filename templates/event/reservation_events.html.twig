@@ -9,18 +9,24 @@
     <h2>Vous avez le choix entre deux formules :</h2>
     <div class="row">
         <div class="col-md-8 row justify-content-around">
-            <div class="col-md-5 text-center card p-5">
-                <h3>Formule Pass'Evènement</h3>
-                <p>Vous permet d'accéder à l'évènement. Ticket valable pour 1 personne.</p>
-                <p>{{event.eventPriceNoFood}}</p>
+            <div class="col-md-5 text-center card p-5 d-flex flex-column justify-content-center align-items-center">
+                <h3 class="mb-5">Formule Pass'Evènement</h3>
+                <p>Vous permet d'accéder à l'évènement.<br><br> Ticket valable pour 1 personne.</p>
+                <strong class="fs-2 my-4">{{event.eventPriceNoFood|price}}</strong>
                 {# donner deux paramètres pour dire type formule #}
-                <a href="{{path('app_add_reservation_no_food',{id:event.id,formule:"1"} ) }}" class="btn btn-success">Ajouter un ticket</a>
+                <a href="{{path('app_add_reservation_no_food',{id:event.id,formule:"1"} ) }}" class="btn btn-success w-100 mt-5">Ajouter un ticket</a>
+                {% if (isEmptyNoFood == false) %}
+                    <a href="{{path('app_delete_reservation_no_food',{id:event.id, formule:"1"} ) }}" class="btn btn-danger w-100 mt-3">Supprimer un ticket</a>
+                {% endif %}
             </div>
-            <div class="col-md-5 text-center card p-5">
-                <h3>Formule Pass'Evènement + Repas</h3>
-                <p>Vous permet d'accéder à l'évènement et de vous y restaurer par la suite. Ticket valable pour 1 personne.</p>
-                <p>{{event.eventPriceWithFood}}</p>
-                <a href="{{path('app_add_reservation_with_food',{id:event.id, formule:"2"} ) }}" class="btn btn-success">Ajouter un ticket</a>
+            <div class="col-md-5 text-center card p-5 d-flex flex-column justify-content-center align-items-center">
+                <h3 class="mb-5">Formule Pass'Evènement + Repas</h3>
+                <p>Vous permet d'accéder à l'évènement et de vous y restaurer par la suite.<br><br> Ticket valable pour 1 personne.</p>
+                <strong class="fs-2 my-4">{{event.eventPriceWithFood|price}}</strong>
+                <a href="{{path('app_add_reservation_with_food',{id:event.id, formule:"2"} ) }}" class="btn btn-success w-100 mt-5">Ajouter un ticket</a>
+                {% if (isEmptyWithFood == false) %}
+                    <a href="{{path('app_delete_reservation_with_food',{id:event.id, formule:"2"} ) }}" class="btn btn-danger w-100 mt-3">Supprimer un ticket</a>
+                {% endif %}
             </div>
         </div>
         <div class="col-md-4">
@@ -60,7 +66,7 @@
                             <strong class="total-price">{{totalPriceReservations|price}}</strong>
                         </li>
                     </ul>
-                    {% if (isEmpty == false) %}
+                    {% if (isEmptyNoFood == false or isEmptyWithFood == false) %}
                         <a href="{{path('app_order')}}" class="btn btn-success w-100 mt-3">Valider le panier</a>
                     {% else %}
                         <a href="{{path('app_order')}}" class="btn btn-success w-100 mt-3 disabled">Valider le panier</a>

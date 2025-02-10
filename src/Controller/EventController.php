@@ -48,7 +48,8 @@ final class EventController extends AbstractController
     #[Route('/evenement/reservation/{id}', name: 'app_event_reservation', defaults:['formule'=>NULL])]
     public function evenementReservation(EntityManagerInterface $entityManager,Session $session , int $id, $formule, Request $request): Response
     {
-        $isEmpty=true;
+        $isEmptyNoFood=true;
+        $isEmptyWithFood=true;
         $evenement = $entityManager->getRepository(Event::class)->findOneById($id);
 
         if(!$evenement){
@@ -70,24 +71,20 @@ final class EventController extends AbstractController
         $totalNumberOfEventNoFood=0;
         $totalNumberOfReservations=0;
 
-        if(array_key_exists($id,$panierReservationNoFood) || array_key_exists($id,$panierReservationWithFood)){
-            $isEmpty=false;
+        if(array_key_exists($id,$panierReservationNoFood)){
+            $isEmptyNoFood=false;
 
             $quantityNoFood=$panierReservationNoFood[$id];
-            $quantityWithFood=$panierReservationWithFood[$id];
-
 
             $panierReservationNoFood=$this->eventRepository->find($id);
-            $panierReservationWithFood=$this->eventRepository->find($id);
-
 
             // dd($quantityWithFood);
             $data[]= [
-                
+                            
                 "panierReservationNoFood"=>$panierReservationNoFood,
                 "quantity"=>$quantityNoFood,
             ];
-            
+
             $totalPriceEventNoFood += $panierReservationNoFood->getEventPriceNoFood()*$quantityNoFood;
             $totalNumberOfEventNoFood= $quantityNoFood;
 
@@ -95,7 +92,13 @@ final class EventController extends AbstractController
 
             $totalPriceReservations+=$totalPriceEventNoFood;
             $totalNumberOfReservations+=$totalNumberOfEventNoFood;
-      
+
+        }
+        if(array_key_exists($id,$panierReservationWithFood)){
+            $isEmptyWithFood=false;
+            $quantityWithFood=$panierReservationWithFood[$id];
+
+            $panierReservationWithFood=$this->eventRepository->find($id);
 
             $panierReservationWithFood=$this->eventRepository->find($id);
             $data[]= [
@@ -111,7 +114,6 @@ final class EventController extends AbstractController
 
             $totalPriceReservations+=$totalPriceEventWithFood;
             $totalNumberOfReservations+=$totalNumberOfEventWithFood;
-            
         }
 
         return $this->render('event/reservation_events.html.twig', [
@@ -119,7 +121,8 @@ final class EventController extends AbstractController
             'data' => $data,
             'totalPriceEventNoFood' => $totalPriceEventNoFood,
             'totalPriceEventWithFood'=>$totalPriceEventWithFood,
-            'isEmpty'=>$isEmpty,
+            'isEmptyNoFood'=>$isEmptyNoFood,
+            'isEmptyWithFood'=>$isEmptyWithFood,
             'totalPriceReservations'=>$totalPriceReservations,
             'totalNumberOfEventNoFood'=>$totalNumberOfEventNoFood,
             'totalNumberOfEventWithFood'=>$totalNumberOfEventWithFood,
@@ -174,6 +177,62 @@ final class EventController extends AbstractController
     }
 
     // créer route pour enlever 1 ticket
+    #[Route('/evenement/supprimer/reservation/formule-2/{id}', name: 'app_delete_reservation_with_food')]
+    public function deleteReservationWithFoodPanier($id,SessionInterface $session, Request $request): Response
+    {
+        $panierReservationWithFood = $session->get('panierReservationWithFood', []);
+
+        if(!empty($panierReservationWithFood[$id])){
+            // si l'élément du panier à une QT > 1 on décrémente sa QT 
+            if($panierReservationWithFood[$id]>1){
+                $panierReservationWithFood[$id]--;
+                // dd($panier[$id]);
+            }else{
+            // sinon on l'enlève du tableau, ca supprime la variable de la $session
+            unset($panierReservationWithFood[$id]);
+            }
+        }
+
+        $session->set('panierReservationWithFood', $panierReservationWithFood);
+
+        $this->addFlash(
+            'success',
+            'Formule Pass\'Evènement + Repas retiré du panier'
+        );
+
+        return $this->redirect($request->headers->get('referer'));
+    }
+
+    #[Route('/evenement/supprimer/reservation/formule-1/{id}', name: 'app_delete_reservation_no_food')]
+    public function deleteReservationNoFoodPanier($id,SessionInterface $session, Request $request): Response
+    {
+
+        $panierReservationNoFood = $session->get('panierReservationNoFood', []);
+
+        if(!empty($panierReservationNoFood[$id])){
+            // si l'élément du panier à une QT > 1 on décrémente sa QT 
+            if($panierReservationNoFood[$id]>1){
+                $panierReservationNoFood[$id]--;
+                // dd($panier[$id]);
+            }else{
+            // sinon on l'enlève du tableau, ca supprime la variable de la $session
+            unset($panierReservationNoFood[$id]);
+            }
+        }
+
+        $session->set('panierReservationNoFood', $panierReservationNoFood);
+
+        $this->addFlash(
+            'success',
+            'Formule Pass\'Evènement retiré du panier'
+        );
+
+        return $this->redirect($request->headers->get('referer'));
+
+
+    }
+
+    // créer fonction dans le panier pour afficher les évènements 
 
 
 }
