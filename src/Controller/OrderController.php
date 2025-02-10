@@ -181,7 +181,7 @@ final class OrderController extends AbstractController
             }
             foreach($dataEventNoFood as $eventNoFood){
                 $orderDetail= New OrderDetail();
-                $orderDetail->setProductName($eventNoFood['panierReservationNoFood']->getName().' : Formule Pass\'Evènement');
+                $orderDetail->setProductName($eventNoFood['panierReservationNoFood']->getName().' | Formule Pass\'Evènement');
                 $orderDetail->setProductImage($eventNoFood['panierReservationNoFood']->getImage());
                 // dd($eventNoFood['panierReservationNoFood']->getImage());
                 $orderDetail->setProductQuantity($eventNoFood['quantity']);
@@ -195,7 +195,7 @@ final class OrderController extends AbstractController
             foreach($dataEventWithFood as $eventWithFood){
                 // dd($dataEventWithFood);
                 $orderDetail= New OrderDetail();
-                $orderDetail->setProductName($eventWithFood['panierReservationWithFood']->getName().' : Formule Pass\'Evènement + Repas');
+                $orderDetail->setProductName($eventWithFood['panierReservationWithFood']->getName().' | Formule Pass\'Evènement + Repas');
                 $orderDetail->setProductImage($eventWithFood['panierReservationWithFood']->getImage());
                 $orderDetail->setProductQuantity($eventWithFood['quantity']);
                 $orderDetail->setProductPrice($eventWithFood['panierReservationWithFood']->getEventPriceWithFoodHT());

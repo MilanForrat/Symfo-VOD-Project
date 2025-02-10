@@ -11,9 +11,10 @@
     <div class="col-8 col-md-3 d-flex justify-content-center align-items-center">
         <h1 class="text-center mb-4 h3">Merci pour votre commande</h1>
     </div>
-    <small>Vous retrouverez votre vidéo dans la rubrique "Mon Catalogue"</small>
-    <a href="{{path('app_user_account_catalog')}}" class="btn btn-success col-md-3 col-6 mt-5 my-2">Accéder à mon catalogue</a>
-    <a href="{{path('app_user_account_invoice_id', {'id_order' : order.id} ) }}" class="btn btn-primary col-md-3 col-6 mt-2">Voir ma commande</a>
+    <div class="text-center">
+        <small>Vous retrouverez vos vidéos dans la rubrique "Mon Catalogue"<br>Et vous retrouverez vos évènements dans la rubrique "Mes Evènements".</small>
+    </div>
+    <a href="{{path('app_user_account_invoice_id', {'id_order' : order.id} ) }}" class="btn btn-primary col-md-3 col-6 mt-5">Voir ma commande</a>
 </div>
 <script src="{{ asset('/js/signIn.js') }}"></script>
 {% endblock %}

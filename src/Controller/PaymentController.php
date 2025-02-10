@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\Catalog;
+use App\Entity\Reservation;
+use App\Repository\EventRepository;
 use App\Repository\OrderRepository;
 use App\Repository\VideoRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -74,9 +76,10 @@ final class PaymentController extends AbstractController
     }
 
     #[Route('/commande/merci/{stripe_session_id}', name: 'app_payment_success')]
-    public function success($stripe_session_id, OrderRepository $orderRepository, EntityManagerInterface $entityManager, SessionInterface $session, VideoRepository $videoRepository): Response
+    public function success($stripe_session_id, OrderRepository $orderRepository, EventRepository $eventRepository, EntityManagerInterface $entityManager, SessionInterface $session, VideoRepository $videoRepository): Response
     {
         $catalogExists=false;
+        $reservationExists=false;
 
         $order=$orderRepository->findOneBy([
             'stripe_session_id'=>$stripe_session_id,
@@ -95,17 +98,35 @@ final class PaymentController extends AbstractController
                 $video = $videoRepository->findOneBy([
                     'name'=>$element,
                 ]);
+                $positionToCut=strpos($element,"|");
+                $nameToCut= substr($element,0,$positionToCut-1);
+                $event = $eventRepository->findOneBy([
+                    'name'=>$nameToCut,
+                ]);
+                // dd($nameToCut);
+                // dd($event);
                 if($video != NULL){
                     $videoToAdd = $video->getId();
                     $catalog = New Catalog;
                     $catalog->setUserId($order->getUser()->getId());
                     $catalog->setVideoId($videoToAdd);
-                    $catalogExists=true;
+                    $entityManager->persist($catalog);
+                }
+                if($event != NULL){
+                    $eventToAdd = $event->getId();
+                    $reservation = New Reservation;
+                    $reservation->setUserId($order->getUser()->getId());
+                    $reservation->setEventId($eventToAdd);
+                    $reservation->setOrderId($order->getId());
+                    $entityManager->persist($reservation);
                 }
             }
-            if($catalogExists == true){
-                $entityManager->persist($catalog);
-            }
+            // if($catalogExists == true){
+            //     $entityManager->persist($catalog);
+            // }
+            // if($reservationExists == true){
+            //     $entityManager->persist($reservation);
+            // }
 
             // dd($video->isPaid());
             $session->remove('panier');

@@ -52,14 +52,14 @@ class Order
     public function getTotalTTC(){
         $products = $this->getOrderDetails();
         $totalTTC = 0;
-
+        
         foreach($products as $product){
-            // dd($product);
+            
             // on récupère le coefficient de tva et on le multiplie ce qui donne par ex: 1.2 pour 20% TVA
             $coeff = 1+ ($product->getProductTva() / 100);
             // nous renvoie le total de tva
-            $totalTTC += $product->getProductPrice()*$coeff;
-
+            $totalTTC += ($product->getProductPrice()*$coeff)*$product->getProductQuantity();
+            // dd($totalTTC);
         }
 
         return  $totalTTC;
@@ -74,7 +74,7 @@ class Order
                 // on récupère le coefficient de tva
                 $coeff = $product->getProductTva() / 100;
                 // nous renvoie le total de tva
-                $totalTVA += $product->getProductPrice()*$coeff;
+                $totalTVA += ($product->getProductPrice()*$coeff)*$product->getProductQuantity();
     
             }
     
@@ -91,7 +91,7 @@ class Order
             // on récupère le coefficient de tva
             $coeff = $product->getProductPrice();
             // nous renvoie le total de tva
-            $totalHT += $coeff;
+            $totalHT += $coeff*$product->getProductQuantity();
 
         }
 

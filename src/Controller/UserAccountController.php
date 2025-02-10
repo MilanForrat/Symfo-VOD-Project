@@ -11,7 +11,10 @@ use App\Repository\AddressRepository;
 use App\Form\AddressUserType;
 use App\Form\PasswordUserType;
 use App\Repository\CatalogRepository;
+use App\Repository\EventRepository;
+use App\Repository\OrderDetailRepository;
 use App\Repository\OrderRepository;
+use App\Repository\ReservationRepository;
 use App\Repository\VideoRepository;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
@@ -189,6 +192,50 @@ class UserAccountController extends AbstractController
 
         return $this->render('user_account/password.html.twig', [
             'form'=>$form->createView(),
+        ]);
+    }
+
+    #[Route('/utilisateur/compte/reservations', name: 'app_user_account_reservations')]
+    public function reservations(ReservationRepository $reservationRepository,EventRepository $eventRepository, OrderDetailRepository $orderDetailRepository): Response
+    {
+        $eventsById=[];
+        $eventsObject=[];
+        $reservations = $reservationRepository->findBy([
+            'user_id'=>$this->getUser()->getId(),
+        ]);
+
+        foreach($reservations as $reservation){
+            // dd($reservation->getOrderId());
+            $order[]=$reservation->getOrderId();
+            $event = $reservation->getEventId();
+            $eventsById[]=$event;
+            
+        }
+        // allows to see only 1 event from the same event_id (prevents duplicates)
+        $unique_reservations=array_unique($eventsById);
+
+        $uniqueOrders=array_unique($order);
+        // dd($unique_orders);
+        $orders=[];
+        // dd($uniqueOrders);
+        array_push($orders, $uniqueOrders);
+        $ordersReIndexed = array_map('array_values',$orders);
+        // dd($ordersReIndexed);
+
+        foreach($unique_reservations as $eventObject){
+            $eventsObject[] = $eventRepository->findById($eventObject);
+            
+        }
+        
+        // récupérer tous les orders id
+        // récupérer que les orders id différents 
+
+
+        
+        return $this->render('user_account/user_reservation.html.twig', [
+            'reservations'=>$reservations,
+            'eventsObject'=>$eventsObject,
+            'ordersReIndexed'=>$ordersReIndexed,
         ]);
     }
 
