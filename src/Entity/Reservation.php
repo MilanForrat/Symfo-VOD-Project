@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\ReservationRepository;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ReservationRepository::class)]
@@ -21,6 +22,9 @@ class Reservation
 
     #[ORM\Column]
     private ?int $order_id = null;
+
+    #[ORM\Column(type: Types::DATE_MUTABLE)]
+    private ?\DateTimeInterface $boughtDate = null;
 
     public function getId(): ?int
     {
@@ -59,6 +63,18 @@ class Reservation
     public function setOrderId(int $order_id): static
     {
         $this->order_id = $order_id;
+
+        return $this;
+    }
+
+    public function getBoughtDate(): ?\DateTimeInterface
+    {
+        return $this->boughtDate;
+    }
+
+    public function setBoughtDate(\DateTimeInterface $boughtDate): static
+    {
+        $this->boughtDate = $boughtDate;
 
         return $this;
     }

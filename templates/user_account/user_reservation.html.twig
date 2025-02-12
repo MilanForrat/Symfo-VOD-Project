@@ -14,30 +14,33 @@
             <div class="container">
                 <div class="row g-3 justify-content-center">
                     {% if reservations|length == 0 %}
-                    <p>Vous n'avez pas encore d'évènement(s).</p>
+                    <p>Vous n'avez pas encore de réservations pour vos évènements.</p>
                     <hr>
                     {% else %}
-                        <p>Vous avez {{(ordersReIndexed|length)+1}} évènement(s).</p>
-                        {% for key, event in eventsObject %}
-                            {% for eventElement in event %}
-                                <div class="card col-11 col-md-3 mb-3 mx-3 mt-5" style="width: 18rem;">
+                        <p>Vous avez actuellement {{(reservations|length)}} réservations pour vos évènements.</p>
+                        {# {{dump(reservations)}} #}
+                            {% for key, eventElement in eventDetails %}
+                                <div class="card col-11 col-md-3 mb-3 mx-3 mt-5">
                                     <img src="/uploads/{{eventElement.image}}" class="card-img-top" alt="...">
                                         <div class="my-3 text-start">
-                                        <span class="badge rounded-pill text-bg-warning ms-3 px-3">Vidéo</span>
+                                        <span class="badge rounded-pill text-bg-warning ms-3 px-3">Evènement</span>
                                     </div>
                                     <div class="card-body">
                                         <h4 class="card-title">{{eventElement.name}}</h4>
                                         <hr>
                                         <h5>{{eventElement.subtitle}}</h5>
                                         <hr>
-                                        <strong>Prévu le : {{eventElement.eventDate|format_datetime(locale: 'fr')}}</strong>                          
+                                        <strong>Prévu le : {{eventElement.eventDate|format_datetime(locale: 'fr')}}</strong>
+                                        <hr>
+                                        <p>
+                                            Ticket(s) acheté(s) le :<br>
+                                            {{eventOrders[key].createdAT|format_datetime(locale: 'fr')}}
+                                        </p>                        
                                     </div>
-                                    {% for orderElement in ordersReIndexed %}
-                                        <a target="_blank" href="{{path('app_invoice_client', {"id_order":orderElement[key] })}}" class="btn btn-success">Télécharger le(s) ticket(s)</a>
-                                    {% endfor %}
+                                    {# {{dump(eventOrders[key].id)}} #}
+                                        <a target="_blank" href="{{path('app_invoice_client', {"id_order":eventOrders[key].id })}}" class="btn btn-success">Télécharger le(s) ticket(s)</a>
                                 </div>
-                            {% endfor %}                           
-                        {% endfor %}
+                        {% endfor %}                           
                     {% endif %}
                 </div>
             </div>

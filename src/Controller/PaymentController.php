@@ -118,6 +118,7 @@ final class PaymentController extends AbstractController
                     $reservation->setUserId($order->getUser()->getId());
                     $reservation->setEventId($eventToAdd);
                     $reservation->setOrderId($order->getId());
+                    $reservation->setBoughtDate((new \DateTime("now")));
                     $entityManager->persist($reservation);
                 }
             }

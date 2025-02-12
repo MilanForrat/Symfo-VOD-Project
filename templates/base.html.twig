@@ -7,6 +7,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link href="{{ asset('/styles/bootstrap.css') }}" rel="stylesheet">
         <link href="{{ asset('/styles/app.css') }}" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
         <script src="https://kit.fontawesome.com/2882818d20.js" crossorigin="anonymous"></script>
     </head>
     <body> 
@@ -63,13 +64,13 @@
                                 <img src="{{ asset('/img/account-icon.png') }}" class="icon-perso me-2">Mon Espace
                             </a>
                             <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="{{ path('app_panier') }}">Mon panier</a></li>
-                                <li><a class="dropdown-item" href="{{ path('app_user_account') }}">Mes Informations</a></li>
-                                <li><a class="dropdown-item" href="{{ path('app_user_account_addresses') }}">Mes Adresses</a></li>
-                                <li><a class="dropdown-item" href="{{ path('app_user_account_catalog') }}">Mon Catalogue</a></li>
-                                <li><a class="dropdown-item" href="{{ path('app_user_account_reservations') }}">Mes Evènements</a></li>
-                                <li><a class="dropdown-item" href="{{ path('app_user_account_invoices') }}">Mes Commandes</a></li>
-                                <li><a class="dropdown-item" href="{{ path('app_logout') }}">Se Déconnecter</a></li>
+                                <li><a class="dropdown-item" href="{{ path('app_panier') }}"><i class="bi bi-cart4 me-3"></i> Mon panier</a></li>
+                                <li><a class="dropdown-item" href="{{ path('app_user_account') }}"><i class="bi bi-info-circle me-3"></i> Mes Informations</a></li>
+                                <li><a class="dropdown-item" href="{{ path('app_user_account_addresses') }}"><i class="bi bi-geo-alt me-3"></i> Mes Adresses</a></li>
+                                <li><a class="dropdown-item" href="{{ path('app_user_account_catalog') }}"><i class="bi bi-play-btn me-3"></i> Mon Catalogue</a></li>
+                                <li><a class="dropdown-item" href="{{ path('app_user_account_reservations') }}"><i class="bi bi-calendar2-event me-3"></i> Mes Evènements</a></li>
+                                <li><a class="dropdown-item" href="{{ path('app_user_account_invoices') }}"><i class="bi bi-receipt me-3"></i> Mes Commandes</a></li>
+                                <li><a class="dropdown-item" href="{{ path('app_logout') }}"><i class="bi bi-box-arrow-left me-3"></i> Se Déconnecter</a></li>
                             </ul>
                         </li>
                         {# <a href="{{ path('app_user_account') }}"><img src="{{ asset('/img/account-icon.png') }}" class="icon-perso me-2">Mon compte</a>

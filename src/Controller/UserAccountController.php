@@ -196,46 +196,50 @@ class UserAccountController extends AbstractController
     }
 
     #[Route('/utilisateur/compte/reservations', name: 'app_user_account_reservations')]
-    public function reservations(ReservationRepository $reservationRepository,EventRepository $eventRepository, OrderDetailRepository $orderDetailRepository): Response
+    public function reservations(ReservationRepository $reservationRepository,EventRepository $eventRepository, OrderRepository $orderRepository): Response
     {
-        $eventsById=[];
-        $eventsObject=[];
+        // renvoie les reservations liées à l'utilisateur
         $reservations = $reservationRepository->findBy([
             'user_id'=>$this->getUser()->getId(),
         ]);
+        $eventOrders=[];
+        $eventDetails=[];
+        $orderIdOfEvents=[];
 
-        foreach($reservations as $reservation){
-            // dd($reservation->getOrderId());
-            $order[]=$reservation->getOrderId();
-            $event = $reservation->getEventId();
-            $eventsById[]=$event;
+        // permet de récupérer l'order Id par Evenement de l'utilisateur
+        foreach($reservations as $event){
             
-        }
-        // allows to see only 1 event from the same event_id (prevents duplicates)
-        $unique_reservations=array_unique($eventsById);
+            // récupérer les détails de l'évènement par son id
+            $eventId=$event->getEventId();
 
-        $uniqueOrders=array_unique($order);
-        // dd($unique_orders);
-        $orders=[];
-        // dd($uniqueOrders);
-        array_push($orders, $uniqueOrders);
-        $ordersReIndexed = array_map('array_values',$orders);
-        // dd($ordersReIndexed);
+            // je recupère l'order_id de l'évènement
+            $eventOrder=$event->getOrderId();
 
-        foreach($unique_reservations as $eventObject){
-            $eventsObject[] = $eventRepository->findById($eventObject);
+
+  
+
+
             
+            // si la valeur existe dans le tableau alors je loop la suite, sinon rien
+            // renvoie vrai si valeur trouvée dans le tableau 
+            if(in_array($eventOrder, $orderIdOfEvents)){
+                dump("true");
+                continue;
+            }else{
+                dump("false");
+                $eventOrders[]=$orderRepository->findOneById($eventOrder);
+                $eventDetails[] = $eventRepository->findOneById($eventId);
+                
+            }
+            // je stock l'order id de chaque évènement
+            $orderIdOfEvents[]=$eventOrder;
+            // dd($eventDetails);
         }
-        
-        // récupérer tous les orders id
-        // récupérer que les orders id différents 
-
-
         
         return $this->render('user_account/user_reservation.html.twig', [
             'reservations'=>$reservations,
-            'eventsObject'=>$eventsObject,
-            'ordersReIndexed'=>$ordersReIndexed,
+            'eventDetails'=>$eventDetails,
+            'eventOrders'=>$eventOrders,
         ]);
     }
 
