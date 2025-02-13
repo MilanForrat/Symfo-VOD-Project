@@ -13,11 +13,11 @@
         <div class="album py-5">
             <div class="container">
                 <div class="row g-3 justify-content-center">
-                    {% if reservations|length == 0 %}
+                    {% if eventOrders|length == 0 %}
                     <p>Vous n'avez pas encore de réservations pour vos évènements.</p>
                     <hr>
                     {% else %}
-                        <p>Vous avez actuellement {{(reservations|length)}} réservations pour vos évènements.</p>
+                        <p>Vous avez actuellement {{(eventOrders|length)}} réservations pour vos évènements.</p>
                         {# {{dump(reservations)}} #}
                             {% for key, eventElement in eventDetails %}
                                 <div class="card col-11 col-md-3 mb-3 mx-3 mt-5">
@@ -37,7 +37,7 @@
                                             {{eventOrders[key].createdAT|format_datetime(locale: 'fr')}}
                                         </p>                        
                                     </div>
-                                    {# {{dump(eventOrders[key].id)}} #}
+                                    {# {{dump(eventOrders|length)}} #}
                                         <a target="_blank" href="{{path('app_invoice_client', {"id_order":eventOrders[key].id })}}" class="btn btn-success">Télécharger le(s) ticket(s)</a>
                                 </div>
                         {% endfor %}                           

@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 // appel de doctrine pour communiquer avec la BDD
+
+use App\Class\Mail;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\Article;
 use App\Entity\Event;
@@ -18,6 +20,8 @@ class HomeController extends AbstractController
     #[Route('/', name: 'app_home')]
     public function index(EntityManagerInterface $entityManager): Response
     {
+        // $mail= New Mail();
+        // $mail->send('bibilanou@hotmail.fr','john doe', 'Bonjour','test premier email');
 
         $video = $entityManager->getRepository(Video::class)->findAll();
         $article = $entityManager->getRepository(Article::class)->findAll();
