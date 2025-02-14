@@ -20,9 +20,6 @@ class HomeController extends AbstractController
     #[Route('/', name: 'app_home')]
     public function index(EntityManagerInterface $entityManager): Response
     {
-        // $mail= New Mail();
-        // $mail->send('bibilanou@hotmail.fr','john doe', 'Bonjour','test premier email');
-
         $video = $entityManager->getRepository(Video::class)->findAll();
         $article = $entityManager->getRepository(Article::class)->findAll();
         $headers = $entityManager->getRepository(Header::class)->findAll();

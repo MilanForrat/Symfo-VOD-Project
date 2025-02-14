@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Class\Mail;
 use App\Entity\User;
 use App\Form\SignInType;
 use Symfony\Component\HttpFoundation\Request;
@@ -52,7 +53,17 @@ class SignInController extends AbstractController
             $entityManager->flush();
 
             // afficher message succès 
-            $this->addFlash('success',"Compte créer avec succès, vérifiez vos e-mail pour complèter l'inscription.");
+            $this->addFlash('success',"Compte créé avec succès, vérifiez vos e-mail pour complèter l'inscription.");
+
+            $mail= New Mail();
+            // variables pour la template
+            $vars=[
+                'firstname'=>$user->getFirstName(),
+                'lastname'=>$user->getLastName(),
+            ];
+            $mail->send($user->getEmail(),$user->getFirstName().' '.$user->getLastName(), 'Bienvenue sur VOD Project','welcome.html',$vars);
+            
+            return $this->redirectToRoute('app_login');
         }else{
             // afficher message erreur
             $this->addFlash('danger',"Une erreur est survenue lors de la création du compte.");

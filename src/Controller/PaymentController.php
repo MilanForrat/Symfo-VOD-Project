@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Class\Mail;
 use App\Entity\Catalog;
 use App\Entity\Reservation;
 use App\Repository\EventRepository;
@@ -78,6 +79,15 @@ final class PaymentController extends AbstractController
     #[Route('/commande/merci/{stripe_session_id}', name: 'app_payment_success')]
     public function success($stripe_session_id, OrderRepository $orderRepository, EventRepository $eventRepository, EntityManagerInterface $entityManager, SessionInterface $session, VideoRepository $videoRepository): Response
     {
+
+        $mail= New Mail();
+        // variables pour la template
+        $vars=[
+            'firstname'=>$user->getFirstName(),
+            'lastname'=>$user->getLastName(),
+        ];
+        $mail->send($user->getEmail(),$user->getFirstName().' '.$user->getLastName(), 'Bienvenue sur VOD Project','thank_you.html',$vars);
+
         $catalogExists=false;
         $reservationExists=false;
 
@@ -136,9 +146,6 @@ final class PaymentController extends AbstractController
         }
         $entityManager->flush();
        
-
-
-
         return $this->render('payment/success.html.twig', [
             'order'=>$order
         ]);
