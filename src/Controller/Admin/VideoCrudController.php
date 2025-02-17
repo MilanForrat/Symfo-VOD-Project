@@ -2,6 +2,7 @@
 
 namespace App\Controller\Admin;
 
+use App\Entity\StatsVideo;
 use App\Entity\Video;
 use Doctrine\DBAL\Types\BooleanType;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
@@ -74,7 +75,7 @@ class VideoCrudController extends AbstractCrudController
                 ->setBasePath('uploads/')
                 ->setUploadDir('public/uploads')
                 ->setLabel('Image')
-                ->setHelp("L'image ne doit pas dépasser 1200 Kb, soit 1,2 Mb")
+                ->setHelp("L'image ne doit pas dépasser 2000 Kb, soit 2 Mb")
                 // on renomme l'image sur le serveur pour éviter le duplicata (nom unique à chaque image)
                 ->setUploadedFileNamePattern('[randomhash].[extension]')
                 // rendre obligatoire l'upload d'image

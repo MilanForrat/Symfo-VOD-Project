@@ -108,16 +108,4 @@ class UserCrudController extends AbstractCrudController
             $form->getData()->setPassword($hash);
         };
     }
-
-
-
-
-
-
-
-
-
-
-
-
 }

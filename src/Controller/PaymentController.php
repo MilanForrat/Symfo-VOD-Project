@@ -5,8 +5,10 @@ namespace App\Controller;
 use App\Class\Mail;
 use App\Entity\Catalog;
 use App\Entity\Reservation;
+use App\Entity\StatsVideo;
 use App\Repository\EventRepository;
 use App\Repository\OrderRepository;
+use App\Repository\StatsVideoRepository;
 use App\Repository\VideoRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Stripe\Stripe;
@@ -77,7 +79,7 @@ final class PaymentController extends AbstractController
     }
 
     #[Route('/commande/merci/{stripe_session_id}', name: 'app_payment_success')]
-    public function success($stripe_session_id, OrderRepository $orderRepository, EventRepository $eventRepository, EntityManagerInterface $entityManager, SessionInterface $session, VideoRepository $videoRepository): Response
+    public function success($stripe_session_id, OrderRepository $orderRepository, EventRepository $eventRepository, EntityManagerInterface $entityManager, SessionInterface $session, VideoRepository $videoRepository, StatsVideoRepository $statsVideoRepository): Response
     {
         $user = $this->getUser();
         // dd($user);
@@ -123,6 +125,14 @@ final class PaymentController extends AbstractController
                     $catalog->setUserId($order->getUser()->getId());
                     $catalog->setVideoId($videoToAdd);
                     $entityManager->persist($catalog);
+                    // incrémenter le StatsVideo par rapport à l'id_video
+                    // chercher dans le repository avec un find 
+                    $statsVideoToIncrement=$statsVideoRepository->findOneBy([
+                        'video_id'=>$video->getId(),
+                    ]);
+                    // dd($statsVideoToIncrement);
+                    $actualVideoPlayCount=$statsVideoToIncrement->getPlayCount();
+                    $statsVideoToIncrement->setPlayCount($actualVideoPlayCount+1);
                 }
                 if($event != NULL){
                     $eventToAdd = $event->getId();
@@ -132,6 +142,8 @@ final class PaymentController extends AbstractController
                     $reservation->setOrderId($order->getId());
                     $reservation->setBoughtDate((new \DateTime("now")));
                     $entityManager->persist($reservation);
+                     // incrémenter le StatsEvent par rapport à l'id_event
+                    
                 }
             }
             // if($catalogExists == true){
