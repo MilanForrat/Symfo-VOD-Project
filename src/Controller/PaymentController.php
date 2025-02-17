@@ -79,6 +79,8 @@ final class PaymentController extends AbstractController
     #[Route('/commande/merci/{stripe_session_id}', name: 'app_payment_success')]
     public function success($stripe_session_id, OrderRepository $orderRepository, EventRepository $eventRepository, EntityManagerInterface $entityManager, SessionInterface $session, VideoRepository $videoRepository): Response
     {
+        $user = $this->getUser();
+        // dd($user);
 
         $mail= New Mail();
         // variables pour la template
@@ -86,7 +88,7 @@ final class PaymentController extends AbstractController
             'firstname'=>$user->getFirstName(),
             'lastname'=>$user->getLastName(),
         ];
-        $mail->send($user->getEmail(),$user->getFirstName().' '.$user->getLastName(), 'Bienvenue sur VOD Project','thank_you.html',$vars);
+        $mail->send($user->getEmail(),$user->getFirstName().' '.$user->getLastName(), 'Commande sur le site VOD Project','thank_you.html',$vars);
 
         $catalogExists=false;
         $reservationExists=false;
