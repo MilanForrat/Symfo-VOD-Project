@@ -83,7 +83,7 @@ final class PaymentController extends AbstractController
     }
 
     #[Route('/commande/merci/{stripe_session_id}', name: 'app_payment_success')]
-    public function success($stripe_session_id, OrderRepository $orderRepository, EventRepository $eventRepository,StatsEventRepository $statsEventRepository, EntityManagerInterface $entityManager, SessionInterface $session, VideoRepository $videoRepository, StatsVideoRepository $statsVideoRepository, OrderDetailRepository $orderDetailRepository): Response
+    public function success($stripe_session_id, OrderRepository $orderRepository, EventRepository $eventRepository,StatsEventRepository $statsEventRepository, EntityManagerInterface $entityManager, SessionInterface $session, VideoRepository $videoRepository,StatsVideoRepository $statsVideoRepository, OrderDetailRepository $orderDetailRepository): Response
     {
         $user = $this->getUser();
         // dd($user);
@@ -132,9 +132,20 @@ final class PaymentController extends AbstractController
                     $entityManager->persist($catalog);
                     // incrémenter le StatsVideo par rapport à l'id_video
                     // chercher dans le repository avec un find 
-                    $statsVideoToIncrement=$statsVideoRepository->findOneBy([
+                    if($statsVideoRepository->findOneBy([
                         'video_id'=>$video->getId(),
-                    ]);
+                    ]) == NULL){
+
+                        $statsVideoToIncrement= New StatsVideo;
+                        $statsVideoToIncrement->setVideoId($video->getId());
+                        $statsVideoToIncrement->setVideoName($video->getName());
+                        $statsVideoToIncrement->setPlayCount(0);
+                        $entityManager->persist($statsVideoToIncrement);
+                    }else{
+                        $statsVideoToIncrement=$statsVideoRepository->findOneBy([
+                            'video_id'=>$video->getId(),
+                        ]);
+                    }
                     // dd($statsVideoToIncrement);
                     $actualVideoPlayCount=$statsVideoToIncrement->getPlayCount();
                     $statsVideoToIncrement->setPlayCount($actualVideoPlayCount+1);
@@ -178,18 +189,20 @@ final class PaymentController extends AbstractController
                 $orderDetailsLength=count($orderDetails);
                 
                 for($i=0;$i<$orderDetailsLength;$i++){
-                    
-                    
                     $productQuantity=$orderDetails[$i]->getProductQuantity();
                     $currentTotalEventTickets+=$productQuantity;
                     // dd($orderDetails[$i]->getProductName());
-                    if($orderDetails[$i]->getProductName() == "Soirée américaine | Formule Pass'Evènement"){
-                        // dd($statsEventToIncrement);
-                        $actualNoFoodStats=$statsEventToIncrement->getNoFoodStats();
-                        $statsEventToIncrement->setNoFoodStats($productQuantity+$actualNoFoodStats);
-                    }else{
+                    if(str_contains($orderDetails[$i]->getProductName(),"Repas")){
+                        // dd("formule avec foood");
                         $actualWithFoodStats=$statsEventToIncrement->getWithFoodStats();
                         $statsEventToIncrement->setWithFoodStats($productQuantity+$actualWithFoodStats);
+                        // dd($statsEventToIncrement->getWithFoodStats());
+                        
+                    }else{
+                        // dd("formule no foood");
+                        $actualNoFoodStats=$statsEventToIncrement->getNoFoodStats();
+                        $statsEventToIncrement->setNoFoodStats($productQuantity+$actualNoFoodStats);
+                        // dd($statsEventToIncrement->getNoFoodStats());
                     }
                 };
                 // set reservation totalTickets
