@@ -5,12 +5,16 @@ namespace App\Controller;
 use App\Class\Mail;
 use App\Entity\Catalog;
 use App\Entity\Reservation;
+use App\Entity\StatsEvent;
 use App\Entity\StatsVideo;
 use App\Repository\EventRepository;
+use App\Repository\OrderDetailRepository;
 use App\Repository\OrderRepository;
+use App\Repository\StatsEventRepository;
 use App\Repository\StatsVideoRepository;
 use App\Repository\VideoRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use phpDocumentor\Reflection\Types\Null_;
 use Stripe\Stripe;
 use Stripe\Checkout\Session;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -79,7 +83,7 @@ final class PaymentController extends AbstractController
     }
 
     #[Route('/commande/merci/{stripe_session_id}', name: 'app_payment_success')]
-    public function success($stripe_session_id, OrderRepository $orderRepository, EventRepository $eventRepository, EntityManagerInterface $entityManager, SessionInterface $session, VideoRepository $videoRepository, StatsVideoRepository $statsVideoRepository): Response
+    public function success($stripe_session_id, OrderRepository $orderRepository, EventRepository $eventRepository,StatsEventRepository $statsEventRepository, EntityManagerInterface $entityManager, SessionInterface $session, VideoRepository $videoRepository, StatsVideoRepository $statsVideoRepository, OrderDetailRepository $orderDetailRepository): Response
     {
         $user = $this->getUser();
         // dd($user);
@@ -94,6 +98,7 @@ final class PaymentController extends AbstractController
 
         $catalogExists=false;
         $reservationExists=false;
+        $isEvent=false;
 
         $order=$orderRepository->findOneBy([
             'stripe_session_id'=>$stripe_session_id,
@@ -141,19 +146,59 @@ final class PaymentController extends AbstractController
                     $reservation->setEventId($eventToAdd);
                     $reservation->setOrderId($order->getId());
                     $reservation->setBoughtDate((new \DateTime("now")));
+                    $reservation->setNumberOfTickets(0);
                     $entityManager->persist($reservation);
-                     // incrémenter le StatsEvent par rapport à l'id_event
-                    
+
+                    // boolean
+                    $isEvent=true;
                 }
             }
-            // if($catalogExists == true){
-            //     $entityManager->persist($catalog);
-            // }
-            // if($reservationExists == true){
-            //     $entityManager->persist($reservation);
-            // }
+            if($isEvent == true){
+                // créer un stat seulement s'il n'existe pas
+                if($statsEventRepository->findOneBy([
+                    'event_id'=>$event->getId(),
+                ]) == NULL){
+                    $statsEventToIncrement= New StatsEvent;
+                    $statsEventToIncrement->setEventId($event->getId());
+                    $statsEventToIncrement->setEventName($event->getName());
+                    $statsEventToIncrement->setPlayCount(0);
+                    $statsEventToIncrement->setNoFoodStats(0);
+                    $statsEventToIncrement->setWithFoodStats(0);
+                }else{
+                    $statsEventToIncrement=$statsEventRepository->findOneBy([
+                        'event_id'=>$event->getId(),
+                    ]);
+                }
+                $orderDetails=$orderDetailRepository->findBy([
+                    'myOrder'=>$order->getId(),
+                ]);
+                
+                
+                $currentTotalEventTickets=0;
+                $orderDetailsLength=count($orderDetails);
+                
+                for($i=0;$i<$orderDetailsLength;$i++){
+                    
+                    
+                    $productQuantity=$orderDetails[$i]->getProductQuantity();
+                    $currentTotalEventTickets+=$productQuantity;
+                    // dd($orderDetails[$i]->getProductName());
+                    if($orderDetails[$i]->getProductName() == "Soirée américaine | Formule Pass'Evènement"){
+                        // dd($statsEventToIncrement);
+                        $actualNoFoodStats=$statsEventToIncrement->getNoFoodStats();
+                        $statsEventToIncrement->setNoFoodStats($productQuantity+$actualNoFoodStats);
+                    }else{
+                        $actualWithFoodStats=$statsEventToIncrement->getWithFoodStats();
+                        $statsEventToIncrement->setWithFoodStats($productQuantity+$actualWithFoodStats);
+                    }
+                };
+                // set reservation totalTickets
+                $reservation->setNumberOfTickets($currentTotalEventTickets);
+                $actualEventPlayCount=$statsEventToIncrement->getPlayCount();
+                $statsEventToIncrement->setPlayCount($actualEventPlayCount+$currentTotalEventTickets);
+                $entityManager->persist($statsEventToIncrement);
+            }
 
-            // dd($video->isPaid());
             $session->remove('panier');
             $session->remove('panierReservationNoFood');
             $session->remove('panierReservationWithFood');

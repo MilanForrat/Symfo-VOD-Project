@@ -35,7 +35,16 @@
                                         <p>
                                             Ticket(s) acheté(s) le :<br>
                                             {{eventOrders[key].createdAT|format_datetime(locale: 'fr')}}
-                                        </p>                        
+                                        </p>
+                                        <p>
+                                            Nombre de ticket(s) :<br>
+                                            {# {{dump(reservations[key])}} #}
+                                            {{reservations[key].numberOfTickets}}
+                                        </p>
+                                        <p>
+                                            Numéro de commande : <br>
+                                            {{reservations[key].orderId}}
+                                        </p>                             
                                     </div>
                                     {# {{dump(eventOrders|length)}} #}
                                         <a target="_blank" href="{{path('app_invoice_client', {"id_order":eventOrders[key].id })}}" class="btn btn-success">Télécharger le(s) ticket(s)</a>

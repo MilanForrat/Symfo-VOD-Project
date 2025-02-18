@@ -26,6 +26,9 @@ class Reservation
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $boughtDate = null;
 
+    #[ORM\Column]
+    private ?int $numberOfTickets = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -75,6 +78,18 @@ class Reservation
     public function setBoughtDate(\DateTimeInterface $boughtDate): static
     {
         $this->boughtDate = $boughtDate;
+
+        return $this;
+    }
+
+    public function getNumberOfTickets(): ?int
+    {
+        return $this->numberOfTickets;
+    }
+
+    public function setNumberOfTickets(int $numberOfTickets): static
+    {
+        $this->numberOfTickets = $numberOfTickets;
 
         return $this;
     }

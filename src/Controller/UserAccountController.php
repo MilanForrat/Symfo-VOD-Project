@@ -215,18 +215,13 @@ class UserAccountController extends AbstractController
             // je recupère l'order_id de l'évènement
             $eventOrder=$event->getOrderId();
 
-
-  
-
-
-            
             // si la valeur existe dans le tableau alors je loop la suite, sinon rien
             // renvoie vrai si valeur trouvée dans le tableau 
             if(in_array($eventOrder, $orderIdOfEvents)){
-                dump("true");
+                // dump("true");
                 continue;
             }else{
-                dump("false");
+                // dump("false");
                 $eventOrders[]=$orderRepository->findOneById($eventOrder);
                 $eventDetails[] = $eventRepository->findOneById($eventId);
                 

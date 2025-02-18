@@ -2,6 +2,8 @@
 
 namespace App\EventSubscriber;
 
+use App\Entity\Event;
+use App\Entity\StatsEvent;
 use App\Entity\StatsVideo;
 use App\Entity\Video;
 use Symfony\Bundle\SecurityBundle\Security;
@@ -25,19 +27,43 @@ class EasyAdminSubscriber implements EventSubscriberInterface
     public function onCreation(AfterEntityPersistedEvent $event){
         $entity = $event->getEntityInstance();
 
-        // créer une ligne stats video à chaque création de nouvelle vidéo
-        $statsVideo = new StatsVideo();
-        $statsVideo->setVideoId($entity->getId());
-        $statsVideo->setVideoName($entity->getName());
-        if($statsVideo->getPlayCount() == NULL){
-            $statsVideo->setPlayCount(0);
-            // die('null');
+        // SI c'est une VIDEO
+        if ($entity instanceof Video) {
+            die('video');
+            // créer une ligne stats video à chaque création de nouvelle vidéo
+            $statsVideo = new StatsVideo();
+            $statsVideo->setVideoId($entity->getId());
+            $statsVideo->setVideoName($entity->getName());
+            if($statsVideo->getPlayCount() == NULL){
+                $statsVideo->setPlayCount(0);
+                // die('null');
+            }else{
+                $statsVideo->setPlayCount($statsVideo->getPlayCount()+1);
+            }
+            // dd($statsVideo);
+            $this->entityManagerInterface->persist($statsVideo);
+            $this->entityManagerInterface->flush();
+
+        // SI c'est un EVENT
+        }else if($entity instanceof Event){
+            // die('event');
+            $statsEvent = new StatsEvent();
+            $statsEvent->setEventId($entity->getId());
+            $statsEvent->setEventName($entity->getName());
+            if($statsEvent->getPlayCount() == NULL){
+                $statsEvent->setPlayCount(0);
+                // die('null');
+            }else{
+                $statsEvent->setPlayCount($statsEvent->getPlayCount()+1);
+            }
+            // dd($statsVideo);
+            $this->entityManagerInterface->persist($statsEvent);
+            $this->entityManagerInterface->flush();
         }else{
-            $statsVideo->setPlayCount($statsVideo->getPlayCount()+1);
+            return;
         }
-        // dd($statsVideo);
-        $this->entityManagerInterface->persist($statsVideo);
-        $this->entityManagerInterface->flush();
+        
+        
     }
 
     public static function getSubscribedEvents()

@@ -12,6 +12,7 @@ use App\Entity\Header;
 use App\Entity\Language;
 use App\Entity\Order;
 use App\Entity\StatsVideo;
+use App\Entity\StatsEvent;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
@@ -78,6 +79,7 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Commandes', 'fa-solid fa-list', Order::class);
         yield MenuItem::linkToCrud('Bannières', 'fa-solid fa-list', Header::class);
         yield MenuItem::linkToCrud('Statistiques Vidéos', 'fa-solid fa-list', StatsVideo::class);
+        yield MenuItem::linkToCrud('Statistiques Evènements', 'fa-solid fa-list', StatsEvent::class);
 
     }
 
