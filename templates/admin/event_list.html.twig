@@ -1,8 +1,13 @@
 {% extends '@!EasyAdmin/layout.html.twig' %}
 {% block main %}
-{# {{dump(event)}} #}
-<hr>
-{# {{dump(reservations)}} #}
+    <div class="d-flex justify-content-between">
+        <small>
+            <a href="{{path('admin_event_index')}}" class="nav-link mb-3"><img src="{{ asset('/img/back-icon.png')}}" class="me-2" width="22px" height="22px" alt="">Retour</a>
+        </small>
+        <small>
+            <a target="_blank" href="{{path('app_event_list_admin', {"event_id":event.id})}}" class="nav-link mb-3"><img src="{{ asset('/img/down-icon.png')}}" class="me-2 mb-1" width="22px" height="22px" alt="">Télécharger la liste</a>
+        </small>
+    </div>
     <h1>Liste des participants de l'évènement : {{event.name}}</h1>
     <div class="d-flex justify-content-between my-5">
         <h2 class="h5">Evènement prévu le : {{event.eventDate|format_datetime(locale: 'fr')}}</h2>

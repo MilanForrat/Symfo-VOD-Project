@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="fr">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>liste-evenement.pdf</title>
+        <style>
+            body{
+                font-family:Roboto, sans-serif;
+            }
+            .text-center{
+                text-align:center;
+            }
+            .text-right{
+                text-align:right;
+            }
+            .text-left{
+                text-align:left;
+            }
+            table{
+                border-collapse: collapse;
+            }
+            table td, table th{
+                border-top: 1px solid #ccc;
+                padding: 0.5rem;
+            }
+        </style>
+    </head>
+    <body>  
+        <h1 style="font-size:25px;">Liste des participants de l'évènement :<br> {{event.name}}</h1>
+        <div class="d-flex justify-content-between my-5">
+            <h2 style="font-size:18px;">Evènement prévu le : {{event.eventDate|format_datetime(locale: 'fr')}}</h2>
+            <h3 style="font-size:18px;">Fin des réservations prévu le : {{event.reservationDateEnd|format_datetime(locale: 'fr')}}</h3>
+        </div>
+        <hr>
+        {# {{dump(statsEvent)}} #}
+        <ul class="d-flex justify-content-between">
+            <li class="mb-3">Le nombre total de formules Pass'Event est : {{statsEvent[0].NoFoodStats}}</li>
+            <li class="mb-3">Le nombre total de formules Pass'Event + Repas est : {{statsEvent[0].WithFoodStats}}</li>
+            <li class="mb-3">Le nombre total d'inscrit à l'évènement est : {{statsEvent[0].playCount}}</li>
+        </ul>
+        <hr>
+        <div class="col-12">
+            <table class="table mt-2">
+            <thead>
+                    <tr>
+                        <th scope="col">Nom</th>
+                        <th scope="col">Prénom</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Date d'achat</th>
+                        <th scope="col">Ref Commande</th>
+                        <th scope="col">Pass'Event</th>
+                        <th scope="col">Pass'Event + Repas</th>
+                        <th scope="col">Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for infos in reservations %}
+                        <tr>
+                            <td>{{infos.LastName}}</td>
+                            <td>{{infos.firstName}}</td>
+                            <td>{{infos.email}}</td>
+                            <td>{{infos.boughtDate|format_datetime(locale: 'fr')}}</td>
+                            <td class="text-center">{{infos.orderId}}</td>
+                            <td class="text-center">{{infos.numberOfTicketsNoFood}}</td>
+                            <td class="text-center">{{infos.numberOfTicketsWithFood}}</td>
+                            <td class="text-center">{{infos.numberOfTickets}}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </body>
+</html>
