@@ -16,9 +16,13 @@
     <hr>
     {# {{dump(statsEvent)}} #}
     <ul class="d-flex justify-content-between">
+    {% if statsEvent|length > 0 %}
         <li class="mb-3">Le nombre total de formules Pass'Event est : {{statsEvent[0].NoFoodStats}}</li>
         <li class="mb-3">Le nombre total de formules Pass'Event + Repas est : {{statsEvent[0].WithFoodStats}}</li>
         <li class="mb-3">Le nombre total d'inscrit à l'évènement est : {{statsEvent[0].playCount}}</li>
+    {% else %}
+        <li>Aucun participant pour le moment</li>
+    {% endif %}
     </ul>
     <hr>
     <div class="col-12">
