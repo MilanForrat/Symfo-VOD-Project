@@ -156,9 +156,10 @@ final class PaymentController extends AbstractController
                     $reservation->setUserId($order->getUser()->getId());
                     $reservation->setEventId($eventToAdd);
                     $reservation->setOrderId($order->getId());
-                    $reservation->setBoughtDate((new \DateTime("now")));
+                    $reservation->setBoughtDate((new \DateTime()));
                     $reservation->setNumberOfTickets(0);
-                    $entityManager->persist($reservation);
+                    $reservation->setNumberOfTicketsNoFood(0);
+                    $reservation->setNumberOfTicketsWithFood(0);
 
                     // boolean
                     $isEvent=true;
@@ -197,12 +198,15 @@ final class PaymentController extends AbstractController
                         $actualWithFoodStats=$statsEventToIncrement->getWithFoodStats();
                         $statsEventToIncrement->setWithFoodStats($productQuantity+$actualWithFoodStats);
                         // dd($statsEventToIncrement->getWithFoodStats());
+                        $reservation->setNumberOfTicketsWithFood($productQuantity);
+                        
                         
                     }else{
                         // dd("formule no foood");
                         $actualNoFoodStats=$statsEventToIncrement->getNoFoodStats();
                         $statsEventToIncrement->setNoFoodStats($productQuantity+$actualNoFoodStats);
                         // dd($statsEventToIncrement->getNoFoodStats());
+                        $reservation->setNumberOfTicketsNoFood($productQuantity);
                     }
                 };
                 // set reservation totalTickets
@@ -210,6 +214,7 @@ final class PaymentController extends AbstractController
                 $actualEventPlayCount=$statsEventToIncrement->getPlayCount();
                 $statsEventToIncrement->setPlayCount($actualEventPlayCount+$currentTotalEventTickets);
                 $entityManager->persist($statsEventToIncrement);
+                $entityManager->persist($reservation);
             }
 
             $session->remove('panier');

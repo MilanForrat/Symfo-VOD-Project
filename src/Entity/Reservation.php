@@ -23,11 +23,17 @@ class Reservation
     #[ORM\Column]
     private ?int $order_id = null;
 
-    #[ORM\Column(type: Types::DATE_MUTABLE)]
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $boughtDate = null;
 
     #[ORM\Column]
     private ?int $numberOfTickets = null;
+
+    #[ORM\Column]
+    private ?int $numberOfTicketsNoFood = null;
+
+    #[ORM\Column]
+    private ?int $numberOfTicketsWithFood = null;
 
     public function getId(): ?int
     {
@@ -90,6 +96,30 @@ class Reservation
     public function setNumberOfTickets(int $numberOfTickets): static
     {
         $this->numberOfTickets = $numberOfTickets;
+
+        return $this;
+    }
+
+    public function getNumberOfTicketsNoFood(): ?int
+    {
+        return $this->numberOfTicketsNoFood;
+    }
+
+    public function setNumberOfTicketsNoFood(int $numberOfTicketsNoFood): static
+    {
+        $this->numberOfTicketsNoFood = $numberOfTicketsNoFood;
+
+        return $this;
+    }
+
+    public function getNumberOfTicketsWithFood(): ?int
+    {
+        return $this->numberOfTicketsWithFood;
+    }
+
+    public function setNumberOfTicketsWithFood(int $numberOfTicketsWithFood): static
+    {
+        $this->numberOfTicketsWithFood = $numberOfTicketsWithFood;
 
         return $this;
     }

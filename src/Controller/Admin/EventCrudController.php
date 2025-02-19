@@ -3,6 +3,12 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Event;
+use App\Entity\StatsEvent;
+use App\Repository\ReservationRepository;
+use App\Repository\StatsEventRepository;
+use App\Repository\UserRepository;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
@@ -13,9 +19,47 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
+use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 
 class EventCrudController extends AbstractCrudController
 {
+    public function configureActions(Actions $actions): Actions
+    {
+        // création d'une nouvelle action qui est reliée à la function show
+        $show = Action::new('Liste des participants')->linkToCrudAction('show');
+
+    return $actions
+        ->add(Crud::PAGE_INDEX, $show)
+    ;
+    }
+
+    public function show(AdminContext $context, ReservationRepository $reservationRepository, StatsEventRepository $statsEventRepository, UserRepository $userRepository){
+        $event = $context->getEntity()->getInstance();
+        $reservations=$reservationRepository->findBy([
+            'event_id'=>$event->getId(),
+        ]);
+        $statsEvent=$statsEventRepository->findBy([
+            'event_id'=>$event->getId(),
+        ]);
+        // dd($order);
+        // 1) boucler le tableau des reservations pour stocker les infos dans un autre tableau
+        foreach($reservations as $reservation){
+            dump($reservation->getUserId());
+            $userId=$reservation->getUserId();
+            $users[]=$userRepository->findById($userId);
+
+        }
+        // 2) boucler le tableau des infos
+
+        return $this->render('admin/event_list.html.twig',[
+            'event'=>$event,
+            'reservations'=>$reservations,
+            'statsEvent'=>$statsEvent,
+            'users'=>$users,
+        ]);
+    }
+
+
     public static function getEntityFqcn(): string
     {
         return Event::class;
