@@ -35,27 +35,17 @@ class EventCrudController extends AbstractCrudController
 
     public function show(AdminContext $context, ReservationRepository $reservationRepository, StatsEventRepository $statsEventRepository, UserRepository $userRepository){
         $event = $context->getEntity()->getInstance();
-        $reservations=$reservationRepository->findBy([
-            'event_id'=>$event->getId(),
-        ]);
+        $reservations=$reservationRepository->findByEventId($event->getId());
         $statsEvent=$statsEventRepository->findBy([
             'event_id'=>$event->getId(),
         ]);
-        // dd($order);
-        // 1) boucler le tableau des reservations pour stocker les infos dans un autre tableau
-        foreach($reservations as $reservation){
-            dump($reservation->getUserId());
-            $userId=$reservation->getUserId();
-            $users[]=$userRepository->findById($userId);
-
-        }
-        // 2) boucler le tableau des infos
-
+       
+        // récupéré les réservations en ordre alphabétique par rapport au lastname
+    
         return $this->render('admin/event_list.html.twig',[
             'event'=>$event,
-            'reservations'=>$reservations,
             'statsEvent'=>$statsEvent,
-            'users'=>$users,
+            'reservations'=>$reservations,
         ]);
     }
 

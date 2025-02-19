@@ -31,15 +31,11 @@
                 </tr>
             </thead>
             <tbody>
-                {% for key, infos in reservations %}
-                    {# {{dump(infos)}}
-                    {{dump(users)}} #}
+                {% for infos in reservations %}
                     <tr>
-                    {# {{dump(users[key][0])}} #}
-                    {# {{dump(key)}} #}
-                        <td>{{users[key][0].LastName}}</td>
-                        <td>{{users[key][0].firstName}}</td>
-                        <td>{{users[key][0].email}}</td>
+                        <td>{{infos.LastName}}</td>
+                        <td>{{infos.firstName}}</td>
+                        <td>{{infos.email}}</td>
                         <td>{{infos.boughtDate|format_datetime(locale: 'fr')}}</td>
                         <td class="text-center">{{infos.orderId}}</td>
                         <td class="text-center">{{infos.numberOfTicketsNoFood}}</td>

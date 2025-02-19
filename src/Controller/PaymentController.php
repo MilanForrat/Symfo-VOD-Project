@@ -154,12 +154,16 @@ final class PaymentController extends AbstractController
                     $eventToAdd = $event->getId();
                     $reservation = New Reservation;
                     $reservation->setUserId($order->getUser()->getId());
+                    $reservation->setemail($order->getUser()->getEmail());
+                    $reservation->setFirstName($order->getUser()->getFirstName());
+                    $reservation->setLastName($order->getUser()->getLastName());
                     $reservation->setEventId($eventToAdd);
                     $reservation->setOrderId($order->getId());
                     $reservation->setBoughtDate((new \DateTime()));
                     $reservation->setNumberOfTickets(0);
                     $reservation->setNumberOfTicketsNoFood(0);
                     $reservation->setNumberOfTicketsWithFood(0);
+
 
                     // boolean
                     $isEvent=true;
