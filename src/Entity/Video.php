@@ -68,6 +68,9 @@ class Video
     #[ORM\Column]
     private ?bool $isHomepage = null;
 
+    #[ORM\ManyToOne(inversedBy: 'Year')]
+    private ?Season $season = null;
+
     // fonction pour récupéré prix TTC selon la tva choisie en BDD
     public function getPriceTvaCalculator(){
         $coeff= 1 +($this->tva/100);
@@ -91,7 +94,9 @@ class Video
     // utilisée pour easyadmin crud
     public function __toString()
     {
-        return $this->name;
+        return 
+            $this->name;
+            $this->season;
     }
 
     public function __construct()
@@ -298,6 +303,18 @@ class Video
     public function setIsHomepage(bool $isHomepage): static
     {
         $this->isHomepage = $isHomepage;
+
+        return $this;
+    }
+
+    public function getSeason(): ?Season
+    {
+        return $this->season;
+    }
+
+    public function setSeason(?Season $season): static
+    {
+        $this->season = $season;
 
         return $this;
     }

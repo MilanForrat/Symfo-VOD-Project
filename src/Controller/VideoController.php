@@ -5,6 +5,7 @@ namespace App\Controller;
 // appel de l'entité sur laquelle on souhaite modifier la BDD
 
 use App\Entity\Catalog;
+use App\Entity\Season;
 use App\Entity\User;
 use App\Entity\Video;
 // appel de doctrine pour communiquer avec la BDD
@@ -165,6 +166,7 @@ class VideoController extends AbstractController
     {
     
         $video = $entityManager->getRepository(Video::class)->findAll();
+        $season= $entityManager->getRepository(Season::class)->findAll();
         
         // si on ne trouve pas de vidéos on redirige à la page d'accueil
         if(!$video){
@@ -174,6 +176,7 @@ class VideoController extends AbstractController
         return $this->render('video/video_index.html.twig', [
             // on passe l'objet en entier afin d'accéder à tous ses détails
             'video' => $video,
+            'season'=>$season,
         ]);
     }
 

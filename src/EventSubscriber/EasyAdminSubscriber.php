@@ -29,7 +29,7 @@ class EasyAdminSubscriber implements EventSubscriberInterface
 
         // SI c'est une VIDEO
         if ($entity instanceof Video) {
-            die('video');
+            // die('video');
             // créer une ligne stats video à chaque création de nouvelle vidéo
             $statsVideo = new StatsVideo();
             $statsVideo->setVideoId($entity->getId());

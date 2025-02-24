@@ -5,7 +5,7 @@
 {% block body %}
     <div class="album py-5">
         <div class="container">
-            <h1 class="h3">Toutes les vidéos</h1>
+            <h1 class="h3">Toutes les vidéos de la saison : {{season}}</h1>
             <hr>
             <p>Cette page contient {{video|length}} résultats.</p>
             <div class="row g-3 justify-content-center">
@@ -15,7 +15,7 @@
                         <li class="nav-item">
                                 <a class="nav-link" aria-current="page" href="{{path('app_all_videos') }}">| Toutes les vidéos |</a>
                         </li>
-                        {% for element in season %}
+                        {% for element in seasons %}
                             <li class="nav-item">
                                 <a class="nav-link" aria-current="page" href="{{path('app_season_details', {'season':element.seasonYear}) }}">| {{element.seasonYear}} |</a>
                             </li>
@@ -26,9 +26,8 @@
                 {# {{dump(video)}} #}
                 <div class="card col-11 col-md-3 mb-3 mx-3" style="width: 18rem;">
                     <img src="/uploads/{{videoElement.image}}" class="card-img-top" alt="...">
-                    <div class="my-3 d-flex justify-content-around">
+                        <div class="my-3 text-start">
                         <span class="badge rounded-pill text-bg-warning ms-3 px-3">Vidéo</span>
-                        <span class="badge text-bg-dark">{{videoElement.season}}</span>
                     </div>
                     <div class="card-body">
                         <h4 class="card-title">{{videoElement.name}}</h4>

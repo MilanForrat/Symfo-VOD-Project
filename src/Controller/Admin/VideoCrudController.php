@@ -65,6 +65,8 @@ class VideoCrudController extends AbstractCrudController
 
         $link = TextField::new('link', "Lien vidéo complète")->setHelp('Lien de la vidéo payante')->hideOnIndex();
 
+        $season = AssociationField::new('season', 'Saison (année)');
+
         $language = AssociationField::new('language', 'Langue');
 
         $fields = [
@@ -107,6 +109,7 @@ class VideoCrudController extends AbstractCrudController
         $fields[]=$trailer;
         $fields[]=$link;
         $fields[]=$relation;
+        $fields[]=$season;
         $fields[]=$language;
         $fields[]=$length;
         $fields[]=$price;
