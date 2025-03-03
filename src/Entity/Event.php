@@ -44,6 +44,12 @@ class Event
     #[ORM\Column]
     private ?bool $isHomepage = null;
 
+    #[ORM\Column(type: Types::TEXT)]
+    private ?string $place = null;
+
+    #[ORM\Column(type: Types::TEXT)]
+    private ?string $GoogleMapsFrame = null;
+
         // utilisée pour easyadmin crud
     public function __toString()
     {
@@ -188,6 +194,30 @@ class Event
     {
         $eventNoFoodHTPrice=$this->eventPriceNoFood/1.2;
         return $eventNoFoodHTPrice;
+    }
+
+    public function getPlace(): ?string
+    {
+        return $this->place;
+    }
+
+    public function setPlace(string $place): static
+    {
+        $this->place = $place;
+
+        return $this;
+    }
+
+    public function getGoogleMapsFrame(): ?string
+    {
+        return $this->GoogleMapsFrame;
+    }
+
+    public function setGoogleMapsFrame(string $GoogleMapsFrame): static
+    {
+        $this->GoogleMapsFrame = $GoogleMapsFrame;
+
+        return $this;
     }
 
 }

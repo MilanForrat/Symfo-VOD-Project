@@ -23,9 +23,16 @@
             <a href="{{ path('app_event_reservation', { 'id' : event.id }) }}" id="reservation-event-btn" class="btn btn-success mb-5">Réserver dès maintenant</a>       
         </div>
         <hr>
-        <div class="col-10 my-5">
-        <h3>Description :</h3>
-            <p class="mb-4 product-description">{{event.description|raw}}</p>
+        <div class="row my-5">
+            <div class="col-7">
+                <h3>Description :</h3>
+                <p class="mb-4 product-description">{{event.description|raw}}</p>
+            </div>
+            <div class="col-4">
+                <h3>Se rendre à l'évènement :</h3>
+                <p class="mb-4 product-description">{{event.place}}</p>
+                {{event.GoogleMapsFrame|raw}}
+            </div>
         </div>
     </div>
 </div>

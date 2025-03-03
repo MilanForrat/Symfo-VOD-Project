@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\OrderDetailRepository;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: OrderDetailRepository::class)]
@@ -31,6 +32,12 @@ class OrderDetail
 
     #[ORM\Column]
     private ?float $productTVA = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $place = null;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $dateEvent = null;
 
     public function getId(): ?int
     {
@@ -112,5 +119,29 @@ class OrderDetail
     public function getTotalTTC(){
         $coeff= 1 +($this->productTVA/100);
         return $coeff*$this->productPrice;
+    }
+
+    public function getPlace(): ?string
+    {
+        return $this->place;
+    }
+
+    public function setPlace(?string $place): static
+    {
+        $this->place = $place;
+
+        return $this;
+    }
+
+    public function getDateEvent(): ?\DateTimeInterface
+    {
+        return $this->dateEvent;
+    }
+
+    public function setDateEvent(?\DateTimeInterface $dateEvent): static
+    {
+        $this->dateEvent = $dateEvent;
+
+        return $this;
     }
 }

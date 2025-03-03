@@ -20,7 +20,7 @@
                         <p>Vous avez actuellement {{(eventOrders|length)}} réservations pour vos évènements.</p>
                         {# {{dump(reservations)}} #}
                             {% for key, eventElement in eventDetails %}
-                                <div class="card col-11 col-md-3 mb-3 mx-3 mt-5">
+                                <div class="card col-11 col-md-4 mb-3 mx-3 mt-5">
                                     <img src="/uploads/{{eventElement.image}}" class="card-img-top" alt="...">
                                         <div class="my-3 text-start">
                                         <span class="badge rounded-pill text-bg-warning ms-3 px-3">Evènement</span>
@@ -32,19 +32,23 @@
                                         <hr>
                                         <strong>Prévu le : {{eventElement.eventDate|format_datetime(locale: 'fr')}}</strong>
                                         <hr>
+                                        <p>Lieu : {{eventElement.place}}</p>
+                                        <hr>
                                         <p>
                                             Ticket(s) acheté(s) le :<br>
                                             {{eventOrders[key].createdAT|format_datetime(locale: 'fr')}}
                                         </p>
-                                        <p>
-                                            Nombre de ticket(s) :<br>
-                                            {# {{dump(reservations[key])}} #}
-                                            {{reservations[key].numberOfTickets}}
-                                        </p>
-                                        <p>
-                                            Numéro de commande : <br>
-                                            {{reservations[key].orderId}}
-                                        </p>                             
+                                        <div class="d-flex justify-content-between">
+                                            <p>
+                                                Nombre de ticket(s) :<br>
+                                                {# {{dump(reservations[key])}} #}
+                                                {{reservations[key].numberOfTickets}}
+                                            </p>
+                                            <p>
+                                                Numéro de commande : <br>
+                                                {{reservations[key].orderId}}
+                                            </p>            
+                                        </div>       
                                     </div>
                                     {# {{dump(eventOrders|length)}} #}
                                         <a target="_blank" href="{{path('app_invoice_client', {"id_order":eventOrders[key].id })}}" class="btn btn-success">Télécharger le(s) ticket(s)</a>

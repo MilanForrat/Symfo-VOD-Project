@@ -96,8 +96,6 @@ final class PaymentController extends AbstractController
         ];
         $mail->send($user->getEmail(),$user->getFirstName().' '.$user->getLastName(), 'Commande sur le site VOD Project','thank_you.html',$vars);
 
-        $catalogExists=false;
-        $reservationExists=false;
         $isEvent=false;
 
         $order=$orderRepository->findOneBy([
@@ -163,8 +161,7 @@ final class PaymentController extends AbstractController
                     $reservation->setNumberOfTickets(0);
                     $reservation->setNumberOfTicketsNoFood(0);
                     $reservation->setNumberOfTicketsWithFood(0);
-
-
+                    
                     // boolean
                     $isEvent=true;
                 }
@@ -205,7 +202,7 @@ final class PaymentController extends AbstractController
                         $reservation->setNumberOfTicketsWithFood($productQuantity);
                         
                         
-                    }else{
+                    }else if(str_contains($orderDetails[$i]->getProductName(),"Seul")){
                         // dd("formule no foood");
                         $actualNoFoodStats=$statsEventToIncrement->getNoFoodStats();
                         $statsEventToIncrement->setNoFoodStats($productQuantity+$actualNoFoodStats);

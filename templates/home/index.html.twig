@@ -88,7 +88,9 @@
                 <div class="card-body">
                     <h4 class="card-title">{{event.name}}</h4>
                     <hr>
-                    <h5 class="text-center">Le {{event.eventDate|format_datetime('full','short',locale: 'fr')}}</h5>                           
+                    <h5 class="text-center">Le {{event.eventDate|format_datetime('full','short',locale: 'fr')}}</h5>
+                    <hr>
+                    <p class="text-center">{{event.place}}</p>                           
                 </div>
                 <a href="{{ path('app_event_details', { 'id' : event.id }) }}" class="btn btn-success">Découvrir l'évènement</a>
             </div>

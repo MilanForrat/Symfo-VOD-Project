@@ -92,6 +92,8 @@ class EventCrudController extends AbstractCrudController
             TextField::new('subtitle', "Sous-titre"),
             SlugField::new('slug')->setTargetFieldName('name')->hideOnIndex()->setHelp('URL de votre évènement générée automatiquement'),
             TextEditorField::new('description', "Description")->hideOnIndex(),
+            TextField::new('place', "Adresse"),
+            TextField::new('GoogleMapsFrame', "Lien Google Maps")->hideOnIndex()->setHelp('1) Aller sur GoogleMaps et rechercher votre lieu - 2) Cliquer sur "Partager" et sélectionner "intégrer une carte" - 3) Cliquer sur "copier le contenu HTML" et le coller ici'),
             TextField::new('eventPriceNoFood', "Prix TTC évènement sans repas")->hideOnIndex()->setHelp('Généralement 10.40'),
             TextField::new('eventPriceWithFood', "Prix TTC évènement + repas")->hideOnIndex()->setHelp('Généralement 26.40'),      
             DateTimeField::new('reservationDateEnd', 'Fin des réservations')->setFormat('dd.MM.yyyy'),

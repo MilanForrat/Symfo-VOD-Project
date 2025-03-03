@@ -180,14 +180,15 @@ final class OrderController extends AbstractController
             }
             foreach($dataEventNoFood as $eventNoFood){
                 $orderDetail= New OrderDetail();
-                $orderDetail->setProductName($eventNoFood['panierReservationNoFood']->getName().' | Formule Pass\'Evènement');
+                $orderDetail->setProductName($eventNoFood['panierReservationNoFood']->getName().' | Formule Pass\'Evènement Seul');
                 $orderDetail->setProductImage($eventNoFood['panierReservationNoFood']->getImage());
                 // dd($eventNoFood['panierReservationNoFood']->getImage());
                 $orderDetail->setProductQuantity($eventNoFood['quantity']);
                 $orderDetail->setProductPrice($eventNoFood['panierReservationNoFood']->getEventPriceNoFoodHT());
                 // dd($eventNoFood['panierReservationNoFood']->getEventPriceNoFoodHT());
                 $orderDetail->setProductTVA(20.0);
-
+                $orderDetail->setPlace($eventNoFood['panierReservationNoFood']->getPlace());
+                $orderDetail->setdateEvent($eventNoFood['panierReservationNoFood']->getEventDate());
                 // on récupère le contenu du panier et on le greffe à orderDetail
                 $order->addOrderDetail($orderDetail);
             }
@@ -199,6 +200,8 @@ final class OrderController extends AbstractController
                 $orderDetail->setProductQuantity($eventWithFood['quantity']);
                 $orderDetail->setProductPrice($eventWithFood['panierReservationWithFood']->getEventPriceWithFoodHT());
                 $orderDetail->setProductTVA(20.0);
+                $orderDetail->setPlace($eventWithFood['panierReservationWithFood']->getPlace());
+                $orderDetail->setdateEvent($eventWithFood['panierReservationWithFood']->getEventDate());
 
                 // on récupère le contenu du panier et on le greffe à orderDetail
                 $order->addOrderDetail($orderDetail);

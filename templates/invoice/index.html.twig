@@ -50,7 +50,7 @@
     <table style="width:100%">
         <thead>
             <tr>
-                <th scope="col" class="text-left">Produit</th>
+                <th scope="col" class="text-left">Vidéo / Evènement</th>
                 <th scope="col" class="text-left">Quantité</th>
                 <th scope="col" class="text-left">Total HT</th>
                 <th scope="col" class="text-left">Taux TVA</th>
@@ -60,7 +60,13 @@
         <tbody>
                 {% for product in order.orderDetails %}
                     <tr>
-                        <td class="text-left">{{product.productName}}</td>
+                        <td class="text-left">
+                            {{product.productName}}<br>
+                            {% if product.place %}
+                            <small style="font-style:italic;">Prévu le : {{product.dateEvent|format_datetime(locale: 'fr')}}</small><br>
+                            <small style="font-style:italic;">Lieu : {{product.place}}</small>
+                            {% endif %}
+                        </td>
                         <td class="text-left">{{product.productQuantity}}</td>
                         <td class="text-left">{{product.productPrice|price}}</td>
                         <td class="text-left">{{product.productTVA}}%</td>
@@ -76,5 +82,8 @@
         <strong>Total TVA : </strong>{{order.totalTVA|price}}<br>
         <strong>Total TTC : </strong>{{order.totalTTC|price}}
     </div>
+    <footer style="position:fixed; bottom: 0; text-align:justify;">
+        <p>La facture sert de ticket/justificatif pour les réservations d'évènements. Une seule facture peut contenir plusieurs tickets. Tous les tickets sont rattachés au Nom utilisé pour l'adresse de facturation. Lors de votre présentation à l'évènement, nous compterons vos accompagnateurs en vérifiant que ceux-ci correspondent au nombre de tickets réservés.</p>
+    </footer>
 </body>
 </html>

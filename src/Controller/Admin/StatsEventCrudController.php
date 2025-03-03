@@ -52,8 +52,8 @@ class StatsEventCrudController extends AbstractCrudController
             IdField::new('id', 'Id')->hideOnIndex(),
             IntegerField::new('event_id','ID de l\'évènement'),
             TextField::new('event_name', "Evènement"),
-            IntegerField::new('noFoodStats','Formule Pass\'Event'),
-            IntegerField::new('withFoodStats','Formule Pass\'Event + repas'),
+            IntegerField::new('noFoodStats','Formule Pass\'Event Seul'),
+            IntegerField::new('withFoodStats','Formule Pass\'Event + Repas'),
             IntegerField::new('play_count','Nombre total d\'achats'),
         ];
     }
